@@ -26,7 +26,6 @@ A personal multi-page itinerary website documenting a 7-week solo trip across Ca
 ├── .claude/
 │   ├── skills/                        ← task-triggered playbooks
 │   └── rules/RULES.md                 ← hard must/must-not (authoritative)
-├── issues/                            ← groomed issues, one .md per issue
 ├── content/
 │   └── itinerary/                     ← source of truth for trip content
 ├── reference/
@@ -45,7 +44,7 @@ A personal multi-page itinerary website documenting a 7-week solo trip across Ca
 
 ### Before writing code, always
 
-1. **Confirm the task is a groomed issue in `/issues/`.** If it isn't, invoke `.claude/skills/feature-grooming/SKILL.md` and stop. Grooming and building are separate turns.
+1. **Confirm the task is a groomed GitHub issue** (on `vito-zbw/canada`, label `groomed`). If it isn't, invoke `.claude/skills/feature-grooming/SKILL.md` and stop. Grooming and building are separate turns.
 2. Read this file.
 3. Read `docs/ARCHITECTURE.md` if touching build config, routing, or tooling.
 4. Consult the relevant skill in `.claude/skills/` per the routing table below.
@@ -56,7 +55,7 @@ A personal multi-page itinerary website documenting a 7-week solo trip across Ca
 
 | Task | Read first |
 |---|---|
-| Vague task, multi-faceted ask, or anything not yet a groomed issue in `/issues/` | `.claude/skills/feature-grooming/SKILL.md` |
+| Vague task, multi-faceted ask, or anything not yet a groomed GitHub issue | `.claude/skills/feature-grooming/SKILL.md` |
 | Visual styling, typography, color, spacing | `.claude/skills/design-system/SKILL.md` + `docs/DESIGN.md` |
 | Building or modifying a component | `.claude/skills/component-patterns/SKILL.md` |
 | Responsive behavior, breakpoints, mobile layout | `.claude/skills/responsive-layout/SKILL.md` |
