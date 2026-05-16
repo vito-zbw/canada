@@ -1,0 +1,106 @@
+# Cross-Canada Solo Trip 2026
+
+## What this project is
+
+A personal multi-page itinerary website documenting a 7-week solo trip across Canada (Jul–Aug 2026). The site is editorial in style — like a long-form travel magazine — and is shared privately with family. Reference design: `https://www.visitsingapore.com/travel-tips/travelling-to-singapore/itineraries/7-days-in-singapore/`. See `reference/visitsingapore-deconstructed.md` for the specific visual elements to imitate.
+
+## Tech stack
+
+- **Astro 4.x** (static-first multi-page framework)
+- **Tailwind CSS** for styling — no custom CSS files unless tokenized in `tailwind.config.js`
+- **MDX** for itinerary content with embedded components
+- **Pexels API** for build-time image fetching, cached locally to `/public/images/`
+- **TypeScript** strict mode
+- Deployment: **Cloudflare Pages** via GitHub integration
+
+## Repository map
+
+```
+/
+├── CLAUDE.md                          ← you are here
+├── docs/                              ← stable reference, read on demand
+│   ├── ARCHITECTURE.md
+│   ├── DESIGN.md
+│   ├── CONTENT-MODEL.md
+│   └── DECISIONS.md                   ← log every non-obvious choice
+├── .claude/
+│   ├── skills/                        ← task-triggered playbooks
+│   └── rules/RULES.md                 ← hard must/must-not (authoritative)
+├── issues/                            ← groomed issues, one .md per issue
+├── content/
+│   └── itinerary/                     ← source of truth for trip content
+├── reference/
+│   └── visitsingapore-deconstructed.md
+├── src/
+│   ├── pages/                         ← Astro file-based routes
+│   ├── components/
+│   ├── layouts/
+│   └── styles/
+├── scripts/
+│   └── fetch-images.ts                ← Pexels build-time fetcher
+└── public/images/                     ← cached fetched images (committed)
+```
+
+## How to work in this repo
+
+### Before writing code, always
+
+1. **Confirm the task is a groomed issue in `/issues/`.** If it isn't, invoke `.claude/skills/feature-grooming/SKILL.md` and stop. Grooming and building are separate turns.
+2. Read this file.
+3. Read `docs/ARCHITECTURE.md` if touching build config, routing, or tooling.
+4. Consult the relevant skill in `.claude/skills/` per the routing table below.
+5. If the task touches content, read `docs/CONTENT-MODEL.md` first.
+6. If anything is ambiguous, **stop and ask** rather than guess.
+
+### Skill routing
+
+| Task | Read first |
+|---|---|
+| Vague task, multi-faceted ask, or anything not yet a groomed issue in `/issues/` | `.claude/skills/feature-grooming/SKILL.md` |
+| Visual styling, typography, color, spacing | `.claude/skills/design-system/SKILL.md` + `docs/DESIGN.md` |
+| Building or modifying a component | `.claude/skills/component-patterns/SKILL.md` |
+| Responsive behavior, breakpoints, mobile layout | `.claude/skills/responsive-layout/SKILL.md` |
+| Anything image-related (fetching, sizing, alt text) | `.claude/skills/image-handling/SKILL.md` |
+| Rendering itinerary content into pages | `.claude/skills/content-rendering/SKILL.md` + `docs/CONTENT-MODEL.md` |
+| Accessibility concerns | `.claude/skills/accessibility/SKILL.md` |
+
+### After changes, always
+
+- Run `npm run build` and confirm it completes without warnings.
+- Run `npm run check` (Astro type check) and confirm clean.
+- If a new dependency was added, log it in `docs/DECISIONS.md` with one-sentence rationale.
+
+## Hard rules (highlights)
+
+The authoritative list is `.claude/rules/RULES.md`. The easiest-to-forget ones:
+
+- **MUST NOT** begin coding from a vague request. Groom first via `.claude/skills/feature-grooming/SKILL.md`.
+- **MUST** be mobile-first responsive — design for 375px viewport first, scale up.
+- **MUST** meet WCAG 2.1 AA: semantic HTML, alt text on every image, focusable interactive elements, sufficient contrast.
+- **MUST** keep itinerary content in `/content/` only. Never hard-code trip details inside components.
+- **MUST NOT** invent itinerary content. If a field is missing, ask.
+- **MUST NOT** ship client-side JavaScript unless an interaction genuinely requires it.
+- **MUST NOT** add a dependency without logging the choice in `docs/DECISIONS.md`.
+
+## Quality bar
+
+A page is "done" when:
+
+- Lighthouse mobile score ≥ 95 across Performance, Accessibility, Best Practices, SEO.
+- No axe-core accessibility violations.
+- Visually coherent with `reference/visitsingapore-deconstructed.md` — same density, hierarchy, and editorial feel.
+- Renders correctly at 375px, 768px, and 1440px.
+- Images load progressively (blur-up or LQIP), have alt text, and use the `<Image>` component (not raw `<img>`).
+
+## Workflow expectations
+
+- Work in small, reviewable increments. Build one component, render one page, then iterate.
+- When in doubt about visual decisions, propose two options with rationale rather than picking silently.
+- Never silently expand scope. If a "small change" reveals deeper work, surface it before doing it.
+
+## What this project is NOT
+
+- Not a CMS — content authoring is just editing markdown/JSON files by hand.
+- Not a blog or aggregator — no comments, no RSS, no analytics.
+- Not multilingual — English only.
+- Not a portfolio piece — built for personal use; ship pragmatically.
