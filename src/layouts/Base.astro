@@ -1,9 +1,12 @@
 ---
+import { useTranslations, type Locale } from '../i18n/ui';
+
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
   ogType?: 'website' | 'article';
+  lang?: Locale;
 }
 
 const {
@@ -11,13 +14,15 @@ const {
   description,
   ogImage,
   ogType = 'website',
+  lang = 'en',
 } = Astro.props;
+
+const t = useTranslations(lang);
 
 // Trip canonical span. Source: content/itinerary/canada-itinerary.md "At a
 // Glance" (Jul 1 → Aug 23 2026, ~7 weeks). Update here if the trip is rebooked.
 const TRIP_START = '2026-07-01';
 const TRIP_END = '2026-08-23';
-const SITE_TITLE = 'Cross-Canada Solo Trip 2026';
 
 // Resolve OG image URL to absolute. The `site` setting in astro.config.mjs is
 // the source of truth for production host.
@@ -27,10 +32,26 @@ const ogImageAbsolute = ogImageRelative.startsWith('http')
   ? ogImageRelative
   : `${siteUrl}${ogImageRelative}`;
 const canonicalUrl = Astro.url.href;
+
+// BCP-47 lang tag for the <html lang> attribute and hreflang annotations.
+// `og:locale` uses Open Graph's underscore-separated form.
+const htmlLang = lang === 'zh' ? 'zh-Hans' : 'en';
+const ogLocale = lang === 'zh' ? 'zh_CN' : 'en_CA';
+
+// Cross-locale equivalents of the current path, for the alternate <link> tags.
+const path = Astro.url.pathname;
+const enPath = path.replace(/^\/zh(?=\/|$)/, '') || '/';
+const zhPath = path.startsWith('/zh')
+  ? path
+  : path === '/'
+    ? '/zh'
+    : `/zh${path}`;
+const enAlt = `${siteUrl}${enPath}`;
+const zhAlt = `${siteUrl}${zhPath}`;
 ---
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang={htmlLang} class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,12 +60,16 @@ const canonicalUrl = Astro.url.href;
     {description && <meta name="description" content={description} />}
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={enAlt} />
+    <link rel="alternate" hreflang="zh-Hans" href={zhAlt} />
+    <link rel="alternate" hreflang="x-default" href={enAlt} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:image" content={ogImageAbsolute} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:site_name" content={t('base.siteTitle')} />
+    <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
@@ -56,7 +81,7 @@ const canonicalUrl = Astro.url.href;
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-stone-50"
     >
-      Skip to content
+      {t('base.skipToContent')}
     </a>
     <main
       id="main"
@@ -70,12 +95,12 @@ const canonicalUrl = Astro.url.href;
       <div
         class="flex flex-col gap-2 border-t border-stone-200 pt-6 md:flex-row md:items-baseline md:justify-between"
       >
-        <p class="font-serif text-stone-700">{SITE_TITLE}</p>
+        <p class="font-serif text-stone-700">{t('base.siteTitle')}</p>
         <p>
           <time datetime={TRIP_START}>July 1</time> –
           <time datetime={TRIP_END}>August 23, 2026</time>
         </p>
-        <p>A personal record, made carefully.</p>
+        <p>{t('footer.tagline')}</p>
       </div>
     </footer>
   </body>
