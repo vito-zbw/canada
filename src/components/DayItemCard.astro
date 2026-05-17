@@ -24,6 +24,11 @@ export interface Props {
   legSlug: string;
   item: DayItem;
   lang?: Locale;
+  // When set, overrides kebab(item.name) for manifest lookup. Used by /zh
+  // routes to reuse the English-keyed image cache for items whose Chinese
+  // name yields a different kebab key. Pages compute this from the parallel
+  // English entry by matching items on `pin`.
+  imageKey?: string;
 }
 
 // MUST match scripts/fetch-images.ts kebab() exactly. The convention is the
@@ -55,7 +60,7 @@ const PHOTOGRAPHABLE: ReadonlySet<DayItem['kind']> = new Set([
   'rest',
 ]);
 
-const { legSlug, item, lang = 'en' } = Astro.props;
+const { legSlug, item, lang = 'en', imageKey } = Astro.props;
 const t = useTranslations(lang);
 const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
 const { pin, name, kind, time, durationMin, cost, note, image } = item;
@@ -100,7 +105,7 @@ let resolvedImage: { src: string; alt: string } | null = null;
 if (image) {
   resolvedImage = { src: `/images/${legSlug}/${image}.jpg`, alt: name };
 } else if (PHOTOGRAPHABLE.has(kind)) {
-  const key = kebab(name);
+  const key = imageKey ?? kebab(name);
   const entry = typedManifest[legSlug]?.items?.[key];
   if (entry) {
     resolvedImage = {

@@ -13,9 +13,15 @@ export interface Props {
   legSlug: string;
   days: Days;
   lang?: Locale;
+  // Optional [dayIdx][itemIdx] → manifest-key map. /zh routes use this to
+  // look up the English-keyed image cache when an item's Chinese name kebabs
+  // to a different key. Position-based (not pin-based) so transit/rest items
+  // without pins still resolve. Built by the page from the parallel English
+  // entry, assuming zh days/items are 1:1 translations preserving order.
+  imageKeyByPosition?: ReadonlyArray<ReadonlyArray<string>>;
 }
 
-const { legSlug, days, lang = 'en' } = Astro.props;
+const { legSlug, days, lang = 'en', imageKeyByPosition } = Astro.props;
 const t = useTranslations(lang);
 const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
 
@@ -33,8 +39,8 @@ function formatDate(iso: string): string {
 {
   days.length > 0 && (
     <section aria-label={t('dayList.aria')} class="space-y-12">
-      {days.map((day, idx) => {
-        const n = idx + 1;
+      {days.map((day, dayIdx) => {
+        const n = dayIdx + 1;
         const headingText = day.label
           ? t('dayList.headingWithLabel', {
               n,
@@ -48,8 +54,13 @@ function formatDate(iso: string): string {
               {headingText}
             </h2>
             <div class="mt-6 space-y-4">
-              {day.items.map((item) => (
-                <DayItemCard legSlug={legSlug} item={item} lang={lang} />
+              {day.items.map((item, itemIdx) => (
+                <DayItemCard
+                  legSlug={legSlug}
+                  item={item}
+                  lang={lang}
+                  imageKey={imageKeyByPosition?.[dayIdx]?.[itemIdx]}
+                />
               ))}
             </div>
           </section>

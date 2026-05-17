@@ -21,27 +21,61 @@ type Entry = CollectionEntry<'itinerary'>;
 const lang: Locale = 'zh';
 const t = useTranslations(lang);
 
+// Mirror of DayItemCard.astro's kebab(). Keep these two in lockstep — the
+// kebab regex is the contract between content names and manifest filenames.
+function kebab(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function buildImageKeyByPosition(enEntry: Entry): string[][] {
+  return (enEntry.data.days ?? []).map((day) =>
+    day.items.map((item) => kebab(item.name)),
+  );
+}
+
 export const getStaticPaths = (async () => {
-  const all = (await getCollection('itinerary'))
+  const collection = await getCollection('itinerary');
+  const zhEntries = collection
     .filter((e) => e.data.lang === 'zh')
     .sort((a, b) => a.data.order - b.data.order);
-  return all.map((entry, i) => ({
-    params: { slug: entry.slug.replace(/^zh\//, '') },
-    props: {
-      entry,
-      prev: i > 0 ? all[i - 1] : null,
-      next: i < all.length - 1 ? all[i + 1] : null,
-    },
-  }));
+  // Index English entries by the bare slug so we can pair them with zh entries
+  // for cross-locale image-key resolution. Plain object because the `Map`
+  // identifier is shadowed by the imported `Map.astro` component.
+  const enBySlug: Record<string, Entry> = {};
+  for (const e of collection) {
+    if (e.data.lang !== 'zh') enBySlug[e.slug] = e;
+  }
+  return zhEntries.map((entry, i) => {
+    const bare = entry.slug.replace(/^zh\//, '');
+    const enEntry = enBySlug[bare] ?? null;
+    return {
+      params: { slug: bare },
+      props: {
+        entry,
+        enEntry,
+        prev: i > 0 ? zhEntries[i - 1] : null,
+        next: i < zhEntries.length - 1 ? zhEntries[i + 1] : null,
+      },
+    };
+  });
 }) satisfies GetStaticPaths;
 
 interface PageProps {
   entry: Entry;
+  enEntry: Entry | null;
   prev: Entry | null;
   next: Entry | null;
 }
 
-const { entry, prev, next } = Astro.props as PageProps;
+const { entry, enEntry, prev, next } = Astro.props as PageProps;
+const imageKeyByPosition = enEntry
+  ? buildImageKeyByPosition(enEntry)
+  : undefined;
 const {
   city,
   province,
@@ -242,7 +276,12 @@ const localTransport = Array.isArray(transport)
           )}
 
           <div class="space-y-16">
-            <DayList legSlug={slugBare} days={days!} lang={lang} />
+            <DayList
+              legSlug={slugBare}
+              days={days!}
+              lang={lang}
+              imageKeyByPosition={imageKeyByPosition}
+            />
 
             {stays && stays.length > 0 && <StaysList stays={stays} lang={lang} />}
 
