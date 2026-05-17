@@ -101,7 +101,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
 - [ ] **Milestone 10 — English / Chinese language toggle (infrastructure)** ([#172](https://github.com/vito-zbw/canada/issues/172))
   - [x] [#173](https://github.com/vito-zbw/canada/issues/173) — Configure Astro i18n routing in `astro.config.mjs`
-  - [ ] [#174](https://github.com/vito-zbw/canada/issues/174) — Create UI strings dictionary and `useTranslations` helper
+  - [x] [#174](https://github.com/vito-zbw/canada/issues/174) — Create UI strings dictionary and `useTranslations` helper
   - [ ] [#175](https://github.com/vito-zbw/canada/issues/175) — Extend content schema with optional `lang` field
   - [ ] [#176](https://github.com/vito-zbw/canada/issues/176) — Build `LanguageToggle` component
   - [ ] [#177](https://github.com/vito-zbw/canada/issues/177) — Localize `TopNav` and integrate `LanguageToggle`
