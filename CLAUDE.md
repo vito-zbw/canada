@@ -122,7 +122,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#194](https://github.com/vito-zbw/canada/issues/194) — Author zh translation: Ottawa leg
   - [x] [#190](https://github.com/vito-zbw/canada/issues/190) — Author zh translation: Montreal leg
   - [x] [#191](https://github.com/vito-zbw/canada/issues/191) — Author zh translation: Quebec City leg
-  - [ ] [#192](https://github.com/vito-zbw/canada/issues/192) — Author zh translation: Toronto leg
+  - [x] [#192](https://github.com/vito-zbw/canada/issues/192) — Author zh translation: Toronto leg
   - [ ] [#195](https://github.com/vito-zbw/canada/issues/195) — Author zh translation: prep — advance-bookings
   - [ ] [#200](https://github.com/vito-zbw/canada/issues/200) — Author zh translation: prep — banking
   - [ ] [#196](https://github.com/vito-zbw/canada/issues/196) — Author zh translation: prep — connectivity
