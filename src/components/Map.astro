@@ -1,0 +1,366 @@
+---
+// Unified MapLibre-backed map component. Replaces the legacy RouteMap,
+// CityMap, and TransitMap SVG components. Three variants:
+//
+//   - route   country-scale map of trip legs; markers are city labels;
+//             clicking a marker navigates to a leg page. Default polyline
+//             is dashed.
+//   - city    neighborhood-scale map of attractions; markers are numbered
+//             circles matching DayItemCard badges. Basemap labels are
+//             hidden above zoom 13 so user pins read cleanly.
+//   - transit corridor map of stations; markers are labeled. Solid line
+//             by default.
+//
+// The component renders a server-side <ol> of markers as soft-fail content
+// inside the map target. A scoped <script> block uses IntersectionObserver
+// to defer initialization until the figure scrolls into view, then
+// dynamic-imports `maplibre-gl` so the ~80 KB library lives in its own
+// Vite chunk (no client:visible directive needed — vanilla pattern matches
+// the existing Checklist island).
+
+export interface MapMarker {
+  id: string;
+  lat: number;
+  lng: number;
+  label: string;
+  href?: string;
+  title: string;
+}
+
+export interface Props {
+  variant: 'route' | 'city' | 'transit';
+  markers: MapMarker[];
+  routeLine?: boolean;
+  routeDashed?: boolean;
+  fit?: 'markers' | { center: [number, number]; zoom: number };
+  caption?: string;
+  ariaLabel: string;
+  class?: string;
+}
+
+const {
+  variant,
+  markers,
+  routeLine = false,
+  routeDashed,
+  fit = 'markers',
+  caption,
+  ariaLabel,
+  class: className = '',
+} = Astro.props;
+
+const dashed = routeDashed ?? variant === 'route';
+const fitAttr = fit === 'markers' ? 'markers' : JSON.stringify(fit);
+---
+
+<figure
+  data-map
+  aria-label={ariaLabel}
+  class:list={['my-2 w-full', className]}
+>
+  <div
+    class:list={[
+      'map-target relative w-full overflow-hidden rounded-md border border-stone-200 bg-stone-100',
+      variant === 'route' && 'aspect-[16/9]',
+      variant === 'city' && 'aspect-square',
+      variant === 'transit' && 'aspect-[16/9] md:aspect-[2/1]',
+    ]}
+    data-variant={variant}
+    data-route-line={routeLine ? '1' : '0'}
+    data-route-dashed={dashed ? '1' : '0'}
+    data-markers={JSON.stringify(markers)}
+    data-fit={fitAttr}
+  >
+    <ol class="map-pin-index">
+      {markers.map((m) => (
+        <li>
+          <span class="font-medium">{m.label}</span>: {m.title}
+        </li>
+      ))}
+    </ol>
+  </div>
+  <figcaption class="mt-2 text-meta text-stone-500">
+    {caption && <span>{caption} · </span>}
+    <span>
+      © <a
+        href="https://openfreemap.org"
+        target="_blank"
+        rel="noopener"
+        class="underline hover:text-stone-700"
+      >OpenFreeMap</a> contributors
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .map-pin-index {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    list-style: none;
+    overflow: auto;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: #57534e;
+    column-count: 2;
+    column-gap: 1rem;
+  }
+  @media (max-width: 480px) {
+    .map-pin-index {
+      column-count: 1;
+    }
+  }
+  .map-target.is-loaded .map-pin-index {
+    display: none;
+  }
+
+  :global(.map-pin-numbered) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border-radius: 9999px;
+    border: 2px solid #ffffff;
+    background-color: #1f3d2b;
+    color: #ffffff;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+    transition: transform 120ms ease;
+  }
+  :global(.map-pin-numbered:hover),
+  :global(.map-pin-numbered:focus-visible) {
+    transform: scale(1.1);
+    outline: none;
+  }
+  :global(.map-pin-labeled) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: #1c1917;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  :global(.map-pin-labeled .map-pin-dot) {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background-color: #1f3d2b;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+    flex-shrink: 0;
+  }
+  :global(.map-pin-labeled .map-pin-label) {
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 3px;
+    padding: 1px 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  :global(.map-pin-labeled:hover .map-pin-label),
+  :global(.map-pin-labeled:focus-visible .map-pin-label) {
+    background-color: #1f3d2b;
+    color: #ffffff;
+    outline: none;
+  }
+  :global(.maplibregl-canvas) {
+    outline: none;
+  }
+</style>
+
+<script>
+  type MapMarker = {
+    id: string;
+    lat: number;
+    lng: number;
+    label: string;
+    href?: string;
+    title: string;
+  };
+
+  type Variant = 'route' | 'city' | 'transit';
+
+  async function initMap(target: HTMLElement): Promise<void> {
+    try {
+      const variant = (target.dataset.variant as Variant) || 'route';
+      const markers: MapMarker[] = JSON.parse(
+        target.dataset.markers || '[]',
+      );
+      if (markers.length === 0) return;
+
+      const routeLine = target.dataset.routeLine === '1';
+      const routeDashed = target.dataset.routeDashed === '1';
+      const fitRaw = target.dataset.fit || 'markers';
+      const fit:
+        | 'markers'
+        | { center: [number, number]; zoom: number } =
+        fitRaw === 'markers' ? 'markers' : JSON.parse(fitRaw);
+
+      // CSS import is a side-effect; Vite emits it as part of the same
+      // chunk graph so the stylesheet ships only when this script runs.
+      await import('maplibre-gl/dist/maplibre-gl.css');
+      const maplibre = await import('maplibre-gl');
+
+      const map = new maplibre.Map({
+        container: target,
+        style: 'https://tiles.openfreemap.org/styles/positron',
+        attributionControl: false,
+      });
+
+      for (const m of markers) {
+        const el = document.createElement(m.href ? 'a' : 'button');
+        el.setAttribute('aria-label', m.title);
+        el.title = m.title;
+        if (m.href) {
+          (el as HTMLAnchorElement).href = m.href;
+        } else {
+          (el as HTMLButtonElement).type = 'button';
+        }
+
+        if (variant === 'city') {
+          el.className = 'map-pin-numbered';
+          el.textContent = m.label;
+        } else {
+          el.className = 'map-pin-labeled';
+          const dot = document.createElement('span');
+          dot.className = 'map-pin-dot';
+          const labelEl = document.createElement('span');
+          labelEl.className = 'map-pin-label';
+          labelEl.textContent = m.label;
+          el.appendChild(dot);
+          el.appendChild(labelEl);
+        }
+
+        new maplibre.Marker({
+          element: el,
+          anchor: variant === 'city' ? 'center' : 'left',
+        })
+          .setLngLat([m.lng, m.lat])
+          .addTo(map);
+      }
+
+      if (typeof fit === 'object' && fit !== null && 'center' in fit) {
+        map.setCenter(fit.center);
+        map.setZoom(fit.zoom);
+      } else if (markers.length === 1) {
+        map.setCenter([markers[0].lng, markers[0].lat]);
+        map.setZoom(12);
+      } else {
+        const bounds = new maplibre.LngLatBounds(
+          [markers[0].lng, markers[0].lat],
+          [markers[0].lng, markers[0].lat],
+        );
+        for (const m of markers) bounds.extend([m.lng, m.lat]);
+        map.fitBounds(bounds, {
+          padding: { top: 60, bottom: 60, left: 60, right: 60 },
+          duration: 0,
+          maxZoom: variant === 'city' ? 14 : 9,
+        });
+      }
+
+      if (routeLine && markers.length > 1) {
+        map.on('load', () => {
+          const coordinates = markers.map(
+            (m) => [m.lng, m.lat] as [number, number],
+          );
+          map.addSource('route-line', {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: { type: 'LineString', coordinates },
+            },
+          });
+          map.addLayer({
+            id: 'route-line',
+            type: 'line',
+            source: 'route-line',
+            layout: { 'line-cap': 'round', 'line-join': 'round' },
+            paint: {
+              'line-color': '#1F3D2B',
+              'line-width': 2.5,
+              'line-opacity': 0.7,
+              ...(routeDashed ? { 'line-dasharray': [2, 2] } : {}),
+            },
+          });
+        });
+      }
+
+      if (variant === 'city') {
+        let lastVisibility: 'visible' | 'none' | null = null;
+        const update = () => {
+          const visibility: 'visible' | 'none' =
+            map.getZoom() > 13 ? 'none' : 'visible';
+          if (lastVisibility === visibility) return;
+          lastVisibility = visibility;
+          const layers = map.getStyle().layers || [];
+          for (const layer of layers) {
+            if ((layer as { type?: string }).type === 'symbol') {
+              try {
+                map.setLayoutProperty(layer.id, 'visibility', visibility);
+              } catch {
+                // layer may be transient; ignore
+              }
+            }
+          }
+        };
+        map.on('load', update);
+        map.on('zoom', update);
+      }
+
+      map.on('load', () => {
+        target.classList.add('is-loaded');
+      });
+    } catch (err) {
+      // Soft-fail: the static <ol> remains visible inside the target.
+      console.warn('[Map] init failed; leaving static fallback', err);
+    }
+  }
+
+  function setup(): void {
+    const targets = document.querySelectorAll<HTMLElement>(
+      'figure[data-map] .map-target',
+    );
+    if (targets.length === 0) return;
+
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach((t) => void initMap(t));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            observer.unobserve(entry.target);
+            void initMap(entry.target as HTMLElement);
+          }
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+
+    targets.forEach((t) => observer.observe(t));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup, { once: true });
+  } else {
+    setup();
+  }
+</script>
