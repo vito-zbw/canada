@@ -1,18 +1,80 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import Hero from '../components/Hero.astro';
+import LegCard from '../components/LegCard.astro';
+import RouteMap from '../components/RouteMap.astro';
+
+const legs = (await getCollection('itinerary')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const totalNights = legs.reduce((sum, l) => sum + l.data.nights, 0);
+const totalStops = legs.length;
+const anchorCount = legs.filter((l) => l.data.anchorEvent != null).length;
+const totalBudget = legs.reduce((sum, l) => sum + (l.data.cost ?? 0), 0);
+
+const budgetLabel = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+  maximumFractionDigits: 0,
+}).format(totalBudget);
 ---
 
 <Base
   title="Cross-Canada Solo Trip 2026"
-  description="A personal itinerary across Canada, July–August 2026."
+  description="Vancouver → Toronto, July 1 – August 23, 2026. The working reference for a seven-week cross-Canada itinerary."
 >
-  <h1 class="font-serif text-h1 tracking-tight md:text-display">
-    Cross-Canada Solo Trip 2026
-  </h1>
-  <p class="mt-6 max-w-prose text-lead text-stone-700">
-    Vancouver → Toronto, July 1 – August 23, 2026. Routing rationale, leg-by-leg
-    plans, costs, and prep notes — this site is the working reference for the
-    trip.
-  </p>
-  <p class="mt-10 text-meta text-stone-500">Site under construction.</p>
+  <TopNav />
+  <Hero
+    imageSlug="vancouver"
+    title="Cross-Canada Solo Trip 2026"
+    eyebrow="July 1 – August 23, 2026"
+    subtitle="Vancouver to Toronto, 50 nights, ten stops, one continent."
+    alt="Vancouver, the trip's first leg"
+  />
+  <section
+    class="mt-18 md:mt-22"
+    aria-label="Trip at a glance"
+  >
+    <dl class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Nights</dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {totalNights}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Stops</dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {totalStops}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Anchor events</dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {anchorCount}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Budget</dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {budgetLabel}
+        </dd>
+      </div>
+    </dl>
+  </section>
+  <section class="mt-18 md:mt-22 lg:mt-30">
+    <h2 class="font-serif text-h2 tracking-tight">The route</h2>
+    <RouteMap class="mt-6" />
+  </section>
+  <section class="mt-18 md:mt-22 lg:mt-30">
+    <h2 class="font-serif text-h2 tracking-tight">All ten legs</h2>
+    <ul
+      class="mt-8 grid grid-cols-1 gap-10 list-none p-0 md:grid-cols-2 lg:grid-cols-3"
+    >
+      {legs.map((entry) => <li><LegCard entry={entry} /></li>)}
+    </ul>
+  </section>
 </Base>
