@@ -1,10 +1,16 @@
 ---
 // One row of the day-by-day list: thumbnail + numbered map pin + title +
 // meta line + optional note. Layout stays horizontal at every viewport;
-// DayList stacks these vertically with `gap-4`. Kind drives the fallback
-// glyph when the item has no `image`.
+// DayList stacks these vertically with `gap-4`.
+//
+// Image resolution (issue #108):
+//   1. item.image explicit override → /images/<slug>/<image>.jpg
+//   2. manifest convention for kind ∈ {attraction, meal, event}
+//        → /images/<slug>/items/<kebab(name)>.jpg, alt from manifest
+//   3. icon-block fallback (always used for kind ∈ {rest, transit})
 
 import type { CollectionEntry } from 'astro:content';
+import manifest from '../../public/images/manifest.json';
 
 type DayItem = NonNullable<
   CollectionEntry<'itinerary'>['data']['days']
@@ -14,6 +20,33 @@ export interface Props {
   legSlug: string;
   item: DayItem;
 }
+
+// MUST match scripts/fetch-images.ts kebab() exactly. The convention is the
+// contract between the fetcher and this component — if you change one, change
+// the other. See docs/CONTENT-MODEL.md for the canonical regex.
+function kebab(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+interface ManifestItemEntry {
+  filename: string;
+  alt: string;
+}
+interface ManifestLeg {
+  items?: Record<string, ManifestItemEntry>;
+}
+const typedManifest = manifest as Record<string, ManifestLeg>;
+
+const PHOTOGRAPHABLE: ReadonlySet<DayItem['kind']> = new Set([
+  'attraction',
+  'meal',
+  'event',
+]);
 
 const { legSlug, item } = Astro.props;
 const { pin, name, kind, time, durationMin, cost, note, image } = item;
@@ -51,7 +84,19 @@ const metaParts = [
   costLabel,
 ].filter((part): part is string => part !== null && part !== '');
 
-const imageSrc = image ? `/images/${legSlug}/${image}.jpg` : null;
+let resolvedImage: { src: string; alt: string } | null = null;
+if (image) {
+  resolvedImage = { src: `/images/${legSlug}/${image}.jpg`, alt: name };
+} else if (PHOTOGRAPHABLE.has(kind)) {
+  const key = kebab(name);
+  const entry = typedManifest[legSlug]?.items?.[key];
+  if (entry) {
+    resolvedImage = {
+      src: `/images/${legSlug}/items/${entry.filename}`,
+      alt: entry.alt && entry.alt.trim() !== '' ? entry.alt : name,
+    };
+  }
+}
 ---
 
 <article
@@ -63,10 +108,10 @@ const imageSrc = image ? `/images/${legSlug}/${image}.jpg` : null;
       class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-md bg-stone-100"
     >
       {
-        imageSrc ? (
+        resolvedImage ? (
           <img
-            src={imageSrc}
-            alt={name}
+            src={resolvedImage.src}
+            alt={resolvedImage.alt}
             width={80}
             height={80}
             loading="lazy"

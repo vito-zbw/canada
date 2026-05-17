@@ -1,0 +1,164 @@
+{
+  "vancouver": {
+    "hero": {
+      "src": "/images/vancouver/hero.jpg",
+      "blur": "/images/vancouver/hero.blur.jpg",
+      "width": 6027,
+      "height": 4010,
+      "alt": "Stunning view of North Vancouver skyline reflecting in the harbor at night."
+    },
+    "inline": [],
+    "items": {
+      "english-bay-walk-into-stanley-park": {
+        "filename": "english-bay-walk-into-stanley-park.jpg",
+        "alt": "Beautiful view of Stanley Park's coastal path with ocean and trees in Vancouver, BC, Canada."
+      },
+      "canada-day-fireworks-at-canada-place": {
+        "filename": "canada-day-fireworks-at-canada-place.jpg",
+        "alt": "A stunning display of fireworks lights up the night sky over Vancouver's harbor, creating a vibrant celebration."
+      },
+      "dinner-miku": {
+        "filename": "dinner-miku.jpg",
+        "alt": "A delectable lobster roll served with coleslaw and lemon wedge, perfect for seafood lovers."
+      },
+      "stanley-park-seawall-bike-loop": {
+        "filename": "stanley-park-seawall-bike-loop.jpg",
+        "alt": "Aerial view of people enjoying the scenic seawall path along Vancouver's coastline under clear skies."
+      },
+      "granville-island-public-market": {
+        "filename": "granville-island-public-market.jpg",
+        "alt": "A detailed street view of traffic signals and street signs at Granville and Robson, Vancouver."
+      },
+      "royal-bc-museum": {
+        "filename": "royal-bc-museum.jpg",
+        "alt": "Canada Place at the Port of Vancouver, a key modern landmark in British Columbia, Canada."
+      },
+      "inner-harbour-at-sunset": {
+        "filename": "inner-harbour-at-sunset.jpg",
+        "alt": "Scenic view of Vancouver's skyline reflecting on water during golden hour, captured from Village Dock."
+      },
+      "butchart-gardens": {
+        "filename": "butchart-gardens.jpg",
+        "alt": "Delicate cherry blossoms in full bloom, capturing the essence of spring."
+      },
+      "bard-on-the-beach": {
+        "filename": "bard-on-the-beach.jpg",
+        "alt": "Bronze laughter sculptures at Morton Park, Vancouver, symbolize joy and humor."
+      },
+      "capilano-suspension-bridge": {
+        "filename": "capilano-suspension-bridge.jpg",
+        "alt": "Man standing on a scenic suspension bridge in lush Vancouver forest."
+      },
+      "grouse-grind-to-grouse-mountain": {
+        "filename": "grouse-grind-to-grouse-mountain.jpg",
+        "alt": "Explore the stunning view of Vancouver from the lush forested hills under a clear blue sky."
+      },
+      "moa-at-ubc": {
+        "filename": "moa-at-ubc.jpg",
+        "alt": "A tall clock tower stands against a clear blue sky on the UBC Vancouver campus."
+      },
+      "richmond-alexandra-road-soup-dumplings-beef-noodle": {
+        "filename": "richmond-alexandra-road-soup-dumplings-beef-noodle.jpg",
+        "alt": "Delicious Taiwanese beef noodle soup served in a metal bowl with fresh garnishes."
+      },
+      "vancouver-art-gallery": {
+        "filename": "vancouver-art-gallery.jpg",
+        "alt": "Bronze laughter sculptures at Morton Park, Vancouver, symbolize joy and humor."
+      },
+      "gastown-steam-clock-and-water-street": {
+        "filename": "gastown-steam-clock-and-water-street.jpg",
+        "alt": "Stunning view of North Vancouver skyline reflecting in the harbor at night."
+      }
+    }
+  },
+  "calgary": {
+    "hero": {
+      "src": "/images/calgary/hero.jpg",
+      "blur": "/images/calgary/hero.blur.jpg",
+      "width": 6000,
+      "height": 4000,
+      "alt": "A vibrant view of Calgary's skyline with modern skyscrapers framed by greenery under a clear sky."
+    },
+    "inline": []
+  },
+  "banff": {
+    "hero": {
+      "src": "/images/banff/hero.jpg",
+      "blur": "/images/banff/hero.blur.jpg",
+      "width": 6000,
+      "height": 4000,
+      "alt": "Peaceful view of Banff mountain scenery with misty forest and dramatic sky."
+    },
+    "inline": []
+  },
+  "jasper": {
+    "hero": {
+      "src": "/images/jasper/hero.jpg",
+      "blur": "/images/jasper/hero.blur.jpg",
+      "width": 7504,
+      "height": 5007,
+      "alt": "A breathtaking view of Jasper, Alberta's mountainous landscape from the SkyTram summit station."
+    },
+    "inline": []
+  },
+  "the-canadian": {
+    "hero": {
+      "src": "/images/the-canadian/hero.jpg",
+      "blur": "/images/the-canadian/hero.blur.jpg",
+      "width": 7952,
+      "height": 5984,
+      "alt": "Breathtaking view of Moraine Lake with turquoise waters surrounded by mountains in Banff National Park, Canada."
+    },
+    "inline": []
+  },
+  "winnipeg": {
+    "hero": {
+      "src": "/images/winnipeg/hero.jpg",
+      "blur": "/images/winnipeg/hero.blur.jpg",
+      "width": 6737,
+      "height": 4672,
+      "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
+    },
+    "inline": []
+  },
+  "ottawa": {
+    "hero": {
+      "src": "/images/ottawa/hero.jpg",
+      "blur": "/images/ottawa/hero.blur.jpg",
+      "width": 10944,
+      "height": 7296,
+      "alt": "Scenic view of the historic Alexandra Bridge in Ottawa over the tranquil Ottawa River."
+    },
+    "inline": []
+  },
+  "montreal": {
+    "hero": {
+      "src": "/images/montreal/hero.jpg",
+      "blur": "/images/montreal/hero.blur.jpg",
+      "width": 6671,
+      "height": 4447,
+      "alt": "Child holds sign supporting runners at Montreal marathon, capturing athletic energy."
+    },
+    "inline": []
+  },
+  "quebec-city": {
+    "hero": {
+      "src": "/images/quebec-city/hero.jpg",
+      "blur": "/images/quebec-city/hero.blur.jpg",
+      "width": 6000,
+      "height": 4000,
+      "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+    },
+    "inline": []
+  },
+  "toronto": {
+    "hero": {
+      "src": "/images/toronto/hero.jpg",
+      "blur": "/images/toronto/hero.blur.jpg",
+      "width": 6000,
+      "height": 4000,
+      "alt": "Toronto skyline featuring the CN Tower and water taxi on Lake Ontario under a clear day sky."
+    },
+    "inline": []
+  }
+}

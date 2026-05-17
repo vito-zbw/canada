@@ -145,7 +145,28 @@ Each entry in `days[].items[]`:
 | `cost` | int | optional | CAD whole dollars. |
 | `coords` | `{lat, lng}` | optional | Required when `pin` is set (the pin needs a position on the map). |
 | `note` | string | optional | One-line hint, ≤ 80 chars. |
-| `image` | string | optional | File slug under `/public/images/<leg-slug>/`. |
+| `image` | string | optional | File slug under `/public/images/<leg-slug>/`. Explicit override — wins over the convention below. |
+
+#### Per-item image convention (issue #107)
+
+When `image` is unset, `DayItemCard` derives a filename from `name` and looks it up in `public/images/manifest.json` under `[legSlug].items[kebab(name)]`. The convention only applies to `kind ∈ {'attraction', 'meal', 'event'}` — `'transit'` and `'rest'` items always use the icon block (no Pexels photo for "9 am SkyTrain" or "afternoon nap").
+
+The `kebab()` function is the contract between `scripts/fetch-images.ts` and `src/components/DayItemCard.astro`. Both implementations MUST match:
+
+```ts
+function kebab(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')   // strip combining diacritics
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+```
+
+Examples: `'Stanley Park'` → `'stanley-park'`, `'Café Bistro'` → `'cafe-bistro'`, `'Dinner — Miku'` → `'dinner-miku'`.
+
+To populate the manifest for a leg, run `npx tsx scripts/fetch-images.ts --leg <slug> --items`.
 
 #### Invariants enforced by content, not the schema
 
