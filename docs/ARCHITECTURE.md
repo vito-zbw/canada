@@ -33,8 +33,9 @@ The `build` script runs `astro check && astro build`, so a type error blocks the
 File-based via `src/pages/`. Conventions:
 
 - `src/pages/index.astro` → `/`
-- `src/pages/prep/<name>.astro` → `/prep/<name>`
+- `src/pages/pre-trip.astro` → `/pre-trip`
 - `src/pages/legs/[slug].astro` → `/legs/<slug>` (dynamic from `getStaticPaths`)
+- `src/pages/404.astro` → 404 fallback
 
 Dynamic routes pull entries from the `itinerary` content collection. Each leg slug must match the `id` field in the entry's frontmatter.
 
@@ -46,17 +47,26 @@ Content lives in `src/content/itinerary/*.{md,mdx}`. Each file has typed frontma
 - Pages access entries via `getCollection('itinerary')` and `getEntry('itinerary', slug)`.
 - MDX entries can embed Astro components (e.g. a leg-cost callout); regular `.md` entries can't.
 
-Source prose for the trip currently lives at `content/itinerary/canada-itinerary.md` as one long document. It will be split into per-leg entries under `src/content/itinerary/` in a later epic.
+The canonical per-leg entries live under `src/content/itinerary/` — 9 city `.mdx` files plus one transit leg (`the-canadian.mdx`). A second collection `prep` (`src/content/prep/*.mdx`) holds the pre-trip checklist sections, rendered by the Checklist island on `/pre-trip`. The pre-split source draft at `content/itinerary/canada-itinerary.md` is retained as historical reference but is no longer the source of truth.
 
 ## Image pipeline
 
-`scripts/fetch-images.ts` is a build-time fetcher (currently a skeleton; see issue 021).
+`scripts/fetch-images.ts` is the build-time Pexels fetcher. It runs out-of-band — not from `npm run build` — and writes to `public/images/<leg-slug>/` plus a single manifest at `public/images/manifest.json`. The manifest is read by `<DayItemCard>` and any component that needs to look up cached images by convention.
 
-Concept: for each leg, read a manifest of Pexels search queries; download top results to `public/images/<leg-slug>/`; commit the cache. Pages reference the cached path, never the Pexels URL directly. This trades fresh imagery for offline-safe, immutable deploys.
+Two modes selected via CLI flag:
 
-Required env var: `PEXELS_API_KEY` (not committed; set in shell or Cloudflare Pages dashboard).
+| Command | Behavior |
+|---|---|
+| `npx tsx scripts/fetch-images.ts` | Default: fetch one hero per leg → `public/images/<slug>/hero.jpg` plus `hero.blur.jpg` (LQIP) |
+| `npx tsx scripts/fetch-images.ts --items` | Per-item: for each leg's `days[].items[]`, fetch images for `kind ∈ {attraction, meal, event}` → `public/images/<slug>/items/<kebab(name)>.jpg`. Items with `kind ∈ {rest, transit}` are skipped. |
 
-Until 021 is fleshed out, the build does not invoke this script. Images can be added manually under `public/images/` without breaking the build.
+Other flags:
+- `--leg <slug>` — limit to one leg (e.g. `--leg vancouver`)
+- `--force` — refetch even when the file already exists (default: idempotent, skip existing)
+
+The `kebab(name)` slug function is the contract between the fetcher and `src/components/DayItemCard.astro` — both implementations must match. The canonical regex is documented in `docs/CONTENT-MODEL.md` § Per-item image convention.
+
+Required env var: `PEXELS_API_KEY` (not committed; set in shell). Cloudflare Pages does not need the key because the fetcher is not invoked at deploy time — the committed cache under `public/images/` is what ships. Pages reference the cached path, never the Pexels URL directly. This trades fresh imagery for offline-safe, immutable deploys.
 
 ## Deploy
 
