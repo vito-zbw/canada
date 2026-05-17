@@ -1,0 +1,140 @@
+---
+id: winnipeg
+order: 6
+city: Winnipeg
+province: MB
+arriveDate: '2026-07-22'
+nights: 3
+cost: 1125
+coords:
+  lat: 49.8951
+  lng: -97.1384
+legType: city
+updated: '2026-05-17'
+highlights:
+  - The Forks
+  - CMHR (Antoine Predock)
+  - Exchange District
+  - FortWhyte Alive
+
+days:
+  - date: '2026-07-22'
+    label: Arrival from The Canadian
+    items:
+      - pin: 1
+        name: Winnipeg Union Station — arrive on Train 2
+        kind: transit
+        time: '08:00'
+        coords: { lat: 49.8881, lng: -97.1305 }
+        note: Cross the street to The Fort Garry Hotel and the Forks corridor
+      - pin: 2
+        name: The Forks — Red + Assiniboine confluence
+        kind: attraction
+        time: morning
+        durationMin: 120
+        coords: { lat: 49.8867, lng: -97.1306 }
+        note: Forks Market — Ukrainian perogies, Smith Restaurant lunch
+      - pin: 3
+        name: Canadian Museum for Human Rights
+        kind: attraction
+        time: afternoon
+        durationMin: 180
+        cost: 18
+        coords: { lat: 49.8902, lng: -97.1305 }
+        note: $18 student admission; Antoine Predock architecture
+      - pin: 4
+        name: 'Dinner — Deer + Almond or Clementine'
+        kind: meal
+        time: evening
+        coords: { lat: 49.8975, lng: -97.1394 }
+        note: Inventive prairie cuisine
+
+  - date: '2026-07-23'
+    label: Manitoba Museum + Exchange District
+    items:
+      - pin: 5
+        name: Manitoba Museum
+        kind: attraction
+        time: morning
+        durationMin: 180
+        coords: { lat: 49.9001, lng: -97.1369 }
+        note: HMS Nonsuch diorama, polar bear gallery, planetarium
+      - pin: 6
+        name: 'Lunch — King + Bannatyne'
+        kind: meal
+        time: midday
+        coords: { lat: 49.8997, lng: -97.1361 }
+      - pin: 7
+        name: 'Exchange District — National Historic Site walk'
+        kind: attraction
+        time: afternoon
+        durationMin: 120
+        coords: { lat: 49.8989, lng: -97.1383 }
+      - pin: 8
+        name: Royal Canadian Mint tour
+        kind: attraction
+        time: late afternoon
+        cost: 8
+        coords: { lat: 49.8328, lng: -97.0883 }
+        note: $8 student tour in south Winnipeg
+
+  - date: '2026-07-24'
+    label: Choice day
+    items:
+      - pin: 9
+        name: 'FortWhyte Alive (or Assiniboine Park as alt)'
+        kind: attraction
+        time: morning
+        durationMin: 240
+        coords: { lat: 49.8217, lng: -97.2331 }
+        note: Bison herd, kayaking, ~30 min by transit / Uber
+      - pin: 10
+        name: 'Dinner in Osborne Village'
+        kind: meal
+        time: evening
+        coords: { lat: 49.8772, lng: -97.1456 }
+        note: Honey dill sauce on fried chicken, bison burgers, Schmoo torte
+      - pin: 11
+        name: 'YWG → Ottawa flight (Friday afternoon)'
+        kind: transit
+        time: afternoon
+        coords: { lat: 49.9100, lng: -97.2391 }
+        note: Flight to YOW closes the leg
+
+stays:
+  - name: Hostel near The Forks / downtown
+    neighborhood: Downtown / Exchange District
+    checkIn: '2026-07-22'
+    checkOut: '2026-07-25'
+    nightlyCAD: 70
+    bookingNote: Specific accommodation TBC
+
+transport:
+  - purpose: Around downtown
+    mode: Walking + Winnipeg Transit
+    costCAD: 18
+  - purpose: To FortWhyte Alive / Assiniboine Park
+    mode: Winnipeg Transit + Uber
+    costCAD: 25
+  - purpose: Winnipeg → Ottawa
+    mode: Flight (Air Canada or WestJet)
+    costCAD: 320
+    note: YWG → YOW Friday afternoon
+
+costBreakdown:
+  lodging: 210
+  food: 300
+  transportLocal: 60
+  activities: 220
+  buffer: 335
+
+cityMap:
+  centerLat: 49.8951
+  centerLng: -97.1384
+  radiusKm: 12
+  provider: svg
+---
+
+Three nights between the train and the flight east. CMHR + Manitoba Museum + the Forks are the world-class anchors. Folklorama opens Aug 2, eight days after the necessary departure for Osheaga, so the headline festival is narrowly missed.
+
+> _Hostel, flight, and per-item costs are preliminary pending booking confirmation. Day 3 is a choice between FortWhyte Alive and Assiniboine Park; current draft picks FortWhyte._
