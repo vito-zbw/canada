@@ -12,10 +12,9 @@ import DayList from '../../components/DayList.astro';
 import StaysList from '../../components/StaysList.astro';
 import TransportTable from '../../components/TransportTable.astro';
 import CostTable from '../../components/CostTable.astro';
-import CityMap from '../../components/CityMap.astro';
+import Map from '../../components/Map.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import TransitTimeline from '../../components/TransitTimeline.astro';
-import TransitMap from '../../components/TransitMap.astro';
 
 type Entry = CollectionEntry<'itinerary'>;
 
@@ -63,31 +62,36 @@ const description = `Leg ${order} of 10: ${city}, ${province}. ${nights} night${
 const isTransit = entry.data.legType === 'transit';
 const isStructured = Array.isArray(days) && days.length > 0;
 
-// Pins for the CityMap: flatten days[].items[], keep only those with
-// both `pin` and `coords` set, project shape into CityMapPin.
-const mapPins = isStructured
+// Markers for the city variant: flatten days[].items[], keep only items
+// with both `pin` and `coords`, project into the Map component's
+// MapMarker shape (label = numbered pin, title = item name).
+const cityMarkers = isStructured
   ? days!
       .flatMap((d) => d.items)
       .filter((it) => typeof it.pin === 'number' && it.coords)
       .map((it) => ({
-        pin: it.pin!,
-        name: it.name,
+        id: `${entry.slug}-${it.pin}`,
         lat: it.coords!.lat,
         lng: it.coords!.lng,
+        label: String(it.pin),
+        title: it.name,
       }))
   : [];
 
-const showCityMap = cityMap && mapPins.length > 0;
+const showCityMap = cityMap && cityMarkers.length > 0;
 
-// Transit stops: flatten transit items in day order; needs coords.
-const transitStops = isStructured
+// Markers for the transit variant: transit-kind items in day order
+// connected by a polyline; label is the station name.
+const transitMarkers = isStructured
   ? days!
       .flatMap((d) => d.items)
       .filter((it) => it.kind === 'transit' && it.coords)
-      .map((it) => ({
-        name: it.name,
+      .map((it, i) => ({
+        id: `${entry.slug}-${i}`,
         lat: it.coords!.lat,
         lng: it.coords!.lng,
+        label: it.name,
+        title: it.name,
       }))
   : [];
 
@@ -161,7 +165,14 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
 
         <TransitTimeline days={days!} />
 
-        {transitStops.length > 0 && <TransitMap stops={transitStops} />}
+        {transitMarkers.length > 0 && (
+          <Map
+            variant="transit"
+            markers={transitMarkers}
+            routeLine
+            ariaLabel={`Route map for ${entry.data.city}`}
+          />
+        )}
 
         {costBreakdown && (
           <CostTable
@@ -196,7 +207,11 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
               class="order-first lg:order-last lg:sticky lg:top-24 lg:self-start"
               aria-label="Local map"
             >
-              <CityMap legSlug={entry.slug} cityMap={cityMap!} pins={mapPins} />
+              <Map
+                variant="city"
+                markers={cityMarkers}
+                ariaLabel={`City map of ${entry.data.city} with attractions`}
+              />
             </aside>
           )}
 
