@@ -113,7 +113,9 @@ const itinerary = defineCollection({
 });
 
 // Pre-trip topics (study permit, packing, banking, connectivity). Shape
-// differs from itinerary — no city, no coords, no nights.
+// differs from itinerary — no city, no coords, no nights. `items[]`
+// is consumed by the Checklist island; each item's `id` is the
+// localStorage key for its tick state (see CONTENT-MODEL.md).
 const prep = defineCollection({
   type: 'content',
   schema: z.object({
@@ -124,6 +126,17 @@ const prep = defineCollection({
     lastReviewed: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO 8601 date YYYY-MM-DD'),
+    items: z
+      .array(
+        z.object({
+          id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+          text: z.string(),
+          detail: z.string().optional(),
+          dueRelative: z.string().optional(),
+          link: z.string().url().optional(),
+        }),
+      )
+      .default([]),
   }),
 });
 

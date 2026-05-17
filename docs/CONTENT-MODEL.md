@@ -312,6 +312,13 @@ const prep = defineCollection({
     title: z.string(),
     summary: z.string(),
     lastReviewed: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    items: z.array(z.object({
+      id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+      text: z.string(),
+      detail: z.string().optional(),
+      dueRelative: z.string().optional(),
+      link: z.string().url().optional(),
+    })).default([]),
   }),
 });
 ```
@@ -323,6 +330,11 @@ const prep = defineCollection({
 | `title` | string | ✓ | Section heading text. |
 | `summary` | string | ✓ | One-line index summary. |
 | `lastReviewed` | ISO 8601 date | ✓ | When the section's facts were last verified. |
+| `items` | array of checklist items | defaults to `[]` | Structured tickable items rendered by the `Checklist` island. Each item: `{ id, text, detail?, dueRelative?, link? }`. |
+
+#### Stable IDs
+
+Each item's `id` is the **localStorage key** the `Checklist` island uses to persist its checked state (`canada:prep:tick:v1[sectionId][itemId]`). Once an item is shipped, **do not rename its `id`** — doing so silently resets every visitor's tick state for that item. Treat the `id` as part of the public contract; change `text` freely, but pick the `id` carefully on first ship and keep it forever.
 
 ## What's not modeled (yet)
 
