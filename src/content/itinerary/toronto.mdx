@@ -139,17 +139,11 @@ days:
     label: Leslieville brunch + Beaches
     items:
       - pin: 16
-        name: High Park
-        kind: attraction
-        time: morning
-        durationMin: 180
-        coords: { lat: 43.6465, lng: -79.4637 }
-      - pin: 17
         name: 'Lady Marmalade brunch (Leslieville)'
         kind: meal
-        time: midday
+        time: morning
         coords: { lat: 43.6610, lng: -79.3450 }
-      - pin: 18
+      - pin: 17
         name: Beaches boardwalk
         kind: attraction
         time: afternoon
@@ -157,9 +151,14 @@ days:
         coords: { lat: 43.6627, lng: -79.3083 }
 
   - date: '2026-08-16'
+    label: Toronto FC night
     items:
-      - name: Self-directed neighborhood time
-        kind: rest
+      - pin: 18
+        name: Toronto FC at BMO Field
+        kind: event
+        time: evening
+        coords: { lat: 43.6326, lng: -79.4185 }
+        note: $40–80 tickets; confirm a home match is scheduled at torontofc.ca before locking the day
 
   - date: '2026-08-17'
     label: Logistics block
@@ -176,24 +175,43 @@ days:
         coords: { lat: 43.6532, lng: -79.3832 }
 
   - date: '2026-08-18'
+    label: CN Tower splurge
     items:
-      - name: Self-directed neighborhood time
-        kind: rest
+      - pin: 21
+        name: CN Tower 360 Revolving Restaurant
+        kind: meal
+        time: evening
+        coords: { lat: 43.6426, lng: -79.3871 }
+        note: $90 prix fixe with skip-the-line; Black Lab Brewing in Leslieville is the alternative
 
   - date: '2026-08-19'
+    label: Quiet day — Bata + High Park
     items:
-      - name: Self-directed neighborhood time
-        kind: rest
+      - pin: 22
+        name: Bata Shoe Museum
+        kind: attraction
+        time: morning
+        durationMin: 90
+        cost: 14
+        coords: { lat: 43.6677, lng: -79.4001 }
+        note: $14 student admission; surprisingly fascinating per source
+      - pin: 23
+        name: High Park
+        kind: attraction
+        time: afternoon
+        durationMin: 180
+        coords: { lat: 43.6465, lng: -79.4637 }
 
   - date: '2026-08-20'
+    label: Pre-CNE wind-down
     items:
-      - name: Self-directed neighborhood time
+      - name: Distillery District return + Riverside walk
         kind: rest
 
   - date: '2026-08-21'
     label: CNE opens
     items:
-      - pin: 21
+      - pin: 24
         name: 'CNE opening day — midway, Bandshell, CNE Food Building'
         kind: event
         time: midday
@@ -203,7 +221,7 @@ days:
   - date: '2026-08-22'
     label: Move-in
     items:
-      - pin: 22
+      - pin: 25
         name: U of T residence move-in
         kind: attraction
         time: morning
