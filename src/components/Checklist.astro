@@ -1,15 +1,15 @@
 ---
-// Pre-trip checklist island. Single Astro <script> block (hoisted by
-// Astro and deduped across instances) wires every [data-prep-checklist]
-// section it finds in the DOM. State persists in localStorage; without
-// JS the checkboxes still work for the session and the edit / hide /
-// add / reset controls are CSS-hidden.
+// Pre-trip checklist island. A single hoisted Astro script (deduped
+// across instances) wires every [data-prep-checklist] section it
+// finds in the DOM. State persists in localStorage; without JS the
+// checkboxes still work for the session and the edit / hide / add /
+// reset controls are CSS-hidden.
 //
 // Storage contract (v1):
-//   canada:prep:tick:v1   → { [sectionId]: { [itemId]: true } }
-//   canada:prep:custom:v1 → { [sectionId]: Array<{ id, text }> }
-//   canada:prep:hide:v1   → { [sectionId]: { [itemId]: true } }
-//   canada:prep:edit:v1   → { [sectionId]: { [itemId]: string } }
+//   canada:prep:tick:v1   - { [sectionId]: { [itemId]: true } }
+//   canada:prep:custom:v1 - { [sectionId]: Array<{ id, text }> }
+//   canada:prep:hide:v1   - { [sectionId]: { [itemId]: true } }
+//   canada:prep:edit:v1   - { [sectionId]: { [itemId]: string } }
 
 import type { CollectionEntry } from 'astro:content';
 

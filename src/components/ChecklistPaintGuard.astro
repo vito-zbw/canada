@@ -1,15 +1,16 @@
 ---
-// Inline <script> + <style> for <head> on /pre-trip. Runs BEFORE first
-// paint to (1) remove the `no-js` class from <html> so JS-only controls
-// become visible, (2) stamp the user's saved tick state onto
-// <html data-prep-tick="..."> as a space-separated list of
-// "sectionId:itemId" tokens, and (3) for every soft-hidden item
-// (canada:prep:hide:v1), inject a <style> rule that paints the
-// matching <li data-item-key="..."> as display:none from the start —
-// killing the FOUC where hidden items briefly appear then disappear.
+// Inline script + style block, mounted in the page head on /pre-trip.
+// Runs BEFORE first paint to (1) remove the `no-js` class from the
+// root html element so JS-only controls become visible, (2) stamp the
+// user's saved tick state onto the root html element via a data-prep-
+// tick attribute holding a space-separated list of "sectionId:itemId"
+// tokens, and (3) for every soft-hidden item (canada:prep:hide:v1),
+// inject a style rule that paints the matching list item (selected by
+// data-item-key) as display:none from the start — killing the FOUC
+// where hidden items briefly appear then disappear.
 //
 // Edited item text (canada:prep:edit:v1) is NOT replaced here: the
-// body isn't parsed yet, so the script can't reach the <li> nodes to
+// body isn't parsed yet, so the script can't reach the item nodes to
 // rewrite text. The Checklist island swaps text at hydration; edited
 // items may flash original text for one frame. Documented trade-off.
 //
