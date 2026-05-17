@@ -1,0 +1,57 @@
+---
+// Pair of locale links — pure HTML, no JS. The non-active link points to the
+// equivalent path in the other locale; the strip regex uses (?=\/|$) so it
+// only matches "/zh" followed by a slash or end-of-string, never substrings
+// like "/zhejiang".
+import { useTranslations, type Locale } from '../i18n/ui';
+
+export interface Props {
+  currentLocale: Locale;
+  currentPath: string;
+}
+
+const { currentLocale, currentPath } = Astro.props;
+const t = useTranslations(currentLocale);
+
+const stripZh = (p: string): string => {
+  const stripped = p.replace(/^\/zh(?=\/|$)/, '');
+  return stripped === '' ? '/' : stripped;
+};
+
+const enHref =
+  currentLocale === 'en' ? currentPath : stripZh(currentPath);
+const zhHref =
+  currentLocale === 'zh'
+    ? currentPath
+    : currentPath === '/'
+      ? '/zh'
+      : `/zh${currentPath}`;
+---
+
+<div
+  class="flex items-center gap-2 text-meta"
+  role="group"
+  aria-label={t('toggle.ariaLabel')}
+>
+  <a
+    href={enHref}
+    aria-current={currentLocale === 'en' ? 'true' : undefined}
+    class:list={[
+      'rounded-sm px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
+      currentLocale === 'en'
+        ? 'text-forest-700 underline decoration-2 underline-offset-4'
+        : 'text-stone-700 hover:text-forest-700',
+    ]}>{t('toggle.en')}</a
+  >
+  <span aria-hidden="true" class="text-stone-300">|</span>
+  <a
+    href={zhHref}
+    aria-current={currentLocale === 'zh' ? 'true' : undefined}
+    class:list={[
+      'rounded-sm px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
+      currentLocale === 'zh'
+        ? 'text-forest-700 underline decoration-2 underline-offset-4'
+        : 'text-stone-700 hover:text-forest-700',
+    ]}>{t('toggle.zh')}</a
+  >
+</div>
