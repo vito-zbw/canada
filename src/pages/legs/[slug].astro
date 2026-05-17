@@ -14,6 +14,8 @@ import TransportTable from '../../components/TransportTable.astro';
 import CostTable from '../../components/CostTable.astro';
 import CityMap from '../../components/CityMap.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
+import TransitTimeline from '../../components/TransitTimeline.astro';
+import TransitMap from '../../components/TransitMap.astro';
 
 type Entry = CollectionEntry<'itinerary'>;
 
@@ -58,6 +60,7 @@ const { Content } = await entry.render();
 
 const description = `Leg ${order} of 10: ${city}, ${province}. ${nights} night${nights === 1 ? '' : 's'} from ${arriveDate}.`;
 
+const isTransit = entry.data.legType === 'transit';
 const isStructured = Array.isArray(days) && days.length > 0;
 
 // Pins for the CityMap: flatten days[].items[], keep only those with
@@ -75,6 +78,24 @@ const mapPins = isStructured
   : [];
 
 const showCityMap = cityMap && mapPins.length > 0;
+
+// Transit stops: flatten transit items in day order; needs coords.
+const transitStops = isStructured
+  ? days!
+      .flatMap((d) => d.items)
+      .filter((it) => it.kind === 'transit' && it.coords)
+      .map((it) => ({
+        name: it.name,
+        lat: it.coords!.lat,
+        lng: it.coords!.lng,
+      }))
+  : [];
+
+// Train info: derived from the leg's first transport row (the ticket).
+const trainInfo =
+  isTransit && Array.isArray(transport) && transport.length > 0
+    ? transport[0]
+    : null;
 
 const dayJumpItems = isStructured
   ? days!.map((d, i) => ({
@@ -119,7 +140,51 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
   </section>
 
   {
-    isStructured ? (
+    isTransit && isStructured ? (
+      <div class="mt-10 space-y-16">
+        {trainInfo && (
+          <section
+            class="rounded-lg border border-stone-200 bg-stone-100 p-5 md:p-6"
+            aria-label="Train info"
+          >
+            <p class="text-meta font-sans uppercase tracking-[0.2em] text-stone-500">
+              {trainInfo.purpose}
+            </p>
+            <p class="mt-1 font-serif text-h4 text-stone-900">
+              {trainInfo.mode}
+            </p>
+            {trainInfo.note && (
+              <p class="mt-2 text-meta text-stone-700">{trainInfo.note}</p>
+            )}
+          </section>
+        )}
+
+        <TransitTimeline days={days!} />
+
+        {transitStops.length > 0 && <TransitMap stops={transitStops} />}
+
+        {costBreakdown && (
+          <CostTable
+            breakdown={costBreakdown}
+            total={cost}
+            updated={updated}
+          />
+        )}
+
+        {galleryHas && (
+          <PhotoGallery
+            slugs={gallery!.map((g) => g.slug)}
+            alts={gallery!.map((g) => g.alt)}
+          />
+        )}
+
+        <article
+          class="max-w-prose text-body leading-relaxed text-stone-800 [&>p+p]:mt-6"
+        >
+          <Content />
+        </article>
+      </div>
+    ) : isStructured ? (
       <>
         <div class="mt-10">
           <DayJumpNav items={dayJumpItems} />
