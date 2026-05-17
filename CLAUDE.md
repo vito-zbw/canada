@@ -95,10 +95,10 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#58](https://github.com/vito-zbw/canada/issues/58) — Generate sitemap.xml via @astrojs/sitemap
   - [x] [#59](https://github.com/vito-zbw/canada/issues/59) — Add robots.txt
   - [x] [#60](https://github.com/vito-zbw/canada/issues/60) — Build /404 page
-- [ ] **Milestone 9 — Deploy and CI verification** ([#68](https://github.com/vito-zbw/canada/issues/68))
+- [x] **Milestone 9 — Deploy and CI verification** ([#68](https://github.com/vito-zbw/canada/issues/68))
   - [x] [#61](https://github.com/vito-zbw/canada/issues/61) — Configure Cloudflare Pages deploy
   - [x] [#62](https://github.com/vito-zbw/canada/issues/62) — Wire axe-core into pre-commit or CI
-  - [ ] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
+  - [x] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
 
 **Resuming protocol:** when picking up a session, scan from the top for the first unticked child. That's your next implementation candidate (subject to its `**Depends on:**` cross-refs in the issue body — verify those are already closed).
 
