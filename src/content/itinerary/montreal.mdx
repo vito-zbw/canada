@@ -1,0 +1,184 @@
+---
+id: montreal
+order: 8
+city: Montréal
+province: QC
+arriveDate: '2026-07-29'
+nights: 6
+cost: 1440
+coords:
+  lat: 45.5017
+  lng: -73.5673
+anchorEvent:
+  name: Osheaga
+  startDate: '2026-07-31'
+  endDate: '2026-08-02'
+legType: city
+updated: '2026-05-17'
+highlights:
+  - Osheaga
+  - Old Montréal
+  - Mount Royal
+  - Plateau food crawl
+
+days:
+  - date: '2026-07-29'
+    label: Arrival
+    items:
+      - pin: 1
+        name: VIA Rail arrival from Ottawa
+        kind: transit
+        time: evening
+        coords: { lat: 45.5005, lng: -73.5670 }
+        note: Gare Centrale
+      - pin: 2
+        name: "Schwartz's smoked meat on St-Laurent + Main walk"
+        kind: meal
+        time: late evening
+        coords: { lat: 45.5165, lng: -73.5779 }
+
+  - date: '2026-07-30'
+    label: Old Montréal
+    items:
+      - pin: 3
+        name: Notre-Dame Basilica
+        kind: attraction
+        time: morning
+        durationMin: 90
+        coords: { lat: 45.5045, lng: -73.5563 }
+      - pin: 4
+        name: Place Jacques-Cartier + Old Port walk
+        kind: attraction
+        time: midday
+        coords: { lat: 45.5083, lng: -73.5544 }
+      - pin: 5
+        name: Pointe-à-Callière Museum of Archaeology
+        kind: attraction
+        time: afternoon
+        durationMin: 150
+        coords: { lat: 45.5028, lng: -73.5547 }
+        note: Built on the original 1642 city site
+      - pin: 6
+        name: 'Just for Laughs OFF-JFL closing show (Théâtre Sainte-Catherine or Le Gesù)'
+        kind: event
+        time: evening
+        coords: { lat: 45.5106, lng: -73.5634 }
+        note: Confirm closing-weekend programming
+
+  - date: '2026-07-31'
+    label: Osheaga day 1
+    items:
+      - pin: 7
+        name: Mont-Royal hike from the Plateau
+        kind: attraction
+        time: morning
+        durationMin: 150
+        coords: { lat: 45.5048, lng: -73.5878 }
+      - pin: 8
+        name: 'St-Viateur Bagel breakfast (Mile End)'
+        kind: meal
+        time: morning
+        coords: { lat: 45.5230, lng: -73.6028 }
+      - pin: 9
+        name: 'Osheaga — Parc Jean-Drapeau, day 1'
+        kind: event
+        time: afternoon
+        coords: { lat: 45.5172, lng: -73.5347 }
+        note: Metro yellow line to Jean-Drapeau
+
+  - date: '2026-08-01'
+    label: Osheaga day 2
+    items:
+      - pin: 10
+        name: 'Osheaga — Parc Jean-Drapeau, day 2'
+        kind: event
+        time: midday
+        coords: { lat: 45.5172, lng: -73.5347 }
+
+  - date: '2026-08-02'
+    label: Osheaga day 3
+    items:
+      - pin: 11
+        name: 'Osheaga — Parc Jean-Drapeau, day 3'
+        kind: event
+        time: midday
+        coords: { lat: 45.5172, lng: -73.5347 }
+        note: Tam-Tams on Mount Royal happens Sundays — overlaps if energy allows
+
+  - date: '2026-08-03'
+    label: Recovery
+    items:
+      - pin: 12
+        name: 'Jean-Talon Market lunch (Little Italy)'
+        kind: meal
+        time: morning
+        coords: { lat: 45.5365, lng: -73.6147 }
+        note: Lobster rolls at Lobster Shack
+      - pin: 13
+        name: Montréal Museum of Fine Arts (MMFA)
+        kind: attraction
+        time: afternoon
+        durationMin: 180
+        coords: { lat: 45.4988, lng: -73.5797 }
+        note: Closed Mondays — check the day
+
+  - date: '2026-08-04'
+    label: Departure
+    items:
+      - pin: 14
+        name: Mount Royal Cross via Notre-Dame-des-Neiges Cemetery
+        kind: attraction
+        time: morning
+        durationMin: 180
+        coords: { lat: 45.5050, lng: -73.5878 }
+      - pin: 15
+        name: Lunch at Au Pied de Cochon
+        kind: meal
+        time: midday
+        coords: { lat: 45.5253, lng: -73.5783 }
+      - pin: 16
+        name: 'VIA Rail Corridor Montréal → Québec City'
+        kind: transit
+        time: late afternoon
+        durationMin: 200
+        coords: { lat: 45.5005, lng: -73.5670 }
+        note: Gare Centrale departure
+
+stays:
+  - name: HI Montreal on Mackay (or M Montreal in the Plateau)
+    neighborhood: Downtown / Plateau
+    checkIn: '2026-07-29'
+    checkOut: '2026-08-04'
+    nightlyCAD: 70
+    bookingNote: 6 nights; Osheaga weekend books out early
+
+transport:
+  - purpose: Around the city
+    mode: STM Metro + BIXI bike share
+    costCAD: 60
+    note: 900 km of bike lanes — most of any North American city
+  - purpose: Osheaga 3-day pass
+    mode: Festival entry (Parc Jean-Drapeau)
+    costCAD: 450
+    note: Anchor event ticket
+  - purpose: 'Montréal → Québec City'
+    mode: 'VIA Rail Corridor (Economy with CANADA1824 code)'
+    costCAD: 60
+
+costBreakdown:
+  lodging: 420
+  food: 420
+  transportLocal: 120
+  activities: 360
+  buffer: 120
+
+cityMap:
+  centerLat: 45.5017
+  centerLng: -73.5673
+  radiusKm: 10
+  provider: svg
+---
+
+Six nights, three of them Osheaga at Parc Jean-Drapeau. The Plateau / Mile End food crawl threads the in-between days; Mount Royal opens and closes the leg. The exit is the VIA Rail Corridor to Québec City on the last afternoon.
+
+> _Festival ticket cost, hostel pick, and Just for Laughs OFF-JFL programming are preliminary; refresh against bookings closer to the trip._
