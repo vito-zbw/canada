@@ -123,12 +123,12 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#190](https://github.com/vito-zbw/canada/issues/190) — Author zh translation: Montreal leg
   - [x] [#191](https://github.com/vito-zbw/canada/issues/191) — Author zh translation: Quebec City leg
   - [x] [#192](https://github.com/vito-zbw/canada/issues/192) — Author zh translation: Toronto leg
-  - [ ] [#195](https://github.com/vito-zbw/canada/issues/195) — Author zh translation: prep — advance-bookings
-  - [ ] [#200](https://github.com/vito-zbw/canada/issues/200) — Author zh translation: prep — banking
-  - [ ] [#196](https://github.com/vito-zbw/canada/issues/196) — Author zh translation: prep — connectivity
-  - [ ] [#197](https://github.com/vito-zbw/canada/issues/197) — Author zh translation: prep — packing
-  - [ ] [#198](https://github.com/vito-zbw/canada/issues/198) — Author zh translation: prep — student-discounts
-  - [ ] [#199](https://github.com/vito-zbw/canada/issues/199) — Author zh translation: prep — study-permit
+  - [x] [#195](https://github.com/vito-zbw/canada/issues/195) — Author zh translation: prep — advance-bookings
+  - [x] [#200](https://github.com/vito-zbw/canada/issues/200) — Author zh translation: prep — banking
+  - [x] [#196](https://github.com/vito-zbw/canada/issues/196) — Author zh translation: prep — connectivity
+  - [x] [#197](https://github.com/vito-zbw/canada/issues/197) — Author zh translation: prep — packing
+  - [x] [#198](https://github.com/vito-zbw/canada/issues/198) — Author zh translation: prep — student-discounts
+  - [x] [#199](https://github.com/vito-zbw/canada/issues/199) — Author zh translation: prep — study-permit
 
 **Resuming protocol:** when picking up a session, scan from the top for the first unticked child. That's your next implementation candidate (subject to its `**Depends on:**` cross-refs in the issue body — verify those are already closed).
 
