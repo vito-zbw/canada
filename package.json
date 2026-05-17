@@ -10,6 +10,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "a11y": "astro build && tsx scripts/run-a11y.ts",
     "astro": "astro"
   },
   "dependencies": {
