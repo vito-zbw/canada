@@ -1,44 +1,59 @@
 ---
-// Sticky horizontal nav listing all 10 legs in trip order. Mobile: the strip
-// scrolls horizontally inside its own bar (snap-x). Desktop: fits inline. No
-// JavaScript anywhere — `position: sticky` and `overflow-x-auto` are native.
+// Sticky horizontal nav listing the active locale's legs in trip order. Mobile:
+// the strip scrolls horizontally inside its own bar (snap-x). Desktop: fits
+// inline. No JavaScript anywhere — `position: sticky` and `overflow-x-auto`
+// are native.
 
 import { getCollection } from 'astro:content';
+import { useTranslations, type Locale } from '../i18n/ui';
+import LanguageToggle from './LanguageToggle.astro';
 
 export interface Props {
+  lang?: Locale;
   currentSlug?: string;
 }
 
-const { currentSlug } = Astro.props;
+const { lang = 'en', currentSlug } = Astro.props;
+const t = useTranslations(lang);
 
-const legs = (await getCollection('itinerary')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const legs = (await getCollection('itinerary'))
+  .filter((e) => (e.data.lang ?? 'en') === lang)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const homeHref = lang === 'en' ? '/' : '/zh';
+const preTripHref = lang === 'en' ? '/pre-trip' : '/zh/pre-trip';
+
+const slugFor = (entrySlug: string): string => entrySlug.replace(/^zh\//, '');
+const legHref = (entrySlug: string): string => {
+  const slug = slugFor(entrySlug);
+  return lang === 'en' ? `/legs/${slug}` : `/zh/legs/${slug}`;
+};
 ---
 
 <nav
-  aria-label="Cross-Canada trip legs"
+  aria-label={t('nav.ariaLabel')}
   class="sticky top-0 z-40 border-b border-stone-200 bg-stone-50/95 backdrop-blur"
 >
   <div
     class="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3 md:px-8 lg:px-16"
   >
     <a
-      href="/"
+      href={homeHref}
       class="shrink-0 font-serif text-stone-900 hover:text-forest-700"
     >
-      Cross-Canada 2026
+      {t('nav.brand')}
     </a>
     <ul
       class="-mx-2 flex flex-1 snap-x snap-mandatory items-center gap-1 overflow-x-auto px-2 text-meta md:gap-2"
     >
       {
         legs.map((entry) => {
-          const isCurrent = entry.slug === currentSlug;
+          const normalizedSlug = slugFor(entry.slug);
+          const isCurrent = normalizedSlug === currentSlug;
           return (
             <li class="snap-start whitespace-nowrap">
               <a
-                href={`/legs/${entry.slug}`}
+                href={legHref(entry.slug)}
                 aria-current={isCurrent ? 'page' : undefined}
                 class:list={[
                   'inline-block rounded-sm px-2 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
@@ -55,7 +70,7 @@ const legs = (await getCollection('itinerary')).sort(
       }
       <li class="snap-start whitespace-nowrap border-l border-stone-200 pl-2">
         <a
-          href="/pre-trip"
+          href={preTripHref}
           aria-current={currentSlug === 'pre-trip' ? 'page' : undefined}
           class:list={[
             'inline-block rounded-sm px-2 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
@@ -64,9 +79,15 @@ const legs = (await getCollection('itinerary')).sort(
               : 'text-stone-700 hover:text-forest-700',
           ]}
         >
-          Pre-trip
+          {t('nav.preTrip')}
         </a>
       </li>
     </ul>
+    <div class="shrink-0">
+      <LanguageToggle
+        currentLocale={lang}
+        currentPath={Astro.url.pathname}
+      />
+    </div>
   </div>
 </nav>
