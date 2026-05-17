@@ -7,7 +7,6 @@ import TopNav from '../../components/TopNav.astro';
 import Hero from '../../components/Hero.astro';
 import MetaLine from '../../components/MetaLine.astro';
 import AnchorEventBadge from '../../components/AnchorEventBadge.astro';
-import DayJumpNav from '../../components/DayJumpNav.astro';
 import DayList from '../../components/DayList.astro';
 import StaysList from '../../components/StaysList.astro';
 import TransportTable from '../../components/TransportTable.astro';
@@ -101,16 +100,6 @@ const trainInfo =
     ? transport[0]
     : null;
 
-const dayJumpItems = isStructured
-  ? days!.map((d, i) => ({
-      id: `day-${i + 1}`,
-      label: `Day ${i + 1} · ${new Intl.DateTimeFormat('en-CA', {
-        month: 'short',
-        day: 'numeric',
-      }).format(new Date(`${d.date}T00:00:00`))}`,
-    }))
-  : [];
-
 const galleryHas = Array.isArray(gallery) && gallery.length > 0;
 ---
 
@@ -197,10 +186,6 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
       </div>
     ) : isStructured ? (
       <>
-        <div class="mt-10">
-          <DayJumpNav items={dayJumpItems} />
-        </div>
-
         <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_minmax(0,360px)]">
           {showLocalMap && (
             <aside

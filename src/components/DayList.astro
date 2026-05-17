@@ -1,7 +1,7 @@
 ---
 // Day-by-day scroll surface: one <section id="day-N"> per day with a
-// serif heading and a vertical stack of DayItemCards. Pairs with
-// DayJumpNav whose anchors target the same `day-N` ids.
+// serif heading and a vertical stack of DayItemCards. The `day-N` ids
+// remain addressable for deep links (e.g. /legs/vancouver#day-3).
 
 import type { CollectionEntry } from 'astro:content';
 import DayItemCard from './DayItemCard.astro';
