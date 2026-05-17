@@ -79,7 +79,57 @@
       "height": 4000,
       "alt": "A vibrant view of Calgary's skyline with modern skyscrapers framed by greenery under a clear sky."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "stampede-park-gate-entry": {
+        "filename": "stampede-park-gate-entry.jpg",
+        "alt": "Metal gates with no entry signs at a lush garden entrance, conveying restricted access."
+      },
+      "mini-donuts-and-stampede-caesar": {
+        "filename": "mini-donuts-and-stampede-caesar.jpg",
+        "alt": "Vibrant ice cream sundae topped with mini donuts and candies in a waffle bowl."
+      },
+      "city-wide-free-pancake-breakfast-hunt": {
+        "filename": "city-wide-free-pancake-breakfast-hunt.jpg",
+        "alt": "Close-up of pancakes topped with strawberry syrup being sliced."
+      },
+      "glenbow-museum-recently-renovated": {
+        "filename": "glenbow-museum-recently-renovated.jpg",
+        "alt": "A vibrant view of Calgary's skyline with modern skyscrapers framed by greenery under a clear sky."
+      },
+      "afternoon-rodeo-at-gmc-stadium": {
+        "filename": "afternoon-rodeo-at-gmc-stadium.jpg",
+        "alt": "Exciting rodeo scene at Cheyenne Frontier Days capturing cowboy chasing calf."
+      },
+      "nashville-north-honky-tonk-dancing": {
+        "filename": "nashville-north-honky-tonk-dancing.jpg",
+        "alt": "Discover the lively street scene in Nashville, Tennessee, with glowing signs and bustling city life."
+      },
+      "calgary-tower": {
+        "filename": "calgary-tower.jpg",
+        "alt": "A detailed view of the iconic Calgary Tower set against a bright blue sky."
+      },
+      "studio-bell-national-music-centre": {
+        "filename": "studio-bell-national-music-centre.jpg",
+        "alt": "Stunning view of the Bow Tower skyscraper in Calgary under a clear blue sky."
+      },
+      "indigenous-elbow-river-camp-bannock-tacos": {
+        "filename": "indigenous-elbow-river-camp-bannock-tacos.jpg",
+        "alt": "Panoramic view of Calgary's iconic Peace Bridge and skyline under a clear blue sky."
+      },
+      "chuckwagon-races": {
+        "filename": "chuckwagon-races.jpg",
+        "alt": "Harness racing event with horses and jockeys on a sandy racetrack."
+      },
+      "grandstand-show-fireworks": {
+        "filename": "grandstand-show-fireworks.jpg",
+        "alt": "Vibrant fireworks light up the night sky in a breathtaking display of colors and patterns."
+      },
+      "alanis-morissette-at-the-saddledome": {
+        "filename": "alanis-morissette-at-the-saddledome.jpg",
+        "alt": "A packed indoor concert with audience lights creating a stunning visual display."
+      }
+    }
   },
   "banff": {
     "hero": {
@@ -89,7 +139,53 @@
       "height": 4000,
       "alt": "Peaceful view of Banff mountain scenery with misty forest and dramatic sky."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "bow-falls-banff-avenue-walk": {
+        "filename": "bow-falls-banff-avenue-walk.jpg",
+        "alt": "Picturesque view of Bow Falls surrounded by lush evergreen forests in Banff National Park."
+      },
+      "banff-upper-hot-springs": {
+        "filename": "banff-upper-hot-springs.jpg",
+        "alt": "Snowy landscape with the majestic Banff Springs Hotel in winter."
+      },
+      "sulphur-mountain-hike-to-gondola-summit": {
+        "filename": "sulphur-mountain-hike-to-gondola-summit.jpg",
+        "alt": "A breathtaking view of Sulphur Mountain in Canada with a Canadian flag fluttering in winter snow."
+      },
+      "banff-park-museum-afternoon-recovery": {
+        "filename": "banff-park-museum-afternoon-recovery.jpg",
+        "alt": "Snowy entrance to Banff National Park, Alberta, Canada."
+      },
+      "plain-of-six-glaciers-tea-house-loop-lake-agnes": {
+        "filename": "plain-of-six-glaciers-tea-house-loop-lake-agnes.jpg",
+        "alt": "Stunning view of Lake Louise with mountains and glacier reflections in Banff National Park, Alberta, Canada."
+      },
+      "larch-valley-sentinel-pass": {
+        "filename": "larch-valley-sentinel-pass.jpg",
+        "alt": "Stunning view of autumn foliage and distant snowy peaks in Banff National Park."
+      },
+      "johnston-canyon-upper-falls-before-9-am": {
+        "filename": "johnston-canyon-upper-falls-before-9-am.jpg",
+        "alt": "A person hiking through snow-covered Johnston Canyon in Banff National Park during winter."
+      },
+      "peyto-lake-viewpoint": {
+        "filename": "peyto-lake-viewpoint.jpg",
+        "alt": "Breathtaking sunrise view of Peyto Lake and the Canadian Rockies in Banff National Park, Alberta."
+      },
+      "bow-lake-num-ti-jah-lodge": {
+        "filename": "bow-lake-num-ti-jah-lodge.jpg",
+        "alt": "Serene sunrise over calm lake reflecting rugged mountains in Banff National Park."
+      },
+      "columbia-icefield-skywalk": {
+        "filename": "columbia-icefield-skywalk.jpg",
+        "alt": "Breathtaking view of Athabasca Glacier in the Canadian Rockies, surrounded by lush greenery."
+      },
+      "athabasca-glacier-toe-walk": {
+        "filename": "athabasca-glacier-toe-walk.jpg",
+        "alt": "Breathtaking view of Athabasca Glacier in the Canadian Rockies, surrounded by lush greenery."
+      }
+    }
   },
   "jasper": {
     "hero": {
@@ -99,7 +195,41 @@
       "height": 5007,
       "alt": "A breathtaking view of Jasper, Alberta's mountainous landscape from the SkyTram summit station."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "banff-avenue-equivalent-connaught-drive-evening-walk": {
+        "filename": "banff-avenue-equivalent-connaught-drive-evening-walk.jpg",
+        "alt": "Picturesque Banff, Canada with mountains and autumn trees lining the road."
+      },
+      "maligne-canyon-morning-walk": {
+        "filename": "maligne-canyon-morning-walk.jpg",
+        "alt": "Woman in a warm coat enjoys a scenic autumn walk in Jasper National Park, Alberta."
+      },
+      "pursuit-cruise-to-spirit-island-maligne-lake": {
+        "filename": "pursuit-cruise-to-spirit-island-maligne-lake.jpg",
+        "alt": "Breathtaking view of Spirit Island surrounded by turquoise waters of Maligne Lake in Jasper National Park."
+      },
+      "bald-hills-hike-behind-maligne-lake": {
+        "filename": "bald-hills-hike-behind-maligne-lake.jpg",
+        "alt": "Stunning view of a road leading to mountains in Jasper National Park, Alberta."
+      },
+      "jasper-skytram-to-whistlers-mountain": {
+        "filename": "jasper-skytram-to-whistlers-mountain.jpg",
+        "alt": "A breathtaking view of Jasper, Alberta's mountainous landscape from the SkyTram summit station."
+      },
+      "athabasca-falls": {
+        "filename": "athabasca-falls.jpg",
+        "alt": "Scenic view of Athabasca Falls with rugged rocks and evergreen forests in Jasper National Park, Alberta, Canada."
+      },
+      "wilcox-pass-hike": {
+        "filename": "wilcox-pass-hike.jpg",
+        "alt": "A woman stands on a rocky peak overlooking the Athabasca Glacier in Alberta, Canada. Scenic mountain view."
+      },
+      "miette-hot-springs-hottest-in-the-rockies": {
+        "filename": "miette-hot-springs-hottest-in-the-rockies.jpg",
+        "alt": "Breathtaking view of snow-capped mountains and a serene river in Jasper National Park."
+      }
+    }
   },
   "the-canadian": {
     "hero": {
@@ -109,7 +239,8 @@
       "height": 5984,
       "alt": "Breathtaking view of Moraine Lake with turquoise waters surrounded by mountains in Banff National Park, Canada."
     },
-    "inline": []
+    "inline": [],
+    "items": {}
   },
   "winnipeg": {
     "hero": {
@@ -119,7 +250,45 @@
       "height": 4672,
       "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "the-forks-red-assiniboine-confluence": {
+        "filename": "the-forks-red-assiniboine-confluence.jpg",
+        "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
+      },
+      "canadian-museum-for-human-rights": {
+        "filename": "canadian-museum-for-human-rights.jpg",
+        "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
+      },
+      "dinner-deer-almond-or-clementine": {
+        "filename": "dinner-deer-almond-or-clementine.jpg",
+        "alt": "Delicious gourmet charcuterie board featuring an assortment of meats, cheeses, nuts, and fruits."
+      },
+      "manitoba-museum": {
+        "filename": "manitoba-museum.jpg",
+        "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
+      },
+      "lunch-king-bannatyne": {
+        "filename": "lunch-king-bannatyne.jpg",
+        "alt": "Two business professionals in formal attire enjoy a lunch break outdoors, sharing sandwiches and conversation."
+      },
+      "exchange-district-national-historic-site-walk": {
+        "filename": "exchange-district-national-historic-site-walk.jpg",
+        "alt": "Explore the historic Trappist Monastery ruins in Winnipeg, Canada, showcasing stunning architecture outdoors."
+      },
+      "royal-canadian-mint-tour": {
+        "filename": "royal-canadian-mint-tour.jpg",
+        "alt": "People ice skating in front of the iconic Winnipeg sign on a sunny winter day."
+      },
+      "fortwhyte-alive-or-assiniboine-park-as-alt": {
+        "filename": "fortwhyte-alive-or-assiniboine-park-as-alt.jpg",
+        "alt": "A serene narrow path winding through dense green forest vegetation during daylight."
+      },
+      "dinner-in-osborne-village": {
+        "filename": "dinner-in-osborne-village.jpg",
+        "alt": "Friends dining in a cozy Italian restaurant, enjoying drinks and food in a lively atmosphere."
+      }
+    }
   },
   "ottawa": {
     "hero": {
@@ -129,7 +298,53 @@
       "height": 7296,
       "alt": "Scenic view of the historic Alexandra Bridge in Ottawa over the tranquil Ottawa River."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "parliament-hill-night-architectural-lighting": {
+        "filename": "parliament-hill-night-architectural-lighting.jpg",
+        "alt": "Interior view of the Canadian House of Commons with green seating and wooden decor."
+      },
+      "byward-market-dinner-beavertails": {
+        "filename": "byward-market-dinner-beavertails.jpg",
+        "alt": "Enchanting night snow scene in Ottawa with a beautifully illuminated historical building."
+      },
+      "national-gallery-of-canada": {
+        "filename": "national-gallery-of-canada.jpg",
+        "alt": "Curved modern architectural interior in Toronto's museum displaying elegant lighting."
+      },
+      "parliament-hill-west-block-guided-tour-free": {
+        "filename": "parliament-hill-west-block-guided-tour-free.jpg",
+        "alt": "Historic Gothic revival building in Ottawa, Canada, with Laurier statue."
+      },
+      "canadian-museum-of-history-gatineau": {
+        "filename": "canadian-museum-of-history-gatineau.jpg",
+        "alt": "Historic Gothic revival building in Ottawa, Canada, with Laurier statue."
+      },
+      "alexandra-bridge-walk-back-to-ontario": {
+        "filename": "alexandra-bridge-walk-back-to-ontario.jpg",
+        "alt": "Ferry crossing Ottawa River by Alexandra Bridge with Canadian flag."
+      },
+      "canadian-war-museum": {
+        "filename": "canadian-war-museum.jpg",
+        "alt": "B-17 Flying Fortress on display at the USAF Museum, Dayton, Ohio."
+      },
+      "casino-lac-leamy-sound-of-light-opening-night": {
+        "filename": "casino-lac-leamy-sound-of-light-opening-night.jpg",
+        "alt": "Energetic crowd at night music festival featuring large LED screens and colorful lighting effects."
+      },
+      "rideau-canal-walk-bixi-downtown-dow-s-lake": {
+        "filename": "rideau-canal-walk-bixi-downtown-dow-s-lake.jpg",
+        "alt": "View of Rideau Canal with cyclists and buildings in Ottawa, showcasing flags and urban architecture."
+      },
+      "diefenbunker-cold-war-museum-carp": {
+        "filename": "diefenbunker-cold-war-museum-carp.jpg",
+        "alt": "Close-up of a vintage military medical crate with a red cross, set against a rustic brick wall."
+      },
+      "canadian-museum-of-nature": {
+        "filename": "canadian-museum-of-nature.jpg",
+        "alt": "A bustling crowd enjoying the dinosaur exhibit at a Toronto museum, showcasing art and history."
+      }
+    }
   },
   "montreal": {
     "hero": {
@@ -139,7 +354,65 @@
       "height": 4447,
       "alt": "Child holds sign supporting runners at Montreal marathon, capturing athletic energy."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "schwartz-s-smoked-meat-on-st-laurent-main-walk": {
+        "filename": "schwartz-s-smoked-meat-on-st-laurent-main-walk.jpg",
+        "alt": "Mouthwatering smoked chicken and beef slices on a rustic wooden board, perfect for a barbecue feast."
+      },
+      "notre-dame-basilica": {
+        "filename": "notre-dame-basilica.jpg",
+        "alt": "From below of ornamental altar with ancient sculptures and arched ceiling inside of famous Cathedral Basilica of Notre Dame de Quebec"
+      },
+      "place-jacques-cartier-old-port-walk": {
+        "filename": "place-jacques-cartier-old-port-walk.jpg",
+        "alt": "Scenic view of Montréal's Old Port with a Ferris wheel and urban skyline under a serene sky."
+      },
+      "pointe-a-calliere-museum-of-archaeology": {
+        "filename": "pointe-a-calliere-museum-of-archaeology.jpg",
+        "alt": "Interior view of İstanbul's Archaeology Museum showcasing ancient artifacts and exhibits."
+      },
+      "just-for-laughs-off-jfl-closing-show-theatre-sainte-catherine-or-le-gesu": {
+        "filename": "just-for-laughs-off-jfl-closing-show-theatre-sainte-catherine-or-le-gesu.jpg",
+        "alt": "Black and white photo capturing St. Catherine's Church in winter snow, at night."
+      },
+      "mont-royal-hike-from-the-plateau": {
+        "filename": "mont-royal-hike-from-the-plateau.jpg",
+        "alt": "Scenic landscape of Mont Aiguille in Chichilianne, France, captured during a clear day."
+      },
+      "st-viateur-bagel-breakfast-mile-end": {
+        "filename": "st-viateur-bagel-breakfast-mile-end.jpg",
+        "alt": "A variety of fresh bagels on a wooden tray at a market in Arcata, CA."
+      },
+      "osheaga-parc-jean-drapeau-day-1": {
+        "filename": "osheaga-parc-jean-drapeau-day-1.jpg",
+        "alt": "Child holds sign supporting runners at Montreal marathon, capturing athletic energy."
+      },
+      "osheaga-parc-jean-drapeau-day-2": {
+        "filename": "osheaga-parc-jean-drapeau-day-2.jpg",
+        "alt": "A woman sits leisurely in a Toronto park near an old cannon, surrounded by lush greenery."
+      },
+      "osheaga-parc-jean-drapeau-day-3": {
+        "filename": "osheaga-parc-jean-drapeau-day-3.jpg",
+        "alt": "Child holds sign supporting runners at Montreal marathon, capturing athletic energy."
+      },
+      "jean-talon-market-lunch-little-italy": {
+        "filename": "jean-talon-market-lunch-little-italy.jpg",
+        "alt": "Explore the vibrant atmosphere of a bustling fish market in Catania, Sicily, showcasing local vendors and fresh produce."
+      },
+      "montreal-museum-of-fine-arts-mmfa": {
+        "filename": "montreal-museum-of-fine-arts-mmfa.jpg",
+        "alt": "Two people viewing a painting in an art museum. Black and white detail enhancing mystery."
+      },
+      "mount-royal-cross-via-notre-dame-des-neiges-cemetery": {
+        "filename": "mount-royal-cross-via-notre-dame-des-neiges-cemetery.jpg",
+        "alt": "A serene cemetery scene featuring a snow-covered marble cross and winter flowers."
+      },
+      "lunch-at-au-pied-de-cochon": {
+        "filename": "lunch-at-au-pied-de-cochon.jpg",
+        "alt": "Juicy Argentine asado with grilled meats served on a platter, showcasing rich flavors."
+      }
+    }
   },
   "quebec-city": {
     "hero": {
@@ -149,7 +422,53 @@
       "height": 4000,
       "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "dufferin-terrace-boardwalk-at-sunset": {
+        "filename": "dufferin-terrace-boardwalk-at-sunset.jpg",
+        "alt": "View of Château Frontenac and Quebec City skyline at sunset with people on a waterfront terrace."
+      },
+      "petit-champlain-night-walk-le-lapin-saute": {
+        "filename": "petit-champlain-night-walk-le-lapin-saute.jpg",
+        "alt": "A picturesque view of a lively street in Old Québec City featuring historic buildings and tourists."
+      },
+      "plains-of-abraham-1759-battlefield": {
+        "filename": "plains-of-abraham-1759-battlefield.jpg",
+        "alt": "Scenic view of the Plains of Abraham in Quebec City during autumn with a directional sign."
+      },
+      "musee-national-des-beaux-arts-du-quebec": {
+        "filename": "musee-national-des-beaux-arts-du-quebec.jpg",
+        "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+      },
+      "place-royale-notre-dame-des-victoires-lower-town": {
+        "filename": "place-royale-notre-dame-des-victoires-lower-town.jpg",
+        "alt": "A serene view of old Quebec City with a historic church and charming architecture in morning light."
+      },
+      "montmorency-falls-43-m-taller-than-niagara": {
+        "filename": "montmorency-falls-43-m-taller-than-niagara.jpg",
+        "alt": "Majestic view of Montmorency Falls with lush greenery and a suspension bridge in Québec City."
+      },
+      "cassis-monna-filles-ile-d-orleans": {
+        "filename": "cassis-monna-filles-ile-d-orleans.jpg",
+        "alt": "View of Château Frontenac and Quebec City skyline at sunset with people on a waterfront terrace."
+      },
+      "cidrerie-bilodeau-ile-d-orleans": {
+        "filename": "cidrerie-bilodeau-ile-d-orleans.jpg",
+        "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+      },
+      "citadelle-guided-tour-changing-of-the-guard-10-am": {
+        "filename": "citadelle-guided-tour-changing-of-the-guard-10-am.jpg",
+        "alt": "Tourists explore a historic street in Old Quebec, Canada, featuring charming architecture."
+      },
+      "lunch-at-chez-ashton-canonical-quebec-poutine": {
+        "filename": "lunch-at-chez-ashton-canonical-quebec-poutine.jpg",
+        "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+      },
+      "4-6-km-fortification-wall-loop": {
+        "filename": "4-6-km-fortification-wall-loop.jpg",
+        "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+      }
+    }
   },
   "toronto": {
     "hero": {
@@ -159,6 +478,84 @@
       "height": 4000,
       "alt": "Toronto skyline featuring the CN Tower and water taxi on Lake Ontario under a clear day sky."
     },
-    "inline": []
+    "inline": [],
+    "items": {
+      "harbourfront-walk-cn-tower-at-night": {
+        "filename": "harbourfront-walk-cn-tower-at-night.jpg",
+        "alt": "Breathtaking night view of Toronto cityscape with the iconic CN Tower glowing amidst the skyscrapers."
+      },
+      "late-night-dim-sum-at-rol-san-chinatown": {
+        "filename": "late-night-dim-sum-at-rol-san-chinatown.jpg",
+        "alt": "Delicious shumai dumplings in bamboo steamers, showcasing traditional dim sum cuisine."
+      },
+      "cn-tower-observation-deck-edgewalk": {
+        "filename": "cn-tower-observation-deck-edgewalk.jpg",
+        "alt": "Vertical view of the iconic CN Tower soaring against a clear blue sky in Toronto, Canada."
+      },
+      "st-lawrence-market-peameal-bacon-sandwich-at-carousel-bakery": {
+        "filename": "st-lawrence-market-peameal-bacon-sandwich-at-carousel-bakery.jpg",
+        "alt": "Visitors at St. Lawrence Market, Toronto, enjoying a variety of food delights and local specialties."
+      },
+      "toronto-islands-ferry-at-sunset": {
+        "filename": "toronto-islands-ferry-at-sunset.jpg",
+        "alt": "A bustling ferry with passengers sails against the backdrop of Toronto's iconic skyline."
+      },
+      "royal-ontario-museum": {
+        "filename": "royal-ontario-museum.jpg",
+        "alt": "People exploring a dinosaur exhibit inside a Toronto museum, showcasing fossils and history."
+      },
+      "art-gallery-of-ontario": {
+        "filename": "art-gallery-of-ontario.jpg",
+        "alt": "Visitors admire ancient Chinese Buddhist murals at a Toronto museum exhibit."
+      },
+      "distillery-district": {
+        "filename": "distillery-district.jpg",
+        "alt": "Christmas market bustle in Toronto with lights and festive decorations."
+      },
+      "kensington-market-food-crawl": {
+        "filename": "kensington-market-food-crawl.jpg",
+        "alt": "Visitors at St. Lawrence Market, Toronto, enjoying a variety of food delights and local specialties."
+      },
+      "graffiti-alley": {
+        "filename": "graffiti-alley.jpg",
+        "alt": "A monochrome urban alley in Toronto adorned with graffiti art, showcasing street culture."
+      },
+      "casa-loma": {
+        "filename": "casa-loma.jpg",
+        "alt": "Capture of Gothic Revival architecture in downtown Toronto on a sunny day."
+      },
+      "blue-jays-at-rogers-centre-vs-houston-or-philadelphia": {
+        "filename": "blue-jays-at-rogers-centre-vs-houston-or-philadelphia.jpg",
+        "alt": "Night view of the illuminated Rogers Centre in Toronto, a famous landmark and tourist attraction."
+      },
+      "niagara-falls-hornblower-maid-of-the-mist": {
+        "filename": "niagara-falls-hornblower-maid-of-the-mist.jpg",
+        "alt": "Experience the thrill of a boat ride at Niagara Falls with breathtaking views and misty excitement."
+      },
+      "high-park": {
+        "filename": "high-park.jpg",
+        "alt": "Serene city park in Toronto featuring lush greenery and building reflections in a pond."
+      },
+      "aga-khan-museum": {
+        "filename": "aga-khan-museum.jpg",
+        "alt": "Visitors admire ancient Chinese Buddhist murals at a Toronto museum exhibit."
+      },
+      "u-of-t-tcard-pickup": {
+        "filename": "u-of-t-tcard-pickup.jpg",
+        "alt": "A Toronto streetcar travels through the bustling downtown, showcasing urban life and city infrastructure."
+      },
+      "open-scotiabank-or-rbc-newcomer-account-branch-visit": {
+        "filename": "open-scotiabank-or-rbc-newcomer-account-branch-visit.jpg",
+        "alt": "Brookfield Place atrium showcasing modern architectural design in Toronto, Canada."
+      },
+      "cne-opening-day-midway-bandshell-cne-food-building": {
+        "filename": "cne-opening-day-midway-bandshell-cne-food-building.jpg",
+        "alt": "Enjoying a thrilling carnival ride under the clear summer sky at a lively festival."
+      },
+      "u-of-t-residence-move-in": {
+        "filename": "u-of-t-residence-move-in.jpg",
+        "alt": "Urban construction site in downtown Toronto with cranes and modern architecture."
+      }
+    }
   }
 }

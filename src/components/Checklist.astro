@@ -2,12 +2,14 @@
 // Pre-trip checklist island. Single Astro <script> block (hoisted by
 // Astro and deduped across instances) wires every [data-prep-checklist]
 // section it finds in the DOM. State persists in localStorage; without
-// JS the checkboxes still work for the session and the add / reset
-// controls are CSS-hidden.
+// JS the checkboxes still work for the session and the edit / hide /
+// add / reset controls are CSS-hidden.
 //
 // Storage contract (v1):
 //   canada:prep:tick:v1   → { [sectionId]: { [itemId]: true } }
 //   canada:prep:custom:v1 → { [sectionId]: Array<{ id, text }> }
+//   canada:prep:hide:v1   → { [sectionId]: { [itemId]: true } }
+//   canada:prep:edit:v1   → { [sectionId]: { [itemId]: string } }
 
 import type { CollectionEntry } from 'astro:content';
 
@@ -42,38 +44,74 @@ const initialTotal = items.length;
   <ul class="prep-items space-y-3">
     {
       items.map((item) => (
-        <li class="prep-item">
-          <label class="flex items-start gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              data-tick-key={`${sectionId}:${item.id}`}
-              class="mt-1.5 h-4 w-4 flex-shrink-0 rounded border-stone-300 text-forest-700 focus:ring-forest-700"
-            />
-            <span class="flex-1 text-body text-stone-900">
-              <span>{item.text}</span>
-              {item.dueRelative && (
-                <span class="ml-2 inline-block rounded bg-stone-100 px-2 py-0.5 text-meta text-stone-700 align-middle">
-                  {item.dueRelative}
-                </span>
-              )}
-              {item.link && (
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener"
-                  class="ml-1 text-forest-700 hover:text-forest-900"
-                  aria-label={`Open link for: ${item.text}`}
+        <li
+          class="prep-item"
+          data-item-key={`${sectionId}:${item.id}`}
+        >
+          <div class="flex items-start gap-2">
+            <label class="flex flex-1 items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                data-tick-key={`${sectionId}:${item.id}`}
+                class="mt-1.5 h-4 w-4 flex-shrink-0 rounded border-stone-300 text-forest-700 focus:ring-forest-700"
+              />
+              <span class="flex-1 text-body text-stone-900">
+                <span
+                  class="prep-item-text"
+                  data-original-text={item.text}
                 >
-                  ↗
-                </a>
-              )}
-              {item.detail && (
-                <span class="mt-1 block text-meta text-stone-500">
-                  {item.detail}
+                  {item.text}
                 </span>
-              )}
-            </span>
-          </label>
+                {item.dueRelative && (
+                  <span class="ml-2 inline-block rounded bg-stone-100 px-2 py-0.5 text-meta text-stone-700 align-middle">
+                    {item.dueRelative}
+                  </span>
+                )}
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener"
+                    class="ml-1 text-forest-700 hover:text-forest-900"
+                    aria-label={`Open link for: ${item.text}`}
+                  >
+                    ↗
+                  </a>
+                )}
+                {item.detail && (
+                  <span class="mt-1 block text-meta text-stone-500">
+                    {item.detail}
+                  </span>
+                )}
+              </span>
+            </label>
+            <div class="checklist-jsonly prep-item-actions mt-1 flex flex-shrink-0 items-center gap-1">
+              <button
+                type="button"
+                data-prep-edit
+                aria-label={`Edit: ${item.text}`}
+                class="prep-item-edit rounded p-1 text-stone-400 hover:text-forest-700 focus:outline-none focus:ring-2 focus:ring-forest-700"
+              >
+                <span aria-hidden="true">✎</span>
+              </button>
+              <button
+                type="button"
+                data-prep-hide
+                aria-label={`Hide: ${item.text}`}
+                class="prep-item-hide rounded p-1 text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+              <button
+                type="button"
+                data-prep-unhide
+                aria-label={`Unhide: ${item.text}`}
+                class="prep-item-unhide rounded px-2 py-0.5 text-meta text-forest-700 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-forest-700"
+              >
+                Unhide
+              </button>
+            </div>
+          </div>
         </li>
       ))
     }
@@ -81,11 +119,21 @@ const initialTotal = items.length;
 
   <ul class="prep-custom-items space-y-3"></ul>
 
+  <button
+    type="button"
+    class="checklist-jsonly text-meta text-stone-500 underline-offset-2 hover:text-forest-700 hover:underline"
+    data-prep-show-hidden
+    hidden
+  >
+    Show <span data-prep-hidden-count>0</span> hidden items
+  </button>
+
   <form class="checklist-jsonly flex items-center gap-2" data-prep-add>
     <input
       type="text"
       placeholder="Add an item…"
       maxlength="120"
+      aria-label={`Add an item to ${title}`}
       class="flex-1 rounded border border-stone-300 px-3 py-2 text-body focus:border-forest-700 focus:outline-none focus:ring-1 focus:ring-forest-700"
     />
     <button
@@ -109,15 +157,59 @@ const initialTotal = items.length;
   .no-js .checklist-jsonly {
     display: none !important;
   }
+
+  /* Unhide button is only shown for hidden items when the section is
+     in show-hidden mode. */
+  .prep-item-unhide {
+    display: none;
+  }
+  [data-prep-checklist][data-show-hidden]
+    li.prep-item[data-hidden]
+    .prep-item-unhide {
+    display: inline-flex;
+  }
+
+  /* In show-hidden mode, swap edit/hide for unhide and mute the row. */
+  [data-prep-checklist][data-show-hidden]
+    li.prep-item[data-hidden]
+    .prep-item-edit,
+  [data-prep-checklist][data-show-hidden]
+    li.prep-item[data-hidden]
+    .prep-item-hide {
+    display: none;
+  }
+  [data-prep-checklist][data-show-hidden] li.prep-item[data-hidden] label {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  /* Show-hidden reveal must beat the paint-guard per-item display:none
+     rules (specificity 0,2,1). This is 0,3,1. */
+  [data-prep-checklist][data-show-hidden] li.prep-item[data-hidden] {
+    display: list-item;
+  }
+
+  /* Custom items (rendered client-side) hidden via attribute when JS
+     can't reach the paint-guard CSS path. */
+  li.prep-item[data-hidden] {
+    /* paint-guard handles default items; this is the post-hydration
+       fallback for newly-hidden items and for custom items. */
+  }
+  [data-prep-checklist]:not([data-show-hidden]) li.prep-item[data-hidden] {
+    display: none;
+  }
 </style>
 
 <script>
   const TICK_KEY = 'canada:prep:tick:v1';
   const CUSTOM_KEY = 'canada:prep:custom:v1';
+  const HIDE_KEY = 'canada:prep:hide:v1';
+  const EDIT_KEY = 'canada:prep:edit:v1';
 
-  type TickMap = Record<string, Record<string, boolean>>;
+  type BoolMap = Record<string, Record<string, boolean>>;
   type CustomItem = { id: string; text: string };
   type CustomMap = Record<string, CustomItem[]>;
+  type EditMap = Record<string, Record<string, string>>;
 
   function readJson<T>(key: string, fallback: T): T {
     try {
@@ -140,13 +232,36 @@ const initialTotal = items.length;
     const inputs = section.querySelectorAll<HTMLInputElement>(
       'input[type="checkbox"][data-tick-key]',
     );
-    const total = inputs.length;
+    let total = 0;
     let done = 0;
     inputs.forEach((cb) => {
+      const li = cb.closest<HTMLElement>('li.prep-item');
+      if (li?.hasAttribute('data-hidden')) return;
+      total++;
       if (cb.checked) done++;
     });
     const progress = section.querySelector<HTMLElement>('[data-prep-progress]');
     if (progress) progress.textContent = `${done} of ${total} done`;
+  }
+
+  function updateHiddenToggle(section: HTMLElement): void {
+    const btn = section.querySelector<HTMLButtonElement>(
+      '[data-prep-show-hidden]',
+    );
+    if (!btn) return;
+    const count = section.querySelectorAll<HTMLElement>(
+      'li.prep-item[data-hidden]',
+    ).length;
+    if (count === 0) {
+      btn.hidden = true;
+      section.removeAttribute('data-show-hidden');
+      btn.innerHTML = `Show <span data-prep-hidden-count>0</span> hidden items`;
+      return;
+    }
+    btn.hidden = false;
+    const showing = section.hasAttribute('data-show-hidden');
+    const verb = showing ? 'Hide' : 'Show';
+    btn.innerHTML = `${verb} <span data-prep-hidden-count>${count}</span> hidden items`;
   }
 
   function bindCheckbox(
@@ -155,10 +270,10 @@ const initialTotal = items.length;
     checkbox: HTMLInputElement,
     section: HTMLElement,
   ): void {
-    const ticks = readJson<TickMap>(TICK_KEY, {});
+    const ticks = readJson<BoolMap>(TICK_KEY, {});
     if (ticks[sectionId]?.[itemId]) checkbox.checked = true;
     checkbox.addEventListener('change', () => {
-      const t = readJson<TickMap>(TICK_KEY, {});
+      const t = readJson<BoolMap>(TICK_KEY, {});
       if (!t[sectionId]) t[sectionId] = {};
       if (checkbox.checked) {
         t[sectionId][itemId] = true;
@@ -170,14 +285,147 @@ const initialTotal = items.length;
     });
   }
 
+  function setItemHidden(
+    li: HTMLElement,
+    sectionId: string,
+    itemId: string,
+    hidden: boolean,
+  ): void {
+    const h = readJson<BoolMap>(HIDE_KEY, {});
+    if (hidden) {
+      if (!h[sectionId]) h[sectionId] = {};
+      h[sectionId][itemId] = true;
+      li.setAttribute('data-hidden', '');
+    } else {
+      if (h[sectionId]) {
+        delete h[sectionId][itemId];
+        if (Object.keys(h[sectionId]).length === 0) delete h[sectionId];
+      }
+      li.removeAttribute('data-hidden');
+    }
+    writeJson(HIDE_KEY, h);
+  }
+
+  function setItemEdit(
+    sectionId: string,
+    itemId: string,
+    text: string | null,
+  ): void {
+    const e = readJson<EditMap>(EDIT_KEY, {});
+    if (text === null) {
+      if (e[sectionId]) {
+        delete e[sectionId][itemId];
+        if (Object.keys(e[sectionId]).length === 0) delete e[sectionId];
+      }
+    } else {
+      if (!e[sectionId]) e[sectionId] = {};
+      e[sectionId][itemId] = text;
+    }
+    writeJson(EDIT_KEY, e);
+  }
+
+  // Inline edit. Replaces the text span with an <input>; Enter saves,
+  // Escape cancels. Only one edit at a time per section (clicking edit
+  // on another item commits/cancels the current one — we cancel for
+  // safety).
+  function startEdit(
+    li: HTMLElement,
+    sectionId: string,
+    itemId: string,
+  ): void {
+    const textSpan = li.querySelector<HTMLElement>('.prep-item-text');
+    if (!textSpan || textSpan.dataset.editing === 'true') return;
+
+    // If another item is being edited in this section, cancel it.
+    const section = li.closest<HTMLElement>('[data-prep-checklist]');
+    section
+      ?.querySelectorAll<HTMLInputElement>('input[data-prep-edit-input]')
+      .forEach((input) => {
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+      });
+
+    const currentText = (textSpan.textContent ?? '').trim();
+    textSpan.dataset.editing = 'true';
+    textSpan.style.display = 'none';
+
+    const wrapper = document.createElement('label');
+    wrapper.className = 'prep-item-edit-wrapper inline-flex items-center';
+    wrapper.dataset.prepEditWrapper = '';
+
+    const srLabel = document.createElement('span');
+    srLabel.className = 'sr-only';
+    srLabel.textContent = 'Edit item text';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentText;
+    input.maxLength = 200;
+    input.className =
+      'flex-1 rounded border border-stone-300 px-2 py-1 text-body focus:border-forest-700 focus:outline-none focus:ring-1 focus:ring-forest-700';
+    input.dataset.prepEditInput = '';
+
+    wrapper.appendChild(srLabel);
+    wrapper.appendChild(input);
+    textSpan.parentElement?.insertBefore(wrapper, textSpan);
+
+    let cleanedUp = false;
+    const cleanup = (commit: boolean) => {
+      if (cleanedUp) return;
+      cleanedUp = true;
+      const next = input.value.trim();
+      wrapper.remove();
+      textSpan.style.display = '';
+      delete textSpan.dataset.editing;
+
+      if (commit && next.length > 0 && next !== currentText) {
+        textSpan.textContent = next;
+        setItemEdit(sectionId, itemId, next);
+        // Keep aria-labels of action buttons in sync with new text.
+        const editBtn = li.querySelector<HTMLButtonElement>('[data-prep-edit]');
+        const hideBtn = li.querySelector<HTMLButtonElement>('[data-prep-hide]');
+        const unhideBtn = li.querySelector<HTMLButtonElement>(
+          '[data-prep-unhide]',
+        );
+        if (editBtn) editBtn.setAttribute('aria-label', `Edit: ${next}`);
+        if (hideBtn) hideBtn.setAttribute('aria-label', `Hide: ${next}`);
+        if (unhideBtn) unhideBtn.setAttribute('aria-label', `Unhide: ${next}`);
+      }
+    };
+
+    input.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        cleanup(true);
+      } else if (ev.key === 'Escape') {
+        ev.preventDefault();
+        cleanup(false);
+      }
+    });
+    input.addEventListener('blur', () => cleanup(false));
+
+    input.focus();
+    input.select();
+  }
+
   function renderCustomItem(
     customList: HTMLUListElement,
     sectionId: string,
     item: CustomItem,
     section: HTMLElement,
   ): void {
+    // Resolve current displayed text (edited or original).
+    const edits = readJson<EditMap>(EDIT_KEY, {});
+    const displayText = edits[sectionId]?.[item.id] ?? item.text;
+
     const li = document.createElement('li');
-    li.className = 'prep-item flex items-start gap-3';
+    li.className = 'prep-item';
+    li.dataset.itemKey = `${sectionId}:${item.id}`;
+
+    const hides = readJson<BoolMap>(HIDE_KEY, {});
+    if (hides[sectionId]?.[item.id]) li.setAttribute('data-hidden', '');
+
+    const row = document.createElement('div');
+    row.className = 'flex items-start gap-2';
 
     const label = document.createElement('label');
     label.className = 'flex flex-1 items-start gap-3 cursor-pointer';
@@ -188,53 +436,137 @@ const initialTotal = items.length;
     cb.className =
       'mt-1.5 h-4 w-4 flex-shrink-0 rounded border-stone-300 text-forest-700 focus:ring-forest-700';
 
-    const text = document.createElement('span');
-    text.className = 'flex-1 text-body text-stone-900';
-    text.textContent = item.text;
+    const textOuter = document.createElement('span');
+    textOuter.className = 'flex-1 text-body text-stone-900';
 
+    const textSpan = document.createElement('span');
+    textSpan.className = 'prep-item-text';
+    textSpan.dataset.originalText = item.text;
+    textSpan.textContent = displayText;
+
+    textOuter.appendChild(textSpan);
     label.appendChild(cb);
-    label.appendChild(text);
+    label.appendChild(textOuter);
 
-    const del = document.createElement('button');
-    del.type = 'button';
-    del.className =
-      'text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
-    del.setAttribute('aria-label', `Delete custom item: ${item.text}`);
-    del.textContent = '×';
-    del.addEventListener('click', () => {
-      const c = readJson<CustomMap>(CUSTOM_KEY, {});
-      c[sectionId] = (c[sectionId] ?? []).filter((x) => x.id !== item.id);
-      writeJson(CUSTOM_KEY, c);
-      const t = readJson<TickMap>(TICK_KEY, {});
-      if (t[sectionId]) delete t[sectionId][item.id];
-      writeJson(TICK_KEY, t);
-      li.remove();
-      updateProgress(section);
-    });
+    const actions = document.createElement('div');
+    actions.className =
+      'checklist-jsonly prep-item-actions mt-1 flex flex-shrink-0 items-center gap-1';
 
-    li.appendChild(label);
-    li.appendChild(del);
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.dataset.prepEdit = '';
+    editBtn.setAttribute('aria-label', `Edit: ${displayText}`);
+    editBtn.className =
+      'prep-item-edit rounded p-1 text-stone-400 hover:text-forest-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
+    editBtn.innerHTML = '<span aria-hidden="true">✎</span>';
+
+    const hideBtn = document.createElement('button');
+    hideBtn.type = 'button';
+    hideBtn.dataset.prepHide = '';
+    hideBtn.setAttribute('aria-label', `Hide: ${displayText}`);
+    hideBtn.className =
+      'prep-item-hide rounded p-1 text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
+    hideBtn.innerHTML = '<span aria-hidden="true">×</span>';
+
+    const unhideBtn = document.createElement('button');
+    unhideBtn.type = 'button';
+    unhideBtn.dataset.prepUnhide = '';
+    unhideBtn.setAttribute('aria-label', `Unhide: ${displayText}`);
+    unhideBtn.className =
+      'prep-item-unhide rounded px-2 py-0.5 text-meta text-forest-700 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-forest-700';
+    unhideBtn.textContent = 'Unhide';
+
+    actions.appendChild(editBtn);
+    actions.appendChild(hideBtn);
+    actions.appendChild(unhideBtn);
+
+    row.appendChild(label);
+    row.appendChild(actions);
+    li.appendChild(row);
     customList.appendChild(li);
 
+    wireItemActions(li, sectionId, item.id, section);
     bindCheckbox(sectionId, item.id, cb, section);
+  }
+
+  function wireItemActions(
+    li: HTMLElement,
+    sectionId: string,
+    itemId: string,
+    section: HTMLElement,
+  ): void {
+    const editBtn = li.querySelector<HTMLButtonElement>('[data-prep-edit]');
+    editBtn?.addEventListener('click', () => {
+      startEdit(li, sectionId, itemId);
+    });
+
+    const hideBtn = li.querySelector<HTMLButtonElement>('[data-prep-hide]');
+    hideBtn?.addEventListener('click', () => {
+      setItemHidden(li, sectionId, itemId, true);
+      updateProgress(section);
+      updateHiddenToggle(section);
+    });
+
+    const unhideBtn = li.querySelector<HTMLButtonElement>('[data-prep-unhide]');
+    unhideBtn?.addEventListener('click', () => {
+      setItemHidden(li, sectionId, itemId, false);
+      updateProgress(section);
+      updateHiddenToggle(section);
+    });
+  }
+
+  function applyEditsAndHides(section: HTMLElement, sectionId: string): void {
+    const hides = readJson<BoolMap>(HIDE_KEY, {})[sectionId] ?? {};
+    const edits = readJson<EditMap>(EDIT_KEY, {})[sectionId] ?? {};
+
+    section
+      .querySelectorAll<HTMLElement>('.prep-items > li.prep-item')
+      .forEach((li) => {
+        const key = li.dataset.itemKey ?? '';
+        const itemId = key.slice(sectionId.length + 1);
+
+        if (hides[itemId]) li.setAttribute('data-hidden', '');
+
+        const editedText = edits[itemId];
+        if (editedText != null) {
+          const textSpan = li.querySelector<HTMLElement>('.prep-item-text');
+          if (textSpan) textSpan.textContent = editedText;
+          // Keep action button aria-labels in sync with edited text.
+          const editBtn = li.querySelector<HTMLButtonElement>(
+            '[data-prep-edit]',
+          );
+          const hideBtn = li.querySelector<HTMLButtonElement>(
+            '[data-prep-hide]',
+          );
+          const unhideBtn = li.querySelector<HTMLButtonElement>(
+            '[data-prep-unhide]',
+          );
+          if (editBtn) editBtn.setAttribute('aria-label', `Edit: ${editedText}`);
+          if (hideBtn) hideBtn.setAttribute('aria-label', `Hide: ${editedText}`);
+          if (unhideBtn)
+            unhideBtn.setAttribute('aria-label', `Unhide: ${editedText}`);
+        }
+      });
   }
 
   function wireSection(section: HTMLElement): void {
     const sectionId = section.dataset.sectionId;
     if (!sectionId) return;
 
-    // Authored checkboxes
+    applyEditsAndHides(section, sectionId);
+
     section
-      .querySelectorAll<HTMLInputElement>(
-        '.prep-items input[type="checkbox"][data-tick-key]',
-      )
-      .forEach((cb) => {
-        const key = cb.dataset.tickKey ?? '';
+      .querySelectorAll<HTMLElement>('.prep-items > li.prep-item')
+      .forEach((li) => {
+        const key = li.dataset.itemKey ?? '';
         const itemId = key.slice(sectionId.length + 1);
-        bindCheckbox(sectionId, itemId, cb, section);
+        const cb = li.querySelector<HTMLInputElement>(
+          'input[type="checkbox"][data-tick-key]',
+        );
+        if (cb) bindCheckbox(sectionId, itemId, cb, section);
+        wireItemActions(li, sectionId, itemId, section);
       });
 
-    // Custom items from storage
     const customList = section.querySelector<HTMLUListElement>(
       '.prep-custom-items',
     );
@@ -245,7 +577,18 @@ const initialTotal = items.length;
       });
     }
 
-    // Add form
+    const showHiddenBtn = section.querySelector<HTMLButtonElement>(
+      '[data-prep-show-hidden]',
+    );
+    showHiddenBtn?.addEventListener('click', () => {
+      if (section.hasAttribute('data-show-hidden')) {
+        section.removeAttribute('data-show-hidden');
+      } else {
+        section.setAttribute('data-show-hidden', '');
+      }
+      updateHiddenToggle(section);
+    });
+
     const addForm = section.querySelector<HTMLFormElement>('[data-prep-add]');
     if (addForm && customList) {
       addForm.addEventListener('submit', (e) => {
@@ -262,10 +605,10 @@ const initialTotal = items.length;
         renderCustomItem(customList, sectionId, { id, text }, section);
         input.value = '';
         updateProgress(section);
+        updateHiddenToggle(section);
       });
     }
 
-    // Reset
     const resetBtn = section.querySelector<HTMLButtonElement>(
       '[data-prep-reset]',
     );
@@ -273,17 +616,17 @@ const initialTotal = items.length;
       resetBtn.addEventListener('click', () => {
         if (
           !window.confirm(
-            'Clear all ticks and custom items in this section?',
+            'Clear all ticks, edits, hides, and custom items in this section?',
           )
         ) {
           return;
         }
-        const t = readJson<TickMap>(TICK_KEY, {});
-        delete t[sectionId];
-        writeJson(TICK_KEY, t);
-        const c = readJson<CustomMap>(CUSTOM_KEY, {});
-        delete c[sectionId];
-        writeJson(CUSTOM_KEY, c);
+        for (const k of [TICK_KEY, CUSTOM_KEY, HIDE_KEY, EDIT_KEY]) {
+          const m = readJson<Record<string, unknown>>(k, {});
+          delete m[sectionId];
+          writeJson(k, m);
+        }
+
         section
           .querySelectorAll<HTMLInputElement>(
             '.prep-items input[type="checkbox"][data-tick-key]',
@@ -291,12 +634,47 @@ const initialTotal = items.length;
           .forEach((cb) => {
             cb.checked = false;
           });
+
+        section
+          .querySelectorAll<HTMLElement>(
+            '.prep-items > li.prep-item[data-hidden]',
+          )
+          .forEach((li) => li.removeAttribute('data-hidden'));
+
+        section
+          .querySelectorAll<HTMLElement>('.prep-items .prep-item-text')
+          .forEach((span) => {
+            const original = span.dataset.originalText ?? span.textContent ?? '';
+            span.textContent = original;
+            const li = span.closest<HTMLElement>('li.prep-item');
+            if (li) {
+              const editBtn = li.querySelector<HTMLButtonElement>(
+                '[data-prep-edit]',
+              );
+              const hideBtn = li.querySelector<HTMLButtonElement>(
+                '[data-prep-hide]',
+              );
+              const unhideBtn = li.querySelector<HTMLButtonElement>(
+                '[data-prep-unhide]',
+              );
+              if (editBtn)
+                editBtn.setAttribute('aria-label', `Edit: ${original}`);
+              if (hideBtn)
+                hideBtn.setAttribute('aria-label', `Hide: ${original}`);
+              if (unhideBtn)
+                unhideBtn.setAttribute('aria-label', `Unhide: ${original}`);
+            }
+          });
+
         customList.replaceChildren();
+        section.removeAttribute('data-show-hidden');
         updateProgress(section);
+        updateHiddenToggle(section);
       });
     }
 
     updateProgress(section);
+    updateHiddenToggle(section);
   }
 
   // Safety: remove no-js even if the paint-guard didn't fire.
@@ -305,4 +683,13 @@ const initialTotal = items.length;
   document
     .querySelectorAll<HTMLElement>('[data-prep-checklist]')
     .forEach(wireSection);
+
+  // Every initially-hidden item now has `data-hidden` set on its <li>,
+  // so the static `[data-hidden]` CSS rules can take over from the
+  // paint-guard's per-item display:none rules. Remove the inline
+  // <style> so runtime un-hides actually re-display the item — keeping
+  // those rules around would override `removeAttribute('data-hidden')`.
+  document
+    .querySelectorAll<HTMLStyleElement>('style[data-prep-hide-paint]')
+    .forEach((s) => s.remove());
 </script>
