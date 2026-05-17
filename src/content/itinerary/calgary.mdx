@@ -29,7 +29,7 @@ days:
         kind: transit
         time: afternoon
         coords: { lat: 51.1138, lng: -114.0203 }
-        note: Calgary Transit C-Train or Uber to the Beltline hostel
+        note: Calgary Transit C-Train to Stampede Park
       - pin: 1
         name: Stampede Park — gate entry
         kind: event
@@ -43,65 +43,62 @@ days:
         time: evening
         coords: { lat: 51.0376, lng: -114.0540 }
         note: The Caesar was invented in Calgary in 1969
+      - pin: 3
+        name: 'Indigenous Elbow River Camp — bannock tacos'
+        kind: meal
+        time: evening
+        coords: { lat: 51.0395, lng: -114.0535 }
 
   - date: '2026-07-09'
     items:
-      - pin: 3
-        name: City-wide free pancake breakfast hunt
-        kind: event
-        time: morning
-        coords: { lat: 51.0447, lng: -114.0719 }
       - pin: 4
-        name: Glenbow Museum (recently renovated)
+        name: Studio Bell / National Music Centre
         kind: attraction
         time: late morning
         durationMin: 150
-        coords: { lat: 51.0457, lng: -114.0648 }
+        coords: { lat: 51.0464, lng: -114.0570 }
+        note: East Village; interactive Canadian music history
       - pin: 5
         name: Afternoon rodeo at GMC Stadium
         kind: event
         time: afternoon
         coords: { lat: 51.0379, lng: -114.0497 }
+        note: 1:30 p.m. — bull riding, barrel racing, saddle bronc
       - pin: 6
-        name: Nashville North — honky-tonk dancing
-        kind: event
-        time: evening
-        coords: { lat: 51.0383, lng: -114.0515 }
-
-  - date: '2026-07-10'
-    items:
-      - pin: 7
-        name: Calgary Tower
-        kind: attraction
-        time: morning
-        durationMin: 60
-        coords: { lat: 51.0444, lng: -114.0631 }
-      - pin: 8
-        name: Studio Bell / National Music Centre
-        kind: attraction
-        time: midday
-        durationMin: 150
-        coords: { lat: 51.0464, lng: -114.0570 }
-        note: East Village; interactive Canadian music history
-      - pin: 9
-        name: 'Indigenous Elbow River Camp — bannock tacos'
-        kind: meal
-        time: afternoon
-        coords: { lat: 51.0395, lng: -114.0535 }
-      - pin: 10
         name: Chuckwagon Races
         kind: event
         time: evening
         coords: { lat: 51.0379, lng: -114.0497 }
-      - pin: 11
+        note: 7:15 p.m. start at GMC Stadium
+      - pin: 7
         name: 'Grandstand Show + fireworks'
         kind: event
         time: late evening
         coords: { lat: 51.0379, lng: -114.0497 }
 
+  - date: '2026-07-10'
+    items:
+      - pin: 8
+        name: Calgary Tower
+        kind: attraction
+        time: morning
+        durationMin: 60
+        coords: { lat: 51.0444, lng: -114.0631 }
+      - pin: 9
+        name: Glenbow Museum (recently renovated)
+        kind: attraction
+        time: late morning
+        durationMin: 150
+        coords: { lat: 51.0457, lng: -114.0648 }
+      - pin: 10
+        name: Nashville North — honky-tonk dancing
+        kind: event
+        time: evening
+        coords: { lat: 51.0383, lng: -114.0515 }
+
   - date: '2026-07-11'
     items:
-      - pin: 12
+      - pin: 11
         name: Alanis Morissette at the Saddledome
         kind: event
         time: evening
@@ -111,25 +108,19 @@ days:
   - date: '2026-07-12'
     label: Showdown Sunday
     items:
-      - pin: 13
+      - pin: 12
         name: Stampede pancake breakfast (Sunday morning)
         kind: meal
         time: morning
         coords: { lat: 51.0447, lng: -114.0719 }
         note: Free city-wide breakfasts; check the Stampede app for the day's map
-      - pin: 14
+      - pin: 13
         name: Showdown Sunday rodeo finals at GMC Stadium
         kind: event
         time: afternoon
         cost: 125
         coords: { lat: 51.0379, lng: -114.0497 }
         note: $75–175; finals close the Stampede
-      - name: Banff Airporter — Calgary → Banff
-        kind: transit
-        time: late afternoon
-        durationMin: 105
-        coords: { lat: 51.0447, lng: -114.0719 }
-        note: 1 h 45 m via TransCanada Hwy 1; departures every 1–2 hours
 
 stays:
   - name: 'HI Calgary City Centre (Beltline)'
@@ -141,7 +132,7 @@ stays:
 
 transport:
   - purpose: YYC → downtown
-    mode: Calgary Transit C-Train or Uber
+    mode: Calgary Transit C-Train
     costCAD: 30
     note: Use the C-Train during Stampede crowds; ride share is functional only pre-Stampede
   - purpose: Around downtown + to Stampede Park
@@ -149,9 +140,9 @@ transport:
     costCAD: 30
     note: 4-day transit pass; skywalks handle summer thunderstorms
   - purpose: Calgary → Banff
-    mode: Banff Airporter shuttle
+    mode: Banff Airporter shuttle or Brewster Express or On-It Regional Transit or Pursuit's "Banff Express"
     costCAD: 84
-    note: 90 minutes west into the Rockies
+    note: Banff Airporter or Brewster Express shuttle from downtown Calgary or YYC, book at banffairporter.com. On-It Regional Transit runs a seasonal Stampede-free $10 weekend shuttle Calgary → Banff (verify 2026 schedule at OnItregionaltransit.ca). 
 
 costBreakdown:
   lodging: 280

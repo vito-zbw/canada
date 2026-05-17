@@ -20,7 +20,7 @@ const routeMarkers = legs.map((l) => ({
 }));
 
 const totalNights = legs.reduce((sum, l) => sum + l.data.nights, 0);
-const totalStops = legs.length;
+const totalStops = legs.filter((l) => l.data.legType === 'city').length;
 const anchorCount = legs.filter((l) => l.data.anchorEvent != null).length;
 const totalBudget = legs.reduce((sum, l) => sum + (l.data.cost ?? 0), 0);
 
