@@ -1,0 +1,122 @@
+---
+// One row of the day-by-day list: thumbnail + numbered map pin + title +
+// meta line + optional note. Layout stays horizontal at every viewport;
+// DayList stacks these vertically with `gap-4`. Kind drives the fallback
+// glyph when the item has no `image`.
+
+import type { CollectionEntry } from 'astro:content';
+
+type DayItem = NonNullable<
+  CollectionEntry<'itinerary'>['data']['days']
+>[number]['items'][number];
+
+export interface Props {
+  legSlug: string;
+  item: DayItem;
+}
+
+const { legSlug, item } = Astro.props;
+const { pin, name, kind, time, durationMin, cost, note, image } = item;
+
+const titleId = `dayitem-${legSlug}-${pin ?? `${kind}-${name.replace(/\s+/g, '-').toLowerCase()}`}`;
+
+const KIND_GLYPH: Record<DayItem['kind'], string> = {
+  attraction: '\u{1F4CD}',
+  meal: '\u{1F37D}',
+  event: '\u{1F39F}',
+  transit: '\u{1F686}',
+  rest: '\u{1F6CF}',
+};
+
+function formatDuration(min: number): string {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  if (h > 0 && m > 0) return `${h}h ${m}m`;
+  if (h > 0) return `${h}h`;
+  return `${m}m`;
+}
+
+const costLabel =
+  typeof cost === 'number'
+    ? new Intl.NumberFormat('en-CA', {
+        style: 'currency',
+        currency: 'CAD',
+        maximumFractionDigits: 0,
+      }).format(cost)
+    : null;
+
+const metaParts = [
+  time ?? null,
+  typeof durationMin === 'number' ? formatDuration(durationMin) : null,
+  costLabel,
+].filter((part): part is string => part !== null && part !== '');
+
+const imageSrc = image ? `/images/${legSlug}/${image}.jpg` : null;
+---
+
+<article
+  aria-labelledby={titleId}
+  class="flex items-start gap-4"
+>
+  <div class="relative flex-shrink-0">
+    <div
+      class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-md bg-stone-100"
+    >
+      {
+        imageSrc ? (
+          <img
+            src={imageSrc}
+            alt={name}
+            width={80}
+            height={80}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        ) : (
+          <span aria-hidden="true" class="text-2xl">
+            {KIND_GLYPH[kind]}
+          </span>
+        )
+      }
+    </div>
+    {
+      pin && (
+        <span
+          aria-label={`Map pin ${pin}`}
+          class="absolute -left-2 -top-2 inline-flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-forest-700 px-1 font-sans text-xs font-semibold tabular-nums text-white"
+        >
+          {pin}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="min-w-0 flex-1">
+    <h3
+      id={titleId}
+      class="font-serif text-h4 leading-tight text-stone-900"
+    >
+      {name}
+    </h3>
+    {
+      metaParts.length > 0 && (
+        <p class="mt-1 text-meta text-stone-500">
+          {metaParts.map((part, i) => (
+            <>
+              {i > 0 && <span aria-hidden="true"> · </span>}
+              <span>{part}</span>
+            </>
+          ))}
+        </p>
+      )
+    }
+    {
+      note && (
+        <p class="mt-1 text-meta text-stone-600">
+          {note}
+        </p>
+      )
+    }
+  </div>
+</article>
