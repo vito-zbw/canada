@@ -49,6 +49,7 @@ const canonicalUrl = Astro.url.href;
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={ogImageAbsolute} />
+    <slot name="head" />
   </head>
   <body class="min-h-dvh bg-stone-50 text-stone-900 font-sans antialiased">
     <a
