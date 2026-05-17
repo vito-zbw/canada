@@ -5,6 +5,7 @@ import { defineCollection, z } from 'astro:content';
 const itinerary = defineCollection({
   type: 'content',
   schema: z.object({
+    // Core
     id: z.string().regex(/^[a-z0-9-]+$/),
     order: z.number().int().min(1),
     city: z.string(),
@@ -24,7 +25,106 @@ const itinerary = defineCollection({
       })
       .optional(),
     legType: z.enum(['city', 'transit']).default('city'),
+
+    // Structured per-leg data — all optional; migrated leg by leg.
+    updated: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO 8601 date YYYY-MM-DD')
+      .optional(),
+
+    highlights: z.array(z.string()).max(4).optional(),
+
+    days: z
+      .array(
+        z.object({
+          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          label: z.string().optional(),
+          items: z.array(
+            z.object({
+              pin: z.number().int().min(1).optional(),
+              name: z.string(),
+              kind: z.enum(['attraction', 'meal', 'event', 'transit', 'rest']),
+              time: z.string().optional(),
+              durationMin: z.number().int().optional(),
+              cost: z.number().int().optional(),
+              coords: z
+                .object({ lat: z.number(), lng: z.number() })
+                .optional(),
+              note: z.string().optional(),
+              image: z.string().optional(),
+            }),
+          ),
+        }),
+      )
+      .optional(),
+
+    stays: z
+      .array(
+        z.object({
+          name: z.string(),
+          neighborhood: z.string().optional(),
+          checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          nightlyCAD: z.number().int(),
+          bookingNote: z.string().optional(),
+        }),
+      )
+      .optional(),
+
+    transport: z
+      .array(
+        z.object({
+          purpose: z.string(),
+          mode: z.string(),
+          costCAD: z.number().int().optional(),
+          note: z.string().optional(),
+        }),
+      )
+      .optional(),
+
+    costBreakdown: z
+      .object({
+        lodging: z.number().int().optional(),
+        food: z.number().int().optional(),
+        transportLocal: z.number().int().optional(),
+        activities: z.number().int().optional(),
+        buffer: z.number().int().optional(),
+      })
+      .optional(),
+
+    gallery: z
+      .array(
+        z.object({
+          slug: z.string(),
+          alt: z.string(),
+        }),
+      )
+      .optional(),
+
+    cityMap: z
+      .object({
+        centerLat: z.number(),
+        centerLng: z.number(),
+        radiusKm: z.number(),
+        provider: z.enum(['svg', 'maplibre']).default('svg'),
+      })
+      .optional(),
   }),
 });
 
-export const collections = { itinerary };
+// Pre-trip topics (study permit, packing, banking, connectivity). Shape
+// differs from itinerary — no city, no coords, no nights.
+const prep = defineCollection({
+  type: 'content',
+  schema: z.object({
+    id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'kebab-case'),
+    order: z.number().int().min(1),
+    title: z.string(),
+    summary: z.string(),
+    lastReviewed: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO 8601 date YYYY-MM-DD'),
+  }),
+});
+
+export const collections = { itinerary, prep };
