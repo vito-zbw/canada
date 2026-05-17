@@ -4,11 +4,20 @@ import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import Hero from '../components/Hero.astro';
 import LegCard from '../components/LegCard.astro';
-import RouteMap from '../components/RouteMap.astro';
+import Map from '../components/Map.astro';
 
 const legs = (await getCollection('itinerary')).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+const routeMarkers = legs.map((l) => ({
+  id: l.slug,
+  lat: l.data.coords.lat,
+  lng: l.data.coords.lng,
+  label: l.data.city,
+  href: `/legs/${l.slug}`,
+  title: `${l.data.city}, leg ${l.data.order} of ${legs.length}`,
+}));
 
 const totalNights = legs.reduce((sum, l) => sum + l.data.nights, 0);
 const totalStops = legs.length;
@@ -67,7 +76,13 @@ const budgetLabel = new Intl.NumberFormat('en-CA', {
   </section>
   <section class="mt-18 md:mt-22 lg:mt-30">
     <h2 class="font-serif text-h2 tracking-tight">The route</h2>
-    <RouteMap class="mt-6" />
+    <Map
+      variant="route"
+      markers={routeMarkers}
+      routeLine
+      ariaLabel="Route map of the cross-Canada trip"
+      class="mt-6"
+    />
   </section>
   <section class="mt-18 md:mt-22 lg:mt-30">
     <h2 class="font-serif text-h2 tracking-tight">All ten legs</h2>

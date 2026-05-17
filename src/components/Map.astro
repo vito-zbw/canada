@@ -11,12 +11,12 @@
 //   - transit corridor map of stations; markers are labeled. Solid line
 //             by default.
 //
-// The component renders a server-side <ol> of markers as soft-fail content
-// inside the map target. A scoped <script> block uses IntersectionObserver
-// to defer initialization until the figure scrolls into view, then
-// dynamic-imports `maplibre-gl` so the ~80 KB library lives in its own
-// Vite chunk (no client:visible directive needed — vanilla pattern matches
-// the existing Checklist island).
+// The component renders a server-side ordered list of markers as soft-fail
+// content inside the map target. A scoped client script uses
+// IntersectionObserver to defer initialization until the figure scrolls
+// into view, then dynamic-imports `maplibre-gl` so the ~80 KB library
+// lives in its own Vite chunk. The vanilla pattern matches the existing
+// Checklist island and needs no client:visible directive.
 
 export interface MapMarker {
   id: string;
@@ -178,6 +178,23 @@ const fitAttr = fit === 'markers' ? 'markers' : JSON.stringify(fit);
     color: #ffffff;
     outline: none;
   }
+  :global(.map-pin-dot-clickable) {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: 9999px;
+    background-color: #1f3d2b;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    transition: transform 120ms ease;
+  }
+  :global(.map-pin-dot-clickable:hover),
+  :global(.map-pin-dot-clickable:focus-visible) {
+    transform: scale(1.25);
+    outline: none;
+  }
   :global(.maplibregl-canvas) {
     outline: none;
   }
@@ -235,6 +252,12 @@ const fitAttr = fit === 'markers' ? 'markers' : JSON.stringify(fit);
         if (variant === 'city') {
           el.className = 'map-pin-numbered';
           el.textContent = m.label;
+        } else if (variant === 'route') {
+          // Route: small DOM dot only. Labels rendered separately by a
+          // symbol layer so MapLibre handles collision (cities like
+          // Banff/Calgary and Ottawa/Montréal are ~1.5°-2° apart and
+          // would otherwise overlap on small viewports).
+          el.className = 'map-pin-dot-clickable';
         } else {
           el.className = 'map-pin-labeled';
           const dot = document.createElement('span');
@@ -248,7 +271,8 @@ const fitAttr = fit === 'markers' ? 'markers' : JSON.stringify(fit);
 
         new maplibre.Marker({
           element: el,
-          anchor: variant === 'city' ? 'center' : 'left',
+          anchor:
+            variant === 'city' || variant === 'route' ? 'center' : 'left',
         })
           .setLngLat([m.lng, m.lat])
           .addTo(map);
@@ -296,6 +320,48 @@ const fitAttr = fit === 'markers' ? 'markers' : JSON.stringify(fit);
               'line-width': 2.5,
               'line-opacity': 0.7,
               ...(routeDashed ? { 'line-dasharray': [2, 2] } : {}),
+            },
+          });
+        });
+      }
+
+      // Route variant: city-name labels on a symbol layer so MapLibre's
+      // collision system decides which to hide when they would overlap.
+      if (variant === 'route') {
+        map.on('load', () => {
+          map.addSource('route-labels', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: markers.map((m) => ({
+                type: 'Feature',
+                properties: { label: m.label },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [m.lng, m.lat],
+                },
+              })),
+            },
+          });
+          map.addLayer({
+            id: 'route-labels',
+            type: 'symbol',
+            source: 'route-labels',
+            layout: {
+              'text-field': ['get', 'label'],
+              'text-font': ['Noto Sans Regular'],
+              'text-size': 12,
+              'text-offset': [0, 0.9],
+              'text-anchor': 'top',
+              'text-allow-overlap': false,
+              'text-ignore-placement': false,
+              'text-optional': true,
+              'text-padding': 4,
+            },
+            paint: {
+              'text-color': '#1c1917',
+              'text-halo-color': '#ffffff',
+              'text-halo-width': 1.5,
             },
           });
         });
