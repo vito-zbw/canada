@@ -1,0 +1,194 @@
+---
+id: ottawa
+order: 7
+lang: zh
+city: 渥太华
+province: ON
+arriveDate: '2026-07-25'
+nights: 4
+cost: 695
+coords:
+  lat: 45.4215
+  lng: -75.6972
+legType: city
+updated: '2026-05-17'
+highlights:
+  - 国会山 (Parliament Hill)
+  - 加拿大国家美术馆 (National Gallery)
+  - 加拿大历史博物馆
+  - 里多运河 (Rideau Canal)
+
+days:
+  - date: '2026-07-25'
+    label: 抵达
+    items:
+      - name: 'YOW → 市中心'
+        kind: transit
+        time: 下午
+        coords: { lat: 45.3225, lng: -75.6692 }
+        note: OC Transpo 97 路或 Uber 到 ByWard Market
+      - pin: 1
+        name: '国会山 —— 夜间建筑灯光'
+        kind: attraction
+        time: 晚上
+        coords: { lat: 45.4253, lng: -75.6996 }
+      - pin: 2
+        name: 'ByWard Market 晚餐 + BeaverTails'
+        kind: meal
+        time: 晚上
+        coords: { lat: 45.4275, lng: -75.6928 }
+        note: 河狸尾饼 (BeaverTails) 的发源地
+
+  - date: '2026-07-26'
+    items:
+      - pin: 3
+        name: 加拿大国家美术馆 (National Gallery of Canada)
+        kind: attraction
+        time: 上午
+        durationMin: 240
+        coords: { lat: 45.4295, lng: -75.6989 }
+        note: 'Bourgeois 的 Maman 蜘蛛、七人画派 (Group of Seven)、原住民与当代艺术'
+      - pin: 4
+        name: '国会山 —— 西楼 (West Block) 免费导览'
+        kind: attraction
+        time: 下午
+        coords: { lat: 45.4254, lng: -75.7022 }
+        note: 中楼 (Centre Block) 翻修至 2031 年左右
+      - pin: 5
+        name: Major's Hill 公园看日落全景
+        kind: attraction
+        time: 晚上
+        coords: { lat: 45.4279, lng: -75.6951 }
+
+  - date: '2026-07-27'
+    label: 渡河去加蒂诺
+    items:
+      - pin: 6
+        name: 加拿大历史博物馆(加蒂诺 Gatineau)
+        kind: attraction
+        time: 上午
+        durationMin: 240
+        coords: { lat: 45.4297, lng: -75.7089 }
+        note: First Peoples Hall + 加拿大史厅
+      - pin: 7
+        name: 从 Alexandra 大桥步行回安省
+        kind: attraction
+        time: 中午
+        coords: { lat: 45.4317, lng: -75.7036 }
+      - pin: 8
+        name: 加拿大战争博物馆 (Canadian War Museum)
+        kind: attraction
+        time: 下午
+        durationMin: 180
+        coords: { lat: 45.4173, lng: -75.7167 }
+        note: LeBreton Flats 街区
+      - pin: 9
+        name: 'Stella Luna 意式冰淇淋(the Glebe)'
+        kind: meal
+        time: 晚上
+        coords: { lat: 45.3978, lng: -75.6843 }
+        note: 里多运河散步后
+
+  - date: '2026-07-28'
+    items:
+      - pin: 10
+        name: 里多运河散步 / BIXI 公共自行车 —— 市中心 → Dow's Lake
+        kind: attraction
+        time: 上午
+        durationMin: 120
+        coords: { lat: 45.4108, lng: -75.7028 }
+        note: 7 公里,联合国教科文组织世界遗产
+      - pin: 11
+        name: 中央实验农场内的树木园 (Arboretum)
+        kind: attraction
+        time: 上午晚些时候
+        durationMin: 90
+        coords: { lat: 45.3819, lng: -75.7022 }
+        note: 免费;从 Dow's Lake 接着往南走即可
+      - pin: 12
+        name: 'Art-Is-In Bakery(City Centre)'
+        kind: meal
+        time: 中午
+        coords: { lat: 45.4136, lng: -75.7222 }
+      - pin: 13
+        name: Diefenbunker 冷战博物馆(Carp 镇)
+        kind: attraction
+        time: 下午
+        durationMin: 180
+        coords: { lat: 45.3500, lng: -76.0500 }
+        note: 10 万平方英尺的地下掩体,西侧约 30 分钟车程
+      - pin: 14
+        name: ByWard Market 夜生活
+        kind: meal
+        time: 晚上
+        coords: { lat: 45.4282, lng: -75.6925 }
+
+  - date: '2026-07-29'
+    label: 出发
+    items:
+      - pin: 15
+        name: 加拿大自然博物馆 (Canadian Museum of Nature)
+        kind: attraction
+        time: 上午
+        durationMin: 150
+        coords: { lat: 45.4129, lng: -75.6878 }
+        note: Victoria Memorial Museum 老建筑
+      - pin: 16
+        name: Casino Lac-Leamy Sound of Light 烟花节 —— 开幕夜
+        kind: event
+        time: 晚上
+        coords: { lat: 45.4544, lng: -75.7297 }
+        note: 开幕夜,但与傍晚前往蒙特利尔的发车时间冲突 —— 要看就得多加一晚渥太华
+
+stays:
+  - name: HI Ottawa Jail Hostel(老监狱青旅)
+    neighborhood: 市中心
+    checkIn: '2026-07-25'
+    checkOut: '2026-07-29'
+    nightlyCAD: 50
+    bookingNote: 旧 Carleton County 监狱改造;客房就是改造后的牢房
+
+transport:
+  - purpose: 'YOW → 市中心'
+    mode: OC Transpo 97 路或 Uber
+    costCAD: 14
+  - purpose: 市中心 + 加蒂诺
+    mode: 步行 + OC Transpo + O-Train + 巴士
+    costCAD: 28
+  - purpose: Diefenbunker(Carp 镇)往返
+    mode: OC Transpo + Uber 或班车
+    costCAD: 40
+  - purpose: '渥太华 → 蒙特利尔'
+    mode: 'VIA Rail Corridor(Economy 票,使用 CANADA1824 折扣码)'
+    costCAD: 45
+    note: '约 2 小时;Canada Strong Pass 青年码享 25% 折扣'
+
+costBreakdown:
+  lodging: 200
+  food: 195
+  transportLocal: 90
+  activities: 130
+  buffer: 80
+
+cityMap:
+  centerLat: 45.4215
+  centerLng: -75.6972
+  radiusKm: 8
+  provider: svg
+---
+
+四晚首都行,夹在温尼伯和蒙特利尔之间。Lac-Leamy Sound of Light 烟花节 7 月 29 日开幕,但同日傍晚的渥太华 → 蒙特利尔出发时间会冲突 —— 要看开幕就得放弃蒙特利尔第一天的到达,在渥太华多加一晚。国会山中楼 (Centre Block) 仍在翻修,只能参加西楼 (West Block) 导览。**RBC Bluesfest** 7 月 19 日结束 —— 比抵达早 6 天,硬性错过。
+
+**交通票小窍门**:OC Transpo 工作日通票 $11.75,但 **周末只要 $5.20** —— 行程允许的话把长交通日排到周六或周日。
+
+**值得绕路的街区**:**the Glebe**——里多运河散完步去吃 **Stella Luna** 冰淇淋;**Hintonburg**——博物馆之后到 **Beyond the Pale Brewing** 喝一杯。
+
+**渥太华食物特色**:
+
+- **BeaverTails** —— 这条连锁就起源于 ByWard Market
+- **Poutine** 在 **Chez Lucien** 或 **The Standard Tavern**
+- **Shawarma** 在 **Shawarma Palace** 或 **Ottawa Shawarma** —— 渥太华其实是全加最好的 shawarma 城市
+- **Whalesbone Oyster House** 东海岸海鲜
+- **Bytown Bagel Company** —— 渥太华版的蒙特利尔贝果
+
+> _Diefenbunker 通行与 Sound of Light 票务仍为初稿;临近出行再刷新。第 5 天 (7 月 29 日) 严格说是半天,模型按上午博物馆 + 下午 VIA Rail Corridor 出发处理 —— 仍按 4 晚住宿计。_
