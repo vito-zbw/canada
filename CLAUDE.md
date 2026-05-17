@@ -99,6 +99,19 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#61](https://github.com/vito-zbw/canada/issues/61) — Configure Cloudflare Pages deploy
   - [x] [#62](https://github.com/vito-zbw/canada/issues/62) — Wire axe-core into pre-commit or CI
   - [x] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
+- [ ] **Milestone 10 — English / Chinese language toggle (infrastructure)** ([#172](https://github.com/vito-zbw/canada/issues/172))
+  - [x] [#173](https://github.com/vito-zbw/canada/issues/173) — Configure Astro i18n routing in `astro.config.mjs`
+  - [ ] [#174](https://github.com/vito-zbw/canada/issues/174) — Create UI strings dictionary and `useTranslations` helper
+  - [ ] [#175](https://github.com/vito-zbw/canada/issues/175) — Extend content schema with optional `lang` field
+  - [ ] [#176](https://github.com/vito-zbw/canada/issues/176) — Build `LanguageToggle` component
+  - [ ] [#177](https://github.com/vito-zbw/canada/issues/177) — Localize `TopNav` and integrate `LanguageToggle`
+  - [ ] [#178](https://github.com/vito-zbw/canada/issues/178) — Localize `Base` layout (html lang, hreflang, footer)
+  - [ ] [#179](https://github.com/vito-zbw/canada/issues/179) — Add per-locale homepage route (en + zh)
+  - [ ] [#180](https://github.com/vito-zbw/canada/issues/180) — Add per-locale leg dynamic route (en + zh)
+  - [ ] [#181](https://github.com/vito-zbw/canada/issues/181) — Add per-locale pre-trip route (en + zh)
+  - [ ] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)
+
+Translation authoring (Chinese MDX content + `zh` half of the UI dictionary) will be groomed in a separate pass once Milestone 10 lands.
 
 **Resuming protocol:** when picking up a session, scan from the top for the first unticked child. That's your next implementation candidate (subject to its `**Depends on:**` cross-refs in the issue body — verify those are already closed).
 
