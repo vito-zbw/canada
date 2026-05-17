@@ -111,7 +111,24 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#181](https://github.com/vito-zbw/canada/issues/181) — Add per-locale pre-trip route (en + zh)
   - [x] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)
 
-Translation authoring (Chinese MDX content + `zh` half of the UI dictionary) will be groomed in a separate pass once Milestone 10 lands.
+- [ ] **Milestone 11 — Chinese content + sub-component localization** ([#183](https://github.com/vito-zbw/canada/issues/183))
+  - [x] [#184](https://github.com/vito-zbw/canada/issues/184) — Localize shared sub-components for /zh/* pages
+  - [ ] [#185](https://github.com/vito-zbw/canada/issues/185) — Author zh translation: Vancouver leg
+  - [ ] [#193](https://github.com/vito-zbw/canada/issues/193) — Author zh translation: Calgary leg
+  - [ ] [#186](https://github.com/vito-zbw/canada/issues/186) — Author zh translation: Banff leg
+  - [ ] [#187](https://github.com/vito-zbw/canada/issues/187) — Author zh translation: Jasper leg
+  - [ ] [#188](https://github.com/vito-zbw/canada/issues/188) — Author zh translation: The Canadian leg
+  - [ ] [#189](https://github.com/vito-zbw/canada/issues/189) — Author zh translation: Winnipeg leg
+  - [ ] [#194](https://github.com/vito-zbw/canada/issues/194) — Author zh translation: Ottawa leg
+  - [ ] [#190](https://github.com/vito-zbw/canada/issues/190) — Author zh translation: Montreal leg
+  - [ ] [#191](https://github.com/vito-zbw/canada/issues/191) — Author zh translation: Quebec City leg
+  - [ ] [#192](https://github.com/vito-zbw/canada/issues/192) — Author zh translation: Toronto leg
+  - [ ] [#195](https://github.com/vito-zbw/canada/issues/195) — Author zh translation: prep — advance-bookings
+  - [ ] [#200](https://github.com/vito-zbw/canada/issues/200) — Author zh translation: prep — banking
+  - [ ] [#196](https://github.com/vito-zbw/canada/issues/196) — Author zh translation: prep — connectivity
+  - [ ] [#197](https://github.com/vito-zbw/canada/issues/197) — Author zh translation: prep — packing
+  - [ ] [#198](https://github.com/vito-zbw/canada/issues/198) — Author zh translation: prep — student-discounts
+  - [ ] [#199](https://github.com/vito-zbw/canada/issues/199) — Author zh translation: prep — study-permit
 
 **Resuming protocol:** when picking up a session, scan from the top for the first unticked child. That's your next implementation candidate (subject to its `**Depends on:**` cross-refs in the issue body — verify those are already closed).
 

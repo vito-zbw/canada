@@ -12,6 +12,7 @@
 //   canada:prep:edit:v1   - { [sectionId]: { [itemId]: string } }
 
 import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Locale } from '../i18n/ui';
 
 type Items = NonNullable<CollectionEntry<'prep'>['data']['items']>;
 
@@ -19,16 +20,42 @@ export interface Props {
   sectionId: string;
   title: string;
   items: Items;
+  lang?: Locale;
 }
 
-const { sectionId, title, items } = Astro.props;
+const { sectionId, title, items, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
 
 const initialTotal = items.length;
+
+// Translations the inline <script> needs at runtime. Passed via data- attrs on
+// the section so the script (which can't import from ui.ts) can read them.
+const counterTemplate = t('checklist.counter', {
+  done: '__DONE__',
+  total: '__TOTAL__',
+});
+const showHiddenTemplate = t('checklist.showHidden', { n: '__N__' });
+const hideHiddenTemplate = t('checklist.hideHidden', { n: '__N__' });
+const editAriaTemplate = t('checklist.editAria', { text: '__TEXT__' });
+const hideAriaTemplate = t('checklist.hideAria', { text: '__TEXT__' });
+const unhideAriaTemplate = t('checklist.unhideAria', { text: '__TEXT__' });
+const resetConfirm = t('checklist.resetConfirm');
+const unhideLabel = t('checklist.unhide');
+const editInputLabel = t('checklist.editInputLabel');
 ---
 
 <section
   data-prep-checklist
   data-section-id={sectionId}
+  data-counter-tpl={counterTemplate}
+  data-show-hidden-tpl={showHiddenTemplate}
+  data-hide-hidden-tpl={hideHiddenTemplate}
+  data-edit-aria-tpl={editAriaTemplate}
+  data-hide-aria-tpl={hideAriaTemplate}
+  data-unhide-aria-tpl={unhideAriaTemplate}
+  data-reset-confirm={resetConfirm}
+  data-unhide-label={unhideLabel}
+  data-edit-input-label={editInputLabel}
   class="space-y-4"
 >
   <header class="space-y-1">
@@ -37,7 +64,7 @@ const initialTotal = items.length;
       class="prep-progress text-meta tabular-nums text-stone-500"
       data-prep-progress
     >
-      0 of {initialTotal} done
+      {t('checklist.counter', { done: 0, total: initialTotal })}
     </p>
   </header>
 
@@ -73,7 +100,7 @@ const initialTotal = items.length;
                     target="_blank"
                     rel="noopener"
                     class="ml-1 text-forest-700 hover:text-forest-900"
-                    aria-label={`Open link for: ${item.text}`}
+                    aria-label={t('checklist.openLinkAria', { text: item.text })}
                   >
                     ↗
                   </a>
@@ -89,7 +116,7 @@ const initialTotal = items.length;
               <button
                 type="button"
                 data-prep-edit
-                aria-label={`Edit: ${item.text}`}
+                aria-label={t('checklist.editAria', { text: item.text })}
                 class="prep-item-edit rounded p-1 text-stone-400 hover:text-forest-700 focus:outline-none focus:ring-2 focus:ring-forest-700"
               >
                 <span aria-hidden="true">✎</span>
@@ -97,7 +124,7 @@ const initialTotal = items.length;
               <button
                 type="button"
                 data-prep-hide
-                aria-label={`Hide: ${item.text}`}
+                aria-label={t('checklist.hideAria', { text: item.text })}
                 class="prep-item-hide rounded p-1 text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700"
               >
                 <span aria-hidden="true">×</span>
@@ -105,10 +132,10 @@ const initialTotal = items.length;
               <button
                 type="button"
                 data-prep-unhide
-                aria-label={`Unhide: ${item.text}`}
+                aria-label={t('checklist.unhideAria', { text: item.text })}
                 class="prep-item-unhide rounded px-2 py-0.5 text-meta text-forest-700 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-forest-700"
               >
-                Unhide
+                {t('checklist.unhide')}
               </button>
             </div>
           </div>
@@ -125,22 +152,22 @@ const initialTotal = items.length;
     data-prep-show-hidden
     hidden
   >
-    Show <span data-prep-hidden-count>0</span> hidden items
+    {t('checklist.showHidden', { n: 0 })}
   </button>
 
   <form class="checklist-jsonly flex items-center gap-2" data-prep-add>
     <input
       type="text"
-      placeholder="Add an item…"
+      placeholder={t('checklist.addPlaceholder')}
       maxlength="120"
-      aria-label={`Add an item to ${title}`}
+      aria-label={t('checklist.addAria', { section: title })}
       class="flex-1 rounded border border-stone-300 px-3 py-2 text-body focus:border-forest-700 focus:outline-none focus:ring-1 focus:ring-forest-700"
     />
     <button
       type="submit"
       class="rounded bg-forest-700 px-4 py-2 text-meta text-stone-50 hover:bg-forest-900"
     >
-      Add
+      {t('checklist.addButton')}
     </button>
   </form>
 
@@ -149,7 +176,7 @@ const initialTotal = items.length;
     class="checklist-jsonly text-meta text-stone-500 underline-offset-2 hover:text-forest-700 hover:underline"
     data-prep-reset
   >
-    Reset section
+    {t('checklist.reset')}
   </button>
 </section>
 
@@ -228,6 +255,14 @@ const initialTotal = items.length;
     }
   }
 
+  function fillTpl(tpl: string, vars: Record<string, string | number>): string {
+    let s = tpl;
+    for (const [k, v] of Object.entries(vars)) {
+      s = s.split(`__${k.toUpperCase()}__`).join(String(v));
+    }
+    return s;
+  }
+
   function updateProgress(section: HTMLElement): void {
     const inputs = section.querySelectorAll<HTMLInputElement>(
       'input[type="checkbox"][data-tick-key]',
@@ -241,7 +276,24 @@ const initialTotal = items.length;
       if (cb.checked) done++;
     });
     const progress = section.querySelector<HTMLElement>('[data-prep-progress]');
-    if (progress) progress.textContent = `${done} of ${total} done`;
+    if (progress) {
+      const tpl = section.dataset.counterTpl ?? '__DONE__ of __TOTAL__ done';
+      progress.textContent = fillTpl(tpl, { DONE: done, TOTAL: total });
+    }
+  }
+
+  function ariaFor(
+    section: HTMLElement,
+    which: 'edit' | 'hide' | 'unhide',
+    text: string,
+  ): string {
+    const tpl =
+      (which === 'edit'
+        ? section.dataset.editAriaTpl
+        : which === 'hide'
+          ? section.dataset.hideAriaTpl
+          : section.dataset.unhideAriaTpl) ?? `${which}: __TEXT__`;
+    return fillTpl(tpl, { TEXT: text });
   }
 
   function updateHiddenToggle(section: HTMLElement): void {
@@ -255,13 +307,14 @@ const initialTotal = items.length;
     if (count === 0) {
       btn.hidden = true;
       section.removeAttribute('data-show-hidden');
-      btn.innerHTML = `Show <span data-prep-hidden-count>0</span> hidden items`;
       return;
     }
     btn.hidden = false;
     const showing = section.hasAttribute('data-show-hidden');
-    const verb = showing ? 'Hide' : 'Show';
-    btn.innerHTML = `${verb} <span data-prep-hidden-count>${count}</span> hidden items`;
+    const tpl = showing
+      ? section.dataset.hideHiddenTpl
+      : section.dataset.showHiddenTpl;
+    btn.textContent = fillTpl(tpl ?? 'Show __N__ hidden items', { N: count });
   }
 
   function bindCheckbox(
@@ -354,7 +407,8 @@ const initialTotal = items.length;
 
     const srLabel = document.createElement('span');
     srLabel.className = 'sr-only';
-    srLabel.textContent = 'Edit item text';
+    srLabel.textContent =
+      section?.dataset.editInputLabel ?? 'Edit item text';
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -386,9 +440,12 @@ const initialTotal = items.length;
         const unhideBtn = li.querySelector<HTMLButtonElement>(
           '[data-prep-unhide]',
         );
-        if (editBtn) editBtn.setAttribute('aria-label', `Edit: ${next}`);
-        if (hideBtn) hideBtn.setAttribute('aria-label', `Hide: ${next}`);
-        if (unhideBtn) unhideBtn.setAttribute('aria-label', `Unhide: ${next}`);
+        const sec = li.closest<HTMLElement>('[data-prep-checklist]');
+        if (sec) {
+          if (editBtn) editBtn.setAttribute('aria-label', ariaFor(sec, 'edit', next));
+          if (hideBtn) hideBtn.setAttribute('aria-label', ariaFor(sec, 'hide', next));
+          if (unhideBtn) unhideBtn.setAttribute('aria-label', ariaFor(sec, 'unhide', next));
+        }
       }
     };
 
@@ -455,7 +512,7 @@ const initialTotal = items.length;
     const editBtn = document.createElement('button');
     editBtn.type = 'button';
     editBtn.dataset.prepEdit = '';
-    editBtn.setAttribute('aria-label', `Edit: ${displayText}`);
+    editBtn.setAttribute('aria-label', ariaFor(section, 'edit', displayText));
     editBtn.className =
       'prep-item-edit rounded p-1 text-stone-400 hover:text-forest-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
     editBtn.innerHTML = '<span aria-hidden="true">✎</span>';
@@ -463,7 +520,7 @@ const initialTotal = items.length;
     const hideBtn = document.createElement('button');
     hideBtn.type = 'button';
     hideBtn.dataset.prepHide = '';
-    hideBtn.setAttribute('aria-label', `Hide: ${displayText}`);
+    hideBtn.setAttribute('aria-label', ariaFor(section, 'hide', displayText));
     hideBtn.className =
       'prep-item-hide rounded p-1 text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
     hideBtn.innerHTML = '<span aria-hidden="true">×</span>';
@@ -471,10 +528,10 @@ const initialTotal = items.length;
     const unhideBtn = document.createElement('button');
     unhideBtn.type = 'button';
     unhideBtn.dataset.prepUnhide = '';
-    unhideBtn.setAttribute('aria-label', `Unhide: ${displayText}`);
+    unhideBtn.setAttribute('aria-label', ariaFor(section, 'unhide', displayText));
     unhideBtn.className =
       'prep-item-unhide rounded px-2 py-0.5 text-meta text-forest-700 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-forest-700';
-    unhideBtn.textContent = 'Unhide';
+    unhideBtn.textContent = section.dataset.unhideLabel ?? 'Unhide';
 
     actions.appendChild(editBtn);
     actions.appendChild(hideBtn);
@@ -541,10 +598,10 @@ const initialTotal = items.length;
           const unhideBtn = li.querySelector<HTMLButtonElement>(
             '[data-prep-unhide]',
           );
-          if (editBtn) editBtn.setAttribute('aria-label', `Edit: ${editedText}`);
-          if (hideBtn) hideBtn.setAttribute('aria-label', `Hide: ${editedText}`);
+          if (editBtn) editBtn.setAttribute('aria-label', ariaFor(section, 'edit', editedText));
+          if (hideBtn) hideBtn.setAttribute('aria-label', ariaFor(section, 'hide', editedText));
           if (unhideBtn)
-            unhideBtn.setAttribute('aria-label', `Unhide: ${editedText}`);
+            unhideBtn.setAttribute('aria-label', ariaFor(section, 'unhide', editedText));
         }
       });
   }
@@ -614,11 +671,10 @@ const initialTotal = items.length;
     );
     if (resetBtn && customList) {
       resetBtn.addEventListener('click', () => {
-        if (
-          !window.confirm(
-            'Clear all ticks, edits, hides, and custom items in this section?',
-          )
-        ) {
+        const confirmMsg =
+          section.dataset.resetConfirm ??
+          'Clear all ticks, edits, hides, and custom items in this section?';
+        if (!window.confirm(confirmMsg)) {
           return;
         }
         for (const k of [TICK_KEY, CUSTOM_KEY, HIDE_KEY, EDIT_KEY]) {
@@ -658,11 +714,11 @@ const initialTotal = items.length;
                 '[data-prep-unhide]',
               );
               if (editBtn)
-                editBtn.setAttribute('aria-label', `Edit: ${original}`);
+                editBtn.setAttribute('aria-label', ariaFor(section, 'edit', original));
               if (hideBtn)
-                hideBtn.setAttribute('aria-label', `Hide: ${original}`);
+                hideBtn.setAttribute('aria-label', ariaFor(section, 'hide', original));
               if (unhideBtn)
-                unhideBtn.setAttribute('aria-label', `Unhide: ${original}`);
+                unhideBtn.setAttribute('aria-label', ariaFor(section, 'unhide', original));
             }
           });
 

@@ -6,25 +6,31 @@ import type { CollectionEntry } from 'astro:content';
 import Image from './Image.astro';
 import MetaLine from './MetaLine.astro';
 import AnchorEventBadge from './AnchorEventBadge.astro';
+import type { Locale } from '../i18n/ui';
 
 export interface Props {
   entry: CollectionEntry<'itinerary'>;
+  lang?: Locale;
 }
 
-const { entry } = Astro.props;
+const { entry, lang = 'en' } = Astro.props;
 const { city, province, arriveDate, nights, cost, anchorEvent, highlights } =
   entry.data;
-const slug = entry.slug;
-const headingId = `legcard-${slug}`;
+const slugBare = entry.slug.replace(/^zh\//, '');
+const headingId = `legcard-${slugBare}`;
+const href = lang === 'en' ? `/legs/${slugBare}` : `/zh/legs/${slugBare}`;
+// Image lookup key for the hero image — manifest entries are keyed by the
+// English/canonical slug, identical for zh entries.
+const imageSlug = slugBare;
 ---
 
 <a
-  href={`/legs/${slug}`}
+  href={href}
   class="group block rounded-md outline-none ring-offset-2 ring-offset-stone-50 focus-visible:ring-2 focus-visible:ring-forest-700"
 >
   <article aria-labelledby={headingId}>
     <Image
-      slug={slug}
+      slug={imageSlug}
       variant="hero"
       alt=""
       class="transition-opacity duration-300 group-hover:opacity-90"
@@ -42,6 +48,7 @@ const headingId = `legcard-${slug}`;
         arriveDate={arriveDate}
         nights={nights}
         cost={cost}
+        lang={lang}
       />
     </div>
     {
@@ -58,6 +65,7 @@ const headingId = `legcard-${slug}`;
             name={anchorEvent.name}
             startDate={anchorEvent.startDate}
             endDate={anchorEvent.endDate}
+            lang={lang}
           />
         </div>
       )

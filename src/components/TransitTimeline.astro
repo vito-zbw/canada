@@ -4,6 +4,7 @@
 // A dashed rail segment marks a > 3-hour gap (overnight crossings).
 
 import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Locale } from '../i18n/ui';
 
 type Days = NonNullable<CollectionEntry<'itinerary'>['data']['days']>;
 type DayItem = Days[number]['items'][number];
@@ -11,9 +12,13 @@ type DayItem = Days[number]['items'][number];
 export interface Props {
   days: Days;
   title?: string;
+  lang?: Locale;
 }
 
-const { days, title = 'Timetable' } = Astro.props;
+const { days, title: titleOverride, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const title = titleOverride ?? t('timetable.title');
+const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
 
 // Filter to transit stops; preserve day boundaries.
 const dayGroups = days
@@ -25,7 +30,7 @@ const dayGroups = days
   }))
   .filter((g) => g.items.length > 0);
 
-const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+const dateFormatter = new Intl.DateTimeFormat(intlLocale, {
   weekday: 'short',
   month: 'short',
   day: 'numeric',
@@ -33,7 +38,9 @@ const dateFormatter = new Intl.DateTimeFormat('en-CA', {
 
 function formatDayHeading(n: number, date: string, label?: string): string {
   const d = dateFormatter.format(new Date(`${date}T00:00:00`));
-  return label ? `Day ${n} · ${d} — ${label}` : `Day ${n} · ${d}`;
+  return label
+    ? t('dayList.headingWithLabel', { n, date: d, label })
+    : t('dayList.heading', { n, date: d });
 }
 
 const isoTimeRe = /^([0-2]\d):([0-5]\d)$/;

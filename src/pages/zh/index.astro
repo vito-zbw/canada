@@ -122,7 +122,7 @@ const hasZhContent = legs.length > 0;
         <ul class="mt-8 grid grid-cols-1 gap-10 list-none p-0 md:grid-cols-2 lg:grid-cols-3">
           {legs.map((entry) => (
             <li>
-              <LegCard entry={entry} />
+              <LegCard entry={entry} lang={lang} />
             </li>
           ))}
         </ul>

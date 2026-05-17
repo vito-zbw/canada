@@ -164,6 +164,7 @@ const localTransport = Array.isArray(transport)
       arriveDate={arriveDate}
       nights={nights}
       cost={cost}
+      lang={lang}
     />
     {
       anchorEvent && (
@@ -172,6 +173,7 @@ const localTransport = Array.isArray(transport)
             name={anchorEvent.name}
             startDate={anchorEvent.startDate}
             endDate={anchorEvent.endDate}
+            lang={lang}
           />
         </div>
       )
@@ -198,7 +200,7 @@ const localTransport = Array.isArray(transport)
           </section>
         )}
 
-        <TransitTimeline days={days!} />
+        <TransitTimeline days={days!} lang={lang} />
 
         {transitMarkers.length > 0 && (
           <Map
@@ -214,6 +216,7 @@ const localTransport = Array.isArray(transport)
             breakdown={costBreakdown}
             total={cost}
             updated={updated}
+            lang={lang}
           />
         )}
 
@@ -249,16 +252,16 @@ const localTransport = Array.isArray(transport)
           )}
 
           <div class="space-y-16">
-            <DayList legSlug={slugBare} days={days!} />
+            <DayList legSlug={slugBare} days={days!} lang={lang} />
 
-            {stays && stays.length > 0 && <StaysList stays={stays} />}
+            {stays && stays.length > 0 && <StaysList stays={stays} lang={lang} />}
 
             {intercityTransport.length > 0 && (
-              <InterCityTransfer transport={intercityTransport} />
+              <InterCityTransfer transport={intercityTransport} lang={lang} />
             )}
 
             {localTransport.length > 0 && (
-              <TransportTable transport={localTransport} />
+              <TransportTable transport={localTransport} lang={lang} />
             )}
 
             {costBreakdown && (
@@ -266,6 +269,7 @@ const localTransport = Array.isArray(transport)
                 breakdown={costBreakdown}
                 total={cost}
                 updated={updated}
+                lang={lang}
               />
             )}
 

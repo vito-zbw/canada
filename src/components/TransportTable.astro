@@ -4,17 +4,22 @@
 // `note` renders as a sub-row spanning all columns beneath its parent.
 
 import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Locale } from '../i18n/ui';
 
 type Transport = NonNullable<CollectionEntry<'itinerary'>['data']['transport']>;
 
 export interface Props {
   transport: Transport;
   title?: string;
+  lang?: Locale;
 }
 
-const { transport, title = 'Getting around' } = Astro.props;
+const { transport, title: titleOverride, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const title = titleOverride ?? t('transport.title');
+const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
 
-const cad = new Intl.NumberFormat('en-CA', {
+const cad = new Intl.NumberFormat(intlLocale, {
   style: 'currency',
   currency: 'CAD',
   maximumFractionDigits: 0,
@@ -26,17 +31,17 @@ const cad = new Intl.NumberFormat('en-CA', {
     <section class="space-y-4">
       <h2 class="font-serif text-h3 tracking-tight text-stone-900">{title}</h2>
       <table class="w-full border-collapse text-meta">
-        <caption class="sr-only">Local transport options for this leg</caption>
+        <caption class="sr-only">{t('transport.caption')}</caption>
         <thead>
           <tr class="border-b border-stone-200 text-left">
             <th scope="col" class="py-2 pr-3 font-sans font-semibold text-stone-700 min-w-[6rem]">
-              Purpose
+              {t('transport.purpose')}
             </th>
             <th scope="col" class="py-2 pr-3 font-sans font-semibold text-stone-700">
-              Mode
+              {t('transport.mode')}
             </th>
             <th scope="col" class="py-2 pl-3 text-right font-sans font-semibold text-stone-700">
-              Cost
+              {t('transport.cost')}
             </th>
           </tr>
         </thead>

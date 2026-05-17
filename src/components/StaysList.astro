@@ -5,22 +5,27 @@
 // mobile.
 
 import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Locale } from '../i18n/ui';
 
 type Stays = NonNullable<CollectionEntry<'itinerary'>['data']['stays']>;
 
 export interface Props {
   stays: Stays;
   title?: string;
+  lang?: Locale;
 }
 
-const { stays, title = "Where I'm staying" } = Astro.props;
+const { stays, title: titleOverride, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const title = titleOverride ?? t('stays.title');
+const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
 
-const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+const dateFormatter = new Intl.DateTimeFormat(intlLocale, {
   month: 'short',
   day: 'numeric',
 });
 
-const cad = new Intl.NumberFormat('en-CA', {
+const cad = new Intl.NumberFormat(intlLocale, {
   style: 'currency',
   currency: 'CAD',
   maximumFractionDigits: 0,
@@ -54,7 +59,9 @@ function formatRange(checkIn: string, checkOut: string): string {
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         {stays.map((stay) => {
           const nights = nightsBetween(stay.checkIn, stay.checkOut);
-          const nightsLabel = `${nights} ${nights === 1 ? 'night' : 'nights'}`;
+          const nightsWord =
+            nights === 1 ? t('metaLine.night') : t('metaLine.nights');
+          const nightsLabel = `${nights} ${nightsWord}`;
           const total = stay.nightlyCAD * nights;
           return (
             <article class="rounded-lg border border-stone-200 p-4">
@@ -69,8 +76,8 @@ function formatRange(checkIn: string, checkOut: string): string {
                 <span aria-hidden="true">·</span> {nightsLabel}
               </p>
               <p class="mt-1 text-meta tabular-nums text-stone-700">
-                {cad.format(stay.nightlyCAD)}/night{' '}
-                <span aria-hidden="true">·</span> {cad.format(total)} total
+                {cad.format(stay.nightlyCAD)}{t('stays.perNight')}{' '}
+                <span aria-hidden="true">·</span> {cad.format(total)} {t('stays.total')}
               </p>
               {stay.bookingNote && (
                 <p class="mt-3 line-clamp-2 text-meta text-stone-500">

@@ -4,17 +4,23 @@
 // readers see a single middot-joined line because dt is .sr-only and dd is
 // inline-block.
 
+import { useTranslations, type Locale } from '../i18n/ui';
+
 export interface Props {
   city: string;
   province: string;
   arriveDate: string; // ISO 8601 (YYYY-MM-DD)
   nights: number;
   cost?: number;
+  lang?: Locale;
 }
 
-const { city, province, arriveDate, nights, cost } = Astro.props;
+const { city, province, arriveDate, nights, cost, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
 
-const dateLabel = new Intl.DateTimeFormat('en-CA', {
+const intlLocale = lang === 'zh' ? 'zh-Hans-CN' : 'en-CA';
+
+const dateLabel = new Intl.DateTimeFormat(intlLocale, {
   month: 'short',
   day: 'numeric',
   year: 'numeric',
@@ -22,33 +28,35 @@ const dateLabel = new Intl.DateTimeFormat('en-CA', {
 
 const costLabel =
   typeof cost === 'number'
-    ? new Intl.NumberFormat('en-CA', {
+    ? new Intl.NumberFormat(intlLocale, {
         style: 'currency',
         currency: 'CAD',
         maximumFractionDigits: 0,
       }).format(cost)
     : null;
 
-const nightsLabel = `${nights} ${nights === 1 ? 'night' : 'nights'}`;
+const nightsWord =
+  nights === 1 ? t('metaLine.night') : t('metaLine.nights');
+const nightsLabel = `${nights} ${nightsWord}`;
 ---
 
 <dl class="text-meta text-stone-500">
-  <dt class="sr-only">City</dt>
+  <dt class="sr-only">{t('metaLine.city')}</dt>
   <dd class="inline">{city}</dd>
   <span aria-hidden="true">·</span>
-  <dt class="sr-only">Province</dt>
+  <dt class="sr-only">{t('metaLine.province')}</dt>
   <dd class="inline">{province}</dd>
   <span aria-hidden="true">·</span>
-  <dt class="sr-only">Arrived</dt>
+  <dt class="sr-only">{t('metaLine.arrived')}</dt>
   <dd class="inline">{dateLabel}</dd>
   <span aria-hidden="true">·</span>
-  <dt class="sr-only">Stay</dt>
+  <dt class="sr-only">{t('metaLine.stay')}</dt>
   <dd class="inline">{nightsLabel}</dd>
   {
     costLabel && (
       <>
         <span aria-hidden="true">·</span>
-        <dt class="sr-only">Cost</dt>
+        <dt class="sr-only">{t('metaLine.cost')}</dt>
         <dd class="inline">{costLabel}</dd>
       </>
     )
