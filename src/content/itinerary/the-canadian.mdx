@@ -1,0 +1,80 @@
+---
+id: the-canadian
+order: 5
+city: The Canadian
+province: AB → MB
+arriveDate: '2026-07-20'
+nights: 2
+cost: 1700
+coords:
+  lat: 52.1332
+  lng: -106.6700
+legType: transit
+updated: '2026-05-17'
+highlights:
+  - Rockies → Prairies in daylight
+  - Park observation car
+  - Sleeper Plus Cabin for One
+
+days:
+  - date: '2026-07-20'
+    label: Jasper boarding
+    items:
+      - name: Jasper VIA Rail Station — Train 2 eastbound
+        kind: transit
+        time: '15:55'
+        coords: { lat: 52.8728, lng: -118.0789 }
+        note: Departure on Mountain Time
+      - name: Edmonton VIA Rail Station
+        kind: transit
+        time: '22:00'
+        coords: { lat: 53.5421, lng: -113.5022 }
+        note: Evening stop, long enough to step onto the platform
+
+  - date: '2026-07-21'
+    label: Prairie crossing
+    items:
+      - name: Saskatoon VIA Rail Station
+        kind: transit
+        time: '07:00'
+        coords: { lat: 52.1332, lng: -106.6700 }
+        note: Saskatchewan stays on UTC-6 year-round — clocks now match Central Time
+      - name: Melville VIA Rail Station
+        kind: transit
+        time: '15:00'
+        coords: { lat: 50.9229, lng: -102.8094 }
+
+  - date: '2026-07-22'
+    label: Winnipeg arrival
+    items:
+      - name: Winnipeg Union Station
+        kind: transit
+        time: '08:00'
+        coords: { lat: 49.8881, lng: -97.1305 }
+        note: Arrival on Central Time, ~38 hours after Jasper
+
+stays:
+  - name: Sleeper Plus Cabin for One, VIA Train 2
+    neighborhood: Onboard
+    checkIn: '2026-07-20'
+    checkOut: '2026-07-22'
+    nightlyCAD: 750
+    bookingNote: Cabin for One; meals included in dining car; specific seat/cabin number TBC
+
+transport:
+  - purpose: Jasper → Winnipeg
+    mode: VIA Rail Train 2 — The Canadian (Sleeper Plus, Cabin for One)
+    costCAD: 1500
+    note: '~38 hours; peak July fare $1,400–$1,900 one way; Sleeper Plus berth alternative $800–$1,100'
+
+costBreakdown:
+  lodging: 1500
+  food: 0
+  transportLocal: 0
+  activities: 0
+  buffer: 200
+---
+
+Two nights eastbound on the Park car, the dining car, and the corridor showers — Jasper to Winnipeg in roughly thirty-eight hours. Departure is in the afternoon on Mountain Time; arrival is just after breakfast on Central. Saskatchewan does not observe DST, so clocks effectively skip an hour at the Alberta-Saskatchewan border without any local change.
+
+> _Boarding time and specific fare are preliminary; the exact 2026 VIA Rail timetable and the cabin assignment will be confirmed against the booking._
