@@ -111,7 +111,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#181](https://github.com/vito-zbw/canada/issues/181) — Add per-locale pre-trip route (en + zh)
   - [x] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)
 
-- [ ] **Milestone 11 — Chinese content + sub-component localization** ([#183](https://github.com/vito-zbw/canada/issues/183))
+- [x] **Milestone 11 — Chinese content + sub-component localization** ([#183](https://github.com/vito-zbw/canada/issues/183))
   - [x] [#184](https://github.com/vito-zbw/canada/issues/184) — Localize shared sub-components for /zh/* pages
   - [x] [#185](https://github.com/vito-zbw/canada/issues/185) — Author zh translation: Vancouver leg
   - [x] [#193](https://github.com/vito-zbw/canada/issues/193) — Author zh translation: Calgary leg
