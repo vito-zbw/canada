@@ -1,0 +1,169 @@
+---
+id: banff
+order: 3
+city: Banff
+province: AB
+arriveDate: '2026-07-12'
+nights: 4
+cost: 1080
+coords:
+  lat: 51.1784
+  lng: -115.5708
+legType: city
+updated: '2026-05-17'
+highlights:
+  - Sulphur Mountain
+  - Lake Louise
+  - Moraine Lake
+  - Icefields Parkway
+
+days:
+  - date: '2026-07-12'
+    label: Arrival
+    items:
+      - pin: 1
+        name: Banff Airporter — Calgary → Banff
+        kind: transit
+        time: morning
+        durationMin: 90
+        coords: { lat: 51.1784, lng: -115.5708 }
+      - pin: 2
+        name: Bow Falls + Banff Avenue walk
+        kind: attraction
+        time: afternoon
+        coords: { lat: 51.1697, lng: -115.5631 }
+      - pin: 3
+        name: Banff Upper Hot Springs
+        kind: attraction
+        time: evening
+        cost: 18
+        coords: { lat: 51.1539, lng: -115.5547 }
+        note: Open until 11 pm; $17.50 admission
+
+  - date: '2026-07-13'
+    label: Sulphur Mountain
+    items:
+      - pin: 4
+        name: Sulphur Mountain hike to gondola summit
+        kind: attraction
+        time: morning
+        durationMin: 240
+        coords: { lat: 51.1500, lng: -115.5722 }
+        note: 5.5 km, 700 m climb up; hiking down is free, gondola down ~$50
+      - pin: 5
+        name: Banff Park Museum (afternoon recovery)
+        kind: attraction
+        time: afternoon
+        coords: { lat: 51.1731, lng: -115.5717 }
+
+  - date: '2026-07-14'
+    label: Lake Louise + Moraine Lake
+    items:
+      - pin: 6
+        name: 'Plain of Six Glaciers Tea House loop (+ Lake Agnes)'
+        kind: attraction
+        time: morning
+        durationMin: 420
+        coords: { lat: 51.4254, lng: -116.2178 }
+        note: 14.6 km from Lake Louise lakefront
+      - pin: 7
+        name: Moraine Lake shuttle from Lake Louise Park & Ride
+        kind: transit
+        time: afternoon
+        coords: { lat: 51.4143, lng: -116.1893 }
+        note: Parks Canada shuttle bookings open 48 h ahead at 8 am MT
+      - pin: 8
+        name: Larch Valley → Sentinel Pass
+        kind: attraction
+        time: late afternoon
+        durationMin: 300
+        coords: { lat: 51.3322, lng: -116.1858 }
+        note: 11.6 km, 720 m gain from Moraine Lake
+
+  - date: '2026-07-15'
+    label: Icefields Parkway to Jasper
+    items:
+      - pin: 9
+        name: 'Johnston Canyon Upper Falls (before 9 am)'
+        kind: attraction
+        time: '07:30'
+        durationMin: 150
+        coords: { lat: 51.2459, lng: -115.8408 }
+      - pin: 10
+        name: Peyto Lake viewpoint
+        kind: attraction
+        time: midday
+        coords: { lat: 51.7273, lng: -116.5078 }
+      - pin: 11
+        name: Bow Lake / Num-Ti-Jah Lodge
+        kind: attraction
+        time: midday
+        coords: { lat: 51.6708, lng: -116.4622 }
+      - pin: 12
+        name: Columbia Icefield Skywalk
+        kind: attraction
+        time: afternoon
+        coords: { lat: 52.2156, lng: -117.2178 }
+      - pin: 13
+        name: Athabasca Glacier — toe walk
+        kind: attraction
+        time: afternoon
+        coords: { lat: 52.1942, lng: -117.2511 }
+      - pin: 14
+        name: Pursuit shuttle Banff → Jasper (Icefields Parkway)
+        kind: transit
+        time: '07:00'
+        durationMin: 720
+        coords: { lat: 51.1784, lng: -115.5708 }
+        note: Arrives Jasper around 7 pm
+
+stays:
+  - name: HI Banff Alpine Centre
+    neighborhood: Tunnel Mountain
+    checkIn: '2026-07-12'
+    checkOut: '2026-07-16'
+    nightlyCAD: 70
+    bookingNote: Books out months ahead for July; own café and hot tub
+
+transport:
+  - purpose: Calgary → Banff
+    mode: Banff Airporter shuttle
+    costCAD: 84
+    note: 90 minutes west; arrival the previous day
+  - purpose: Around townsite + Lake Minnewanka + Canmore
+    mode: Roam Public Transit
+    costCAD: 30
+    note: $2-5 per ride; 8X express to Lake Louise
+  - purpose: Sulphur Mountain Gondola down
+    mode: Banff Gondola
+    costCAD: 50
+    note: Climb up free, gondola down only
+  - purpose: Moraine Lake access
+    mode: Parks Canada shuttle (Lake Louise Park & Ride)
+    costCAD: 10
+    note: 48-hour-ahead booking window
+  - purpose: Banff → Jasper
+    mode: Pursuit Icefields Parkway day shuttle
+    costCAD: 200
+    note: Sightseeing-format transit; Peyto / Bow / Columbia Icefield stops
+  - purpose: Parks Canada admission
+    mode: Canada Strong Pass — free
+    note: Per-park fee waived Jun 19 - Sep 7, 2026
+
+costBreakdown:
+  lodging: 280
+  food: 280
+  transportLocal: 100
+  activities: 300
+  buffer: 120
+
+cityMap:
+  centerLat: 51.1784
+  centerLng: -115.5708
+  radiusKm: 75
+  provider: svg
+---
+
+Four nights in the Bow Valley, three strenuous hiking days, and the Icefields Parkway transit-and-sightseeing day to Jasper. Parks admission is free under the Canada Strong Pass; Moraine Lake remains shuttle-only.
+
+> _Hostel rate, individual shuttle fares, and concert/admission specifics are preliminary. The Pursuit shuttle in particular varies by package — confirm against booking._
