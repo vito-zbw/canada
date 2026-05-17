@@ -7,10 +7,13 @@
 //   (default)   Fetch one hero image per leg → public/images/<slug>/hero.jpg
 //               and a Pexels `tiny` thumbnail as hero.blur.jpg (LQIP source).
 //
-//   --items     Fetch per-item attraction/meal/event images for each leg's
-//               days[].items[] entries → public/images/<slug>/items/<kebab>.jpg.
-//               Items with kind ∈ {rest, transit} are skipped (no photograph
-//               for "lunch break" or "9 am SkyTrain"). See issue #107.
+//   --items     Fetch per-item images for each leg's days[].items[] entries
+//               → public/images/<slug>/items/<kebab>.jpg. Items with
+//               kind ∈ {attraction, meal, event, transit} are photographed;
+//               kind = rest is skipped (no Pexels photo for "afternoon nap").
+//               When the literal name yields no Pexels result, the fetcher
+//               retries with a kind-themed semantic query (e.g.
+//               "<city> train transportation" for transit items). See #107.
 //
 // Other flags:
 //   --leg <slug>   Limit work to one leg (e.g. --leg vancouver).
@@ -47,7 +50,31 @@ const PHOTOGRAPHABLE_KINDS = new Set<DayItemKind>([
   'attraction',
   'meal',
   'event',
+  'transit',
 ]);
+
+// Strip tokens that confuse Pexels search: directional arrows and the
+// "via" connector that often appears in transit names like
+// "YVR → downtown via SkyTrain Canada Line". The cleaned form is what
+// goes to the Pexels query; the kebab() filename is unchanged.
+function cleanPexelsQuery(name: string): string {
+  return name
+    .replace(/[→←↔⇒⇐⇄⇆]/g, ' ')
+    .replace(/\bvia\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Kind-themed fallback when the literal-name query returns no results.
+// The goal is "semantically similar, not exact" — a SkyTrain photo for
+// any transit item, a landmark for any attraction, etc. rest is omitted
+// because it never reaches this function (filtered upstream).
+const KIND_FALLBACK_QUERY: Partial<Record<DayItemKind, string>> = {
+  transit: 'train transportation',
+  attraction: 'landmark scenic',
+  meal: 'restaurant food',
+  event: 'festival crowd',
+};
 
 export interface ManifestImage {
   src: string;
@@ -319,11 +346,23 @@ async function fetchItemImage(
   }
 
   try {
-    const query = `${item.name} ${city}`;
-    const photos = await pexelsSearch(query, 'landscape', 8);
+    const primaryQuery = `${cleanPexelsQuery(item.name)} ${city}`.trim();
+    let photos = await pexelsSearch(primaryQuery, 'landscape', 8);
+
+    if (photos.length === 0) {
+      const themed = KIND_FALLBACK_QUERY[item.kind];
+      if (themed) {
+        const fallbackQuery = `${city} ${themed}`;
+        process.stderr.write(
+          `  [info] no results for "${primaryQuery}"; retrying with "${fallbackQuery}" (${legSlug}:${key})\n`,
+        );
+        photos = await pexelsSearch(fallbackQuery, 'landscape', 8);
+      }
+    }
+
     if (photos.length === 0) {
       process.stderr.write(
-        `  [warn] no Pexels results for "${query}" (${legSlug}:${key})\n`,
+        `  [warn] no Pexels results for "${primaryQuery}" or fallback (${legSlug}:${key}); icon will render\n`,
       );
       return null;
     }
@@ -355,7 +394,7 @@ async function fetchItemImage(
           alt,
           pexelsAlt,
           photographer: photo.photographer ?? null,
-          query,
+          query: primaryQuery,
           width: photo.width,
           height: photo.height,
         },

@@ -149,7 +149,7 @@ Each entry in `days[].items[]`:
 
 #### Per-item image convention (issue #107)
 
-When `image` is unset, `DayItemCard` derives a filename from `name` and looks it up in `public/images/manifest.json` under `[legSlug].items[kebab(name)]`. The convention only applies to `kind ∈ {'attraction', 'meal', 'event'}` — `'transit'` and `'rest'` items always use the icon block (no Pexels photo for "9 am SkyTrain" or "afternoon nap").
+When `image` is unset, `DayItemCard` derives a filename from `name` and looks it up in `public/images/manifest.json` under `[legSlug].items[kebab(name)]`. The convention applies to `kind ∈ {'attraction', 'meal', 'event', 'transit'}`. Items with `kind: 'rest'` always use the icon block (no Pexels photo for "afternoon nap"). For transit items whose literal name yields no Pexels match, the fetcher retries with a kind-themed semantic query (e.g. `"<city> train transportation"`) — so a generic SkyTrain or train photo backs up specific names like `"YVR → downtown via SkyTrain Canada Line"`.
 
 The `kebab()` function is the contract between `scripts/fetch-images.ts` and `src/components/DayItemCard.astro`. Both implementations MUST match:
 
