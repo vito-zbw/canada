@@ -68,6 +68,18 @@
       "gastown-steam-clock-and-water-street": {
         "filename": "gastown-steam-clock-and-water-street.jpg",
         "alt": "Stunning view of North Vancouver skyline reflecting in the harbor at night."
+      },
+      "yvr-downtown-via-skytrain-canada-line": {
+        "filename": "yvr-downtown-via-skytrain-canada-line.jpg",
+        "alt": "SkyTrain passing modern high-rise buildings in Vancouver, emphasizing urban transit and architecture."
+      },
+      "bc-ferries-tsawwassen-swartz-bay-then-bus-to-victoria": {
+        "filename": "bc-ferries-tsawwassen-swartz-bay-then-bus-to-victoria.jpg",
+        "alt": "A ferry approaches a breakwater with a lighthouse in Victoria, British Columbia."
+      },
+      "bc-ferries-swartz-bay-tsawwassen": {
+        "filename": "bc-ferries-swartz-bay-tsawwassen.jpg",
+        "alt": "A BC Ferries ship sailing during a stunning golden sunset in BC, Canada."
       }
     }
   },
@@ -128,6 +140,10 @@
       "alanis-morissette-at-the-saddledome": {
         "filename": "alanis-morissette-at-the-saddledome.jpg",
         "alt": "A packed indoor concert with audience lights creating a stunning visual display."
+      },
+      "yyc-downtown": {
+        "filename": "yyc-downtown.jpg",
+        "alt": "Stunning nighttime view of Calgary's skyline with reflection and bridge lights."
       }
     }
   },
@@ -184,6 +200,18 @@
       "athabasca-glacier-toe-walk": {
         "filename": "athabasca-glacier-toe-walk.jpg",
         "alt": "Breathtaking view of Athabasca Glacier in the Canadian Rockies, surrounded by lush greenery."
+      },
+      "banff-airporter-calgary-banff": {
+        "filename": "banff-airporter-calgary-banff.jpg",
+        "alt": "Breathtaking sunrise view of Peyto Lake and the Canadian Rockies in Banff National Park, Alberta."
+      },
+      "moraine-lake-shuttle-from-lake-louise-park-ride": {
+        "filename": "moraine-lake-shuttle-from-lake-louise-park-ride.jpg",
+        "alt": "Explore the serene beauty of Moraine Lake with its crystal-clear reflections and majestic Rocky Mountains."
+      },
+      "pursuit-shuttle-banff-jasper-icefields-parkway": {
+        "filename": "pursuit-shuttle-banff-jasper-icefields-parkway.jpg",
+        "alt": "Breathtaking road view through Jasper, Alberta with stunning snow-capped mountains and dramatic skies."
       }
     }
   },
@@ -228,6 +256,14 @@
       "miette-hot-springs-hottest-in-the-rockies": {
         "filename": "miette-hot-springs-hottest-in-the-rockies.jpg",
         "alt": "Breathtaking view of snow-capped mountains and a serene river in Jasper National Park."
+      },
+      "pursuit-shuttle-arrives-in-jasper-7-pm": {
+        "filename": "pursuit-shuttle-arrives-in-jasper-7-pm.jpg",
+        "alt": "Stunning aerial view of Jasper town and the scenic Canadian Rockies landscape."
+      },
+      "jasper-via-rail-station-board-train-2-eastbound": {
+        "filename": "jasper-via-rail-station-board-train-2-eastbound.jpg",
+        "alt": "Interior of a Toronto subway station with a Metrolinx train and passengers boarding."
       }
     }
   },
@@ -240,7 +276,28 @@
       "alt": "Breathtaking view of Moraine Lake with turquoise waters surrounded by mountains in Banff National Park, Canada."
     },
     "inline": [],
-    "items": {}
+    "items": {
+      "jasper-via-rail-station-train-2-eastbound": {
+        "filename": "jasper-via-rail-station-train-2-eastbound.jpg",
+        "alt": "Interior of a Toronto subway station with a Metrolinx train and passengers boarding."
+      },
+      "edmonton-via-rail-station": {
+        "filename": "edmonton-via-rail-station.jpg",
+        "alt": "A snowy night at Fairway Station in Kitchener, Ontario with a light rail transit arriving."
+      },
+      "saskatoon-via-rail-station": {
+        "filename": "saskatoon-via-rail-station.jpg",
+        "alt": "A snowy night at Fairway Station in Kitchener, Ontario with a light rail transit arriving."
+      },
+      "melville-via-rail-station": {
+        "filename": "melville-via-rail-station.jpg",
+        "alt": "A snowy night at Fairway Station in Kitchener, Ontario with a light rail transit arriving."
+      },
+      "winnipeg-union-station": {
+        "filename": "winnipeg-union-station.jpg",
+        "alt": "View of Union Station and railway tracks in Nashville, Tennessee, during the day with modern buildings."
+      }
+    }
   },
   "winnipeg": {
     "hero": {
@@ -287,6 +344,14 @@
       "dinner-in-osborne-village": {
         "filename": "dinner-in-osborne-village.jpg",
         "alt": "Friends dining in a cozy Italian restaurant, enjoying drinks and food in a lively atmosphere."
+      },
+      "winnipeg-union-station-arrive-on-train-2": {
+        "filename": "winnipeg-union-station-arrive-on-train-2.jpg",
+        "alt": "Evening train at Denver Union Station with iconic sign and transit information display."
+      },
+      "ywg-ottawa-flight-friday-afternoon": {
+        "filename": "ywg-ottawa-flight-friday-afternoon.jpg",
+        "alt": "A passenger jet taking off into a clear blue sky, symbolizing travel and aviation."
       }
     }
   },
@@ -343,6 +408,14 @@
       "canadian-museum-of-nature": {
         "filename": "canadian-museum-of-nature.jpg",
         "alt": "A bustling crowd enjoying the dinosaur exhibit at a Toronto museum, showcasing art and history."
+      },
+      "yow-downtown": {
+        "filename": "yow-downtown.jpg",
+        "alt": "Enchanting night snow scene in Ottawa with a beautifully illuminated historical building."
+      },
+      "via-rail-corridor-ottawa-montreal": {
+        "filename": "via-rail-corridor-ottawa-montreal.jpg",
+        "alt": "Scenic view of the historic Alexandra Bridge in Ottawa over the tranquil Ottawa River."
       }
     }
   },
@@ -399,6 +472,14 @@
       "lunch-at-au-pied-de-cochon": {
         "filename": "lunch-at-au-pied-de-cochon.jpg",
         "alt": "Juicy Argentine asado with grilled meats served on a platter, showcasing rich flavors."
+      },
+      "via-rail-arrival-from-ottawa": {
+        "filename": "via-rail-arrival-from-ottawa.jpg",
+        "alt": "Queensland Rail train arrives at Loganlea Station in Queensland, Australia, showcasing public transport."
+      },
+      "via-rail-corridor-montreal-quebec-city": {
+        "filename": "via-rail-corridor-montreal-quebec-city.jpg",
+        "alt": "Scenic view of Montreal's iconic Clock Tower from the water on a clear day."
       }
     }
   },
@@ -454,6 +535,18 @@
       },
       "4-6-km-fortification-wall-loop": {
         "filename": "4-6-km-fortification-wall-loop.jpg",
+        "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
+      },
+      "via-rail-arrival-from-montreal": {
+        "filename": "via-rail-arrival-from-montreal.jpg",
+        "alt": "Queensland Rail train arrives at Loganlea Station in Queensland, Australia, showcasing public transport."
+      },
+      "tours-voir-quebec-half-day": {
+        "filename": "tours-voir-quebec-half-day.jpg",
+        "alt": "Tourists explore a historic street in Old Quebec, Canada, featuring charming architecture."
+      },
+      "via-rail-business-class-quebec-city-toronto": {
+        "filename": "via-rail-business-class-quebec-city-toronto.jpg",
         "alt": "Tourists stroll by the famous Québec City sign in a sunny outdoor setting."
       }
     }
@@ -543,6 +636,14 @@
       "u-of-t-residence-move-in": {
         "filename": "u-of-t-residence-move-in.jpg",
         "alt": "Urban construction site in downtown Toronto with cranes and modern architecture."
+      },
+      "via-rail-arrival-from-quebec-city": {
+        "filename": "via-rail-arrival-from-quebec-city.jpg",
+        "alt": "A Toronto streetcar travels through the bustling downtown, showcasing urban life and city infrastructure."
+      },
+      "go-bus-to-niagara-falls": {
+        "filename": "go-bus-to-niagara-falls.jpg",
+        "alt": "Green trolley bus at Niagara Falls State Park in summer, ideal for sightseeing and tourism."
       }
     }
   }
