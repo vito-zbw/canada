@@ -1,0 +1,46 @@
+---
+// Inter-city transfers as a card list, visually distinct from the
+// "Getting around" TransportTable so a reader can answer "how do I
+// get from this city to the next?" without scanning local-transit rows.
+
+import type { CollectionEntry } from 'astro:content';
+
+type Transport = NonNullable<CollectionEntry<'itinerary'>['data']['transport']>;
+
+export interface Props {
+  transport: Transport;
+  title?: string;
+}
+
+const { transport, title = 'Inter-city transfers' } = Astro.props;
+
+const cad = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+  maximumFractionDigits: 0,
+});
+---
+
+{
+  transport.length > 0 && (
+    <section class="space-y-4">
+      <h2 class="font-serif text-h3 tracking-tight text-stone-900">{title}</h2>
+      <ul class="space-y-3">
+        {transport.map((row) => (
+          <li class="rounded-md border border-stone-200 bg-stone-50 p-4 md:p-5">
+            <div class="flex items-baseline justify-between gap-4">
+              <p class="font-serif text-lead text-stone-900">{row.purpose}</p>
+              <p class="shrink-0 text-meta tabular-nums text-stone-700">
+                {typeof row.costCAD === 'number' ? cad.format(row.costCAD) : '—'}
+              </p>
+            </div>
+            <p class="mt-1 text-body text-stone-700">{row.mode}</p>
+            {row.note && (
+              <p class="mt-2 text-meta text-stone-500">{row.note}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

@@ -10,6 +10,7 @@ import AnchorEventBadge from '../../components/AnchorEventBadge.astro';
 import DayList from '../../components/DayList.astro';
 import StaysList from '../../components/StaysList.astro';
 import TransportTable from '../../components/TransportTable.astro';
+import InterCityTransfer from '../../components/InterCityTransfer.astro';
 import CostTable from '../../components/CostTable.astro';
 import Map from '../../components/Map.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
@@ -101,6 +102,33 @@ const trainInfo =
     : null;
 
 const galleryHas = Array.isArray(gallery) && gallery.length > 0;
+
+// Split transport rows into inter-city moves vs local transit. An inter-city
+// row is one whose `purpose` starts with a trip city name followed by `→`
+// (e.g., "Calgary → Banff"). This excludes intra-city directional rows like
+// "YVR → downtown" or "Airport ↔ downtown".
+const TRIP_CITIES = [
+  'Vancouver',
+  'Calgary',
+  'Banff',
+  'Jasper',
+  'Winnipeg',
+  'Ottawa',
+  'Montréal',
+  'Québec City',
+  'Toronto',
+];
+function isIntercity(purpose: string): boolean {
+  if (!purpose.includes('→')) return false;
+  const lhs = purpose.split('→')[0]!.trim();
+  return TRIP_CITIES.includes(lhs);
+}
+const intercityTransport = Array.isArray(transport)
+  ? transport.filter((r) => isIntercity(r.purpose))
+  : [];
+const localTransport = Array.isArray(transport)
+  ? transport.filter((r) => !isIntercity(r.purpose))
+  : [];
 ---
 
 <Base title={`${city} — Cross-Canada Solo Trip 2026`} description={description}>
@@ -205,8 +233,12 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
 
             {stays && stays.length > 0 && <StaysList stays={stays} />}
 
-            {transport && transport.length > 0 && (
-              <TransportTable transport={transport} />
+            {intercityTransport.length > 0 && (
+              <InterCityTransfer transport={intercityTransport} />
+            )}
+
+            {localTransport.length > 0 && (
+              <TransportTable transport={localTransport} />
             )}
 
             {costBreakdown && (
