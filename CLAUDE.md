@@ -99,7 +99,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#61](https://github.com/vito-zbw/canada/issues/61) — Configure Cloudflare Pages deploy
   - [x] [#62](https://github.com/vito-zbw/canada/issues/62) — Wire axe-core into pre-commit or CI
   - [x] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
-- [ ] **Milestone 10 — English / Chinese language toggle (infrastructure)** ([#172](https://github.com/vito-zbw/canada/issues/172))
+- [x] **Milestone 10 — English / Chinese language toggle (infrastructure)** ([#172](https://github.com/vito-zbw/canada/issues/172))
   - [x] [#173](https://github.com/vito-zbw/canada/issues/173) — Configure Astro i18n routing in `astro.config.mjs`
   - [x] [#174](https://github.com/vito-zbw/canada/issues/174) — Create UI strings dictionary and `useTranslations` helper
   - [x] [#175](https://github.com/vito-zbw/canada/issues/175) — Extend content schema with optional `lang` field
