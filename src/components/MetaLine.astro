@@ -1,0 +1,56 @@
+---
+// Compact leg-page metadata: city · province · arrive date · nights · (cost).
+// Uses <dl>/<dt>/<dd> so screen readers announce labelled values; sighted
+// readers see a single middot-joined line because dt is .sr-only and dd is
+// inline-block.
+
+export interface Props {
+  city: string;
+  province: string;
+  arriveDate: string; // ISO 8601 (YYYY-MM-DD)
+  nights: number;
+  cost?: number;
+}
+
+const { city, province, arriveDate, nights, cost } = Astro.props;
+
+const dateLabel = new Intl.DateTimeFormat('en-CA', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+}).format(new Date(`${arriveDate}T00:00:00`));
+
+const costLabel =
+  typeof cost === 'number'
+    ? new Intl.NumberFormat('en-CA', {
+        style: 'currency',
+        currency: 'CAD',
+        maximumFractionDigits: 0,
+      }).format(cost)
+    : null;
+
+const nightsLabel = `${nights} ${nights === 1 ? 'night' : 'nights'}`;
+---
+
+<dl class="text-meta text-stone-500">
+  <dt class="sr-only">City</dt>
+  <dd class="inline">{city}</dd>
+  <span aria-hidden="true">·</span>
+  <dt class="sr-only">Province</dt>
+  <dd class="inline">{province}</dd>
+  <span aria-hidden="true">·</span>
+  <dt class="sr-only">Arrived</dt>
+  <dd class="inline">{dateLabel}</dd>
+  <span aria-hidden="true">·</span>
+  <dt class="sr-only">Stay</dt>
+  <dd class="inline">{nightsLabel}</dd>
+  {
+    costLabel && (
+      <>
+        <span aria-hidden="true">·</span>
+        <dt class="sr-only">Cost</dt>
+        <dd class="inline">{costLabel}</dd>
+      </>
+    )
+  }
+</dl>

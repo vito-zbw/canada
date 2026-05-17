@@ -1,0 +1,32 @@
+---
+// Pill badge for an anchor event tied to a leg (Stampede, Osheaga, etc.).
+// Forest accent on a tinted forest-50 surface — both tokens documented in
+// docs/DESIGN.md; contrast is ~9:1 (AAA).
+
+export interface Props {
+  name: string;
+  startDate: string; // ISO 8601
+  endDate: string;   // ISO 8601
+}
+
+const { name, startDate, endDate } = Astro.props;
+
+const fmt = new Intl.DateTimeFormat('en-CA', {
+  month: 'short',
+  day: 'numeric',
+});
+
+const start = fmt.format(new Date(`${startDate}T00:00:00`));
+const end = fmt.format(new Date(`${endDate}T00:00:00`));
+const dateLabel = startDate === endDate ? start : `${start} – ${end}`;
+---
+
+<span
+  class="inline-flex max-w-full items-center gap-2 whitespace-nowrap rounded-full bg-forest-50 px-3 py-1 text-meta text-forest-700"
+  aria-label={`Featured event: ${name}, ${dateLabel}`}
+>
+  <span aria-hidden="true">★</span>
+  <span class="truncate">{name}</span>
+  <span aria-hidden="true">·</span>
+  <span>{dateLabel}</span>
+</span>

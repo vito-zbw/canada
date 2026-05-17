@@ -1,0 +1,72 @@
+---
+// Sticky horizontal nav listing all 10 legs in trip order. Mobile: the strip
+// scrolls horizontally inside its own bar (snap-x). Desktop: fits inline. No
+// JavaScript anywhere — `position: sticky` and `overflow-x-auto` are native.
+
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug } = Astro.props;
+
+const legs = (await getCollection('itinerary')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<nav
+  aria-label="Cross-Canada trip legs"
+  class="sticky top-0 z-40 border-b border-stone-200 bg-stone-50/95 backdrop-blur"
+>
+  <div
+    class="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3 md:px-8 lg:px-16"
+  >
+    <a
+      href="/"
+      class="shrink-0 font-serif text-stone-900 hover:text-forest-700"
+    >
+      Cross-Canada 2026
+    </a>
+    <ul
+      class="-mx-2 flex flex-1 snap-x snap-mandatory items-center gap-1 overflow-x-auto px-2 text-meta md:gap-2"
+    >
+      {
+        legs.map((entry) => {
+          const isCurrent = entry.slug === currentSlug;
+          return (
+            <li class="snap-start whitespace-nowrap">
+              <a
+                href={`/legs/${entry.slug}`}
+                aria-current={isCurrent ? 'page' : undefined}
+                class:list={[
+                  'inline-block rounded-sm px-2 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
+                  isCurrent
+                    ? 'text-forest-700 underline decoration-2 underline-offset-4'
+                    : 'text-stone-700 hover:text-forest-700',
+                ]}
+              >
+                {entry.data.city}
+              </a>
+            </li>
+          );
+        })
+      }
+      <li class="snap-start whitespace-nowrap border-l border-stone-200 pl-2">
+        <a
+          href="/pre-trip"
+          aria-current={currentSlug === 'pre-trip' ? 'page' : undefined}
+          class:list={[
+            'inline-block rounded-sm px-2 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700',
+            currentSlug === 'pre-trip'
+              ? 'text-forest-700 underline decoration-2 underline-offset-4'
+              : 'text-stone-700 hover:text-forest-700',
+          ]}
+        >
+          Pre-trip
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

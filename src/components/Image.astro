@@ -1,0 +1,77 @@
+---
+import manifest from '../../public/images/manifest.json';
+
+export interface Props {
+  slug: string;
+  variant?: 'hero' | 'inline';
+  alt: string;
+  class?: string;
+}
+
+interface ManifestImage {
+  src: string;
+  blur: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+interface ManifestEntry {
+  hero: ManifestImage;
+  inline: ManifestImage[];
+}
+
+const { slug, variant = 'hero', alt, class: className = '' } = Astro.props;
+
+const typedManifest = manifest as Record<string, ManifestEntry>;
+const entry = typedManifest[slug];
+if (!entry) {
+  throw new Error(
+    `<Image> slug "${slug}" is not in public/images/manifest.json. ` +
+      `Run \`scripts/fetch-images.ts\` or add the entry.`,
+  );
+}
+
+let img: ManifestImage;
+if (variant === 'hero') {
+  if (!entry.hero) {
+    throw new Error(
+      `<Image> slug "${slug}" has no \`hero\` entry in the manifest.`,
+    );
+  }
+  img = entry.hero;
+} else {
+  const first = entry.inline?.[0];
+  if (!first) {
+    throw new Error(
+      `<Image> slug "${slug}" has no \`inline\` entries in the manifest.`,
+    );
+  }
+  img = first;
+}
+
+const aspectClass =
+  variant === 'hero'
+    ? 'aspect-[4/3] md:aspect-[16/9]'
+    : 'aspect-[3/2]';
+
+const loading: 'eager' | 'lazy' = variant === 'hero' ? 'eager' : 'lazy';
+---
+
+<div
+  class:list={[
+    'relative w-full overflow-hidden bg-stone-200',
+    aspectClass,
+    className,
+  ]}
+  style={`background-image:url(${img.blur});background-size:cover;background-position:center;filter:none;`}
+>
+  <img
+    src={img.src}
+    alt={alt}
+    width={img.width}
+    height={img.height}
+    loading={loading}
+    decoding="async"
+    class="absolute inset-0 h-full w-full object-cover"
+  />
+</div>
