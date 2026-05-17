@@ -1,0 +1,93 @@
+---
+id: the-canadian
+order: 5
+lang: zh
+city: The Canadian 列车
+province: AB → MB
+arriveDate: '2026-07-20'
+nights: 2
+cost: 1700
+coords:
+  lat: 52.1332
+  lng: -106.6700
+legType: transit
+updated: '2026-05-17'
+highlights:
+  - 白天穿越落基山 → 大草原
+  - Park 全景观景车
+  - 单人卧铺舱 (Sleeper Plus Cabin for One)
+
+days:
+  - date: '2026-07-20'
+    label: 贾斯珀上车
+    items:
+      - name: 贾斯珀 VIA Rail 车站 —— 东行 2 次列车
+        kind: transit
+        time: '15:55'
+        coords: { lat: 52.8728, lng: -118.0789 }
+        note: 山区时间发车
+      - name: 埃德蒙顿 VIA Rail 车站
+        kind: transit
+        time: '22:00'
+        coords: { lat: 53.5421, lng: -113.5022 }
+        note: 晚间停约 30 分钟
+
+  - date: '2026-07-21'
+    label: 横穿大草原
+    items:
+      - name: 萨斯卡通 (Saskatoon) VIA Rail 车站
+        kind: transit
+        time: '07:00'
+        coords: { lat: 52.1332, lng: -106.6700 }
+        note: 清晨停约 1 小时 —— 可下车走走站台
+      - name: Melville VIA Rail 车站
+        kind: transit
+        time: '15:00'
+        coords: { lat: 50.9229, lng: -102.8094 }
+
+  - date: '2026-07-22'
+    label: 抵达温尼伯
+    items:
+      - name: 温尼伯联合车站 (Winnipeg Union Station)
+        kind: transit
+        time: '08:00'
+        coords: { lat: 49.8881, lng: -97.1305 }
+        note: 中部时间抵达,从贾斯珀算约 38 小时
+
+stays:
+  - name: VIA 2 次列车 Sleeper Plus 单人卧铺舱
+    neighborhood: 列车上
+    checkIn: '2026-07-20'
+    checkOut: '2026-07-22'
+    nightlyCAD: 750
+    bookingNote: 单人卧铺舱;餐厅车餐食含在票价内;具体车厢/舱号待定
+
+transport:
+  - purpose: 贾斯珀 → 温尼伯
+    mode: VIA Rail 2 次列车 —— The Canadian(Sleeper Plus 单人舱)
+    costCAD: 1500
+    note: '约 38 小时;7 月旺季单程 $1,400–$1,900;Sleeper Plus 床位备选 $800–$1,100'
+
+costBreakdown:
+  lodging: 1500
+  food: 0
+  transportLocal: 0
+  activities: 0
+  buffer: 200
+---
+
+import PullQuote from '../../../components/PullQuote.astro';
+
+两晚东行,泡在 Park 观景车、餐厅车与走道淋浴里 —— 贾斯珀到温尼伯约三十八小时。山区时间下午发车,中部时间次次日早餐后抵达。
+
+**车上须知**:
+
+- 车尾的全景圆顶 **Park 车厢** 先到先得 —— 一定要赶上日出进入萨斯卡通,再赶日落进入曼尼托巴。
+- **餐厅车** 每餐三轮拼桌。日常着装即可,晚餐稍微正式一点更好;桌伴往往是退休的澳洲人和德国铁路迷。
+- 草原中段 **基本无 Wi-Fi 与信号** —— 出发前先下好播客、Netflix、Spotify。舱内有电源。
+
+<PullQuote
+  quote="Canada Strong Pass 的 25% 青年折扣 (CANADA1824) 不适用于 The Canadian 的 Sleeper Plus 或 Prestige 票价 —— 只能用在 Economy。卧铺舱没有学生折扣。"
+/>
+
+> _发车时间与具体票价仍为初稿;2026 年 VIA 时刻表与具体舱位号需对照实际预订核实。_
