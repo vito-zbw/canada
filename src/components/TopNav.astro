@@ -6,7 +6,6 @@
 
 import { getCollection } from 'astro:content';
 import { useTranslations, type Locale } from '../i18n/ui';
-import LanguageToggle from './LanguageToggle.astro';
 
 export interface Props {
   lang?: Locale;
@@ -83,11 +82,5 @@ const legHref = (entrySlug: string): string => {
         </a>
       </li>
     </ul>
-    <div class="shrink-0">
-      <LanguageToggle
-        currentLocale={lang}
-        currentPath={Astro.url.pathname}
-      />
-    </div>
   </div>
 </nav>
