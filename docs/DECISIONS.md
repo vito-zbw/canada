@@ -6,6 +6,48 @@ A new entry is mandatory for: adding a dependency (R7), choosing one approach ov
 
 ---
 
+## 2026-05-17 — Checklist island: vanilla JS + localStorage, no backend
+
+- **Decision:** The pre-trip Checklist component (`src/components/Checklist.astro`) is the v1 site's only client-side island. It uses vanilla JS in an Astro `<script>` block — no React, Vue, Svelte, or other framework — and persists tick state + user-added items to `localStorage` under versioned keys (`canada:prep:tick:v1`, `canada:prep:custom:v1`). A separate inline pre-paint script (`ChecklistPaintGuard`, #88) removes the `no-js` class and stamps initial tick state onto `<html>` before first paint to keep the FOUC tight.
+- **Why:** The pre-trip checklist must persist across reloads and accept user-added items — neither is expressible in static HTML alone, which is the only thing R6 permits an island for. Vanilla JS keeps the bundle ≤ 3 KB minified and avoids the runtime cost of a framework for a single component. localStorage is the right persistence layer for a personal site: per-device by design, no backend to operate, no sync surface to debug. Versioned keys (`:v1`) let a future schema migration silently abandon old data without name collisions.
+- **Alternatives considered:** Preact island (≥ 9 KB runtime even with `astro/preact`; gains nothing here), Alpine.js (~12 KB; ergonomic but a framework dep), Cloudflare KV or D1 backend (cross-device sync that no one asked for; adds an operational surface), no persistence at all (defeats the point of a checklist), localStorage *without* the pre-paint guard (visible flash on every load).
+- **Reversibility:** Easy — the storage shape is small (two flat objects keyed by sectionId/itemId), so swapping to a framework or a backend would mostly be a one-time export. Storage keys are versioned so the contract is explicit if migration is needed.
+
+## 2026-05-16 — Dep: `@astrojs/sitemap` pinned to 3.2.1
+
+- **Decision:** Add `@astrojs/sitemap@3.2.1` as a `devDependency`. Pinned (not caret) to avoid drifting to 3.7+ which targets Astro 5 internals.
+- **Why:** Generates `sitemap-index.xml` + `sitemap-0.xml` from all built routes at zero hand-maintenance cost. The 3.7 latest depends on Astro 5's route metadata shape (`_routes.reduce` fails on Astro 4); 3.2.1 is the last release that works against Astro 4.16.
+- **Alternatives considered:** Hand-rolled sitemap script (would re-implement route discovery), skip sitemap until the Astro 5 upgrade (loses search-indexing benefit), upgrade to Astro 5 (breaks the framework pin per architecture doc).
+- **Reversibility:** Easy — bump to 3.7+ once Astro is upgraded to 5.x; the integration's config shape is unchanged.
+
+## 2026-05-16 — Site URL placeholder: `https://canada.pages.dev`
+
+- **Decision:** \`astro.config.mjs\` \`site:\` and the OG / sitemap / robots URLs all reference \`https://canada.pages.dev\` as a temporary canonical URL. Update to the real Cloudflare Pages or custom-domain URL once the project is deployed (single change, one config line).
+- **Why:** OG metadata (#57), sitemap (#58), and robots.txt (#59) all need a baked-in canonical host. Cloudflare Pages assigns a \`<project>.pages.dev\` domain by default; \`canada.pages.dev\` matches that pattern and is highly likely to be the eventual default. The placeholder unblocks shipping the metadata work; replacing it is a one-line edit when the real URL is known.
+- **Alternatives considered:** Block #57-#59 on the domain (delays the entire SEO milestone), use a wildcard CDN URL (Cloudflare's preview URLs aren't suitable for canonical), invent the domain (would actively mislead crawlers).
+- **Reversibility:** Easy — change \`site:\` in \`astro.config.mjs\`, the sitemap line in \`public/robots.txt\`, and rebuild.
+
+## 2026-05-16 — Axe via jsdom (no browser binary)
+
+- **Decision:** Run axe-core through `jsdom` via `scripts/check-axe.ts`, not via `@axe-core/cli`. Added `axe-core` and `jsdom` as `devDependencies`.
+- **Why:** The build environment is sandboxed and has no Chrome binary. `@axe-core/cli` quietly launches a real Chromium under the hood; without one it hangs forever. `jsdom` is a JavaScript-only DOM that parses HTML and runs axe-core's static rules (alt text, heading order, landmarks, lang, ARIA) — the rules that catch real WCAG 2.1 AA violations on static editorial pages. It does not run CSS layout, so it cannot check computed contrast or hidden-by-CSS rules; those are still verified manually against the design tokens (already AAA).
+- **Alternatives considered:** `@axe-core/cli` (blocked by sandbox), `pa11y` (also Chromium-based), Playwright + axe (Playwright also wants a browser binary), defer all a11y checks to manual audit (loses automation per CLAUDE.md's "zero axe violations" bar).
+- **Reversibility:** Easy — once a browser binary is available, switch `check-axe.ts` to driver Playwright or use `@axe-core/cli` directly. The script's interface (`tsx scripts/check-axe.ts <url>`) stays the same.
+
+## 2026-05-16 — Dev deps: `@types/node` and `tsx`
+
+- **Decision:** Add `@types/node` (^22) and `tsx` (^4) as `devDependencies`.
+- **Why:** `scripts/fetch-images.ts` needs typed Node built-ins (`node:fs`, `node:path`, `Buffer`, `process`) to satisfy `astro check`. `tsx` runs the TS script directly (`npx tsx scripts/fetch-images.ts`) without a separate compile step. The previous skeleton avoided `@types/node` because it only touched `process.env`; the real fetcher needs the full Node typings.
+- **Alternatives considered:** ts-node (heavier, slower cold start), compile to JS via `tsc` (extra build step + dist artifact in the repo), Bun (would replace the whole runtime — too disruptive for one script).
+- **Reversibility:** Easy — remove both packages and the script's Node-typed imports if the fetcher is ever rewritten as plain JS.
+
+## 2026-05-16 — Image LQIP: reuse Pexels `src.tiny` instead of `sharp`
+
+- **Decision:** The Pexels fetcher saves the API's own `src.tiny` thumbnail (280×200 JPEG) as `<slug>/hero.blur.jpg`. The Image component applies a CSS `filter: blur()` to that thumbnail until the full hero loads.
+- **Why:** Avoids pulling in `sharp` (~30 MB native binary, postinstall surface area) for what is purely a placeholder. The CSS blur masks the thumbnail's lack of true Gaussian blur; the visual result is indistinguishable in the swap window.
+- **Alternatives considered:** `sharp` (one extra dep + native compile failures in sandboxed CI), inline base64 LQIP in the manifest (bloats the JSON; no easy fade-out), `plaiceholder` (wraps sharp anyway).
+- **Reversibility:** Moderate — re-running the fetcher with a sharp-based path produces drop-in replacements at the same file names.
+
 ## 2026-05-16 — Deploy target: Cloudflare Pages
 
 - **Decision:** Deploy via Cloudflare Pages with GitHub integration.

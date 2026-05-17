@@ -1,0 +1,308 @@
+---
+// Pre-trip checklist island. Single Astro <script> block (hoisted by
+// Astro and deduped across instances) wires every [data-prep-checklist]
+// section it finds in the DOM. State persists in localStorage; without
+// JS the checkboxes still work for the session and the add / reset
+// controls are CSS-hidden.
+//
+// Storage contract (v1):
+//   canada:prep:tick:v1   → { [sectionId]: { [itemId]: true } }
+//   canada:prep:custom:v1 → { [sectionId]: Array<{ id, text }> }
+
+import type { CollectionEntry } from 'astro:content';
+
+type Items = NonNullable<CollectionEntry<'prep'>['data']['items']>;
+
+export interface Props {
+  sectionId: string;
+  title: string;
+  items: Items;
+}
+
+const { sectionId, title, items } = Astro.props;
+
+const initialTotal = items.length;
+---
+
+<section
+  data-prep-checklist
+  data-section-id={sectionId}
+  class="space-y-4"
+>
+  <header class="space-y-1">
+    <h2 class="font-serif text-h3 tracking-tight text-stone-900">{title}</h2>
+    <p
+      class="prep-progress text-meta tabular-nums text-stone-500"
+      data-prep-progress
+    >
+      0 of {initialTotal} done
+    </p>
+  </header>
+
+  <ul class="prep-items space-y-3">
+    {
+      items.map((item) => (
+        <li class="prep-item">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              data-tick-key={`${sectionId}:${item.id}`}
+              class="mt-1.5 h-4 w-4 flex-shrink-0 rounded border-stone-300 text-forest-700 focus:ring-forest-700"
+            />
+            <span class="flex-1 text-body text-stone-900">
+              <span>{item.text}</span>
+              {item.dueRelative && (
+                <span class="ml-2 inline-block rounded bg-stone-100 px-2 py-0.5 text-meta text-stone-700 align-middle">
+                  {item.dueRelative}
+                </span>
+              )}
+              {item.link && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener"
+                  class="ml-1 text-forest-700 hover:text-forest-900"
+                  aria-label={`Open link for: ${item.text}`}
+                >
+                  ↗
+                </a>
+              )}
+              {item.detail && (
+                <span class="mt-1 block text-meta text-stone-500">
+                  {item.detail}
+                </span>
+              )}
+            </span>
+          </label>
+        </li>
+      ))
+    }
+  </ul>
+
+  <ul class="prep-custom-items space-y-3"></ul>
+
+  <form class="checklist-jsonly flex items-center gap-2" data-prep-add>
+    <input
+      type="text"
+      placeholder="Add an item…"
+      maxlength="120"
+      class="flex-1 rounded border border-stone-300 px-3 py-2 text-body focus:border-forest-700 focus:outline-none focus:ring-1 focus:ring-forest-700"
+    />
+    <button
+      type="submit"
+      class="rounded bg-forest-700 px-4 py-2 text-meta text-stone-50 hover:bg-forest-900"
+    >
+      Add
+    </button>
+  </form>
+
+  <button
+    type="button"
+    class="checklist-jsonly text-meta text-stone-500 underline-offset-2 hover:text-forest-700 hover:underline"
+    data-prep-reset
+  >
+    Reset section
+  </button>
+</section>
+
+<style is:global>
+  .no-js .checklist-jsonly {
+    display: none !important;
+  }
+</style>
+
+<script>
+  const TICK_KEY = 'canada:prep:tick:v1';
+  const CUSTOM_KEY = 'canada:prep:custom:v1';
+
+  type TickMap = Record<string, Record<string, boolean>>;
+  type CustomItem = { id: string; text: string };
+  type CustomMap = Record<string, CustomItem[]>;
+
+  function readJson<T>(key: string, fallback: T): T {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? (JSON.parse(raw) as T) : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function writeJson(key: string, value: unknown): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.warn('Checklist: localStorage write failed', e);
+    }
+  }
+
+  function updateProgress(section: HTMLElement): void {
+    const inputs = section.querySelectorAll<HTMLInputElement>(
+      'input[type="checkbox"][data-tick-key]',
+    );
+    const total = inputs.length;
+    let done = 0;
+    inputs.forEach((cb) => {
+      if (cb.checked) done++;
+    });
+    const progress = section.querySelector<HTMLElement>('[data-prep-progress]');
+    if (progress) progress.textContent = `${done} of ${total} done`;
+  }
+
+  function bindCheckbox(
+    sectionId: string,
+    itemId: string,
+    checkbox: HTMLInputElement,
+    section: HTMLElement,
+  ): void {
+    const ticks = readJson<TickMap>(TICK_KEY, {});
+    if (ticks[sectionId]?.[itemId]) checkbox.checked = true;
+    checkbox.addEventListener('change', () => {
+      const t = readJson<TickMap>(TICK_KEY, {});
+      if (!t[sectionId]) t[sectionId] = {};
+      if (checkbox.checked) {
+        t[sectionId][itemId] = true;
+      } else {
+        delete t[sectionId][itemId];
+      }
+      writeJson(TICK_KEY, t);
+      updateProgress(section);
+    });
+  }
+
+  function renderCustomItem(
+    customList: HTMLUListElement,
+    sectionId: string,
+    item: CustomItem,
+    section: HTMLElement,
+  ): void {
+    const li = document.createElement('li');
+    li.className = 'prep-item flex items-start gap-3';
+
+    const label = document.createElement('label');
+    label.className = 'flex flex-1 items-start gap-3 cursor-pointer';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.dataset.tickKey = `${sectionId}:${item.id}`;
+    cb.className =
+      'mt-1.5 h-4 w-4 flex-shrink-0 rounded border-stone-300 text-forest-700 focus:ring-forest-700';
+
+    const text = document.createElement('span');
+    text.className = 'flex-1 text-body text-stone-900';
+    text.textContent = item.text;
+
+    label.appendChild(cb);
+    label.appendChild(text);
+
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className =
+      'text-stone-400 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-forest-700';
+    del.setAttribute('aria-label', `Delete custom item: ${item.text}`);
+    del.textContent = '×';
+    del.addEventListener('click', () => {
+      const c = readJson<CustomMap>(CUSTOM_KEY, {});
+      c[sectionId] = (c[sectionId] ?? []).filter((x) => x.id !== item.id);
+      writeJson(CUSTOM_KEY, c);
+      const t = readJson<TickMap>(TICK_KEY, {});
+      if (t[sectionId]) delete t[sectionId][item.id];
+      writeJson(TICK_KEY, t);
+      li.remove();
+      updateProgress(section);
+    });
+
+    li.appendChild(label);
+    li.appendChild(del);
+    customList.appendChild(li);
+
+    bindCheckbox(sectionId, item.id, cb, section);
+  }
+
+  function wireSection(section: HTMLElement): void {
+    const sectionId = section.dataset.sectionId;
+    if (!sectionId) return;
+
+    // Authored checkboxes
+    section
+      .querySelectorAll<HTMLInputElement>(
+        '.prep-items input[type="checkbox"][data-tick-key]',
+      )
+      .forEach((cb) => {
+        const key = cb.dataset.tickKey ?? '';
+        const itemId = key.slice(sectionId.length + 1);
+        bindCheckbox(sectionId, itemId, cb, section);
+      });
+
+    // Custom items from storage
+    const customList = section.querySelector<HTMLUListElement>(
+      '.prep-custom-items',
+    );
+    if (customList) {
+      const custom = readJson<CustomMap>(CUSTOM_KEY, {})[sectionId] ?? [];
+      custom.forEach((item) => {
+        renderCustomItem(customList, sectionId, item, section);
+      });
+    }
+
+    // Add form
+    const addForm = section.querySelector<HTMLFormElement>('[data-prep-add]');
+    if (addForm && customList) {
+      addForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = addForm.querySelector<HTMLInputElement>('input');
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        const id = `user-${Math.random().toString(36).slice(2, 10)}`;
+        const c = readJson<CustomMap>(CUSTOM_KEY, {});
+        if (!c[sectionId]) c[sectionId] = [];
+        c[sectionId].push({ id, text });
+        writeJson(CUSTOM_KEY, c);
+        renderCustomItem(customList, sectionId, { id, text }, section);
+        input.value = '';
+        updateProgress(section);
+      });
+    }
+
+    // Reset
+    const resetBtn = section.querySelector<HTMLButtonElement>(
+      '[data-prep-reset]',
+    );
+    if (resetBtn && customList) {
+      resetBtn.addEventListener('click', () => {
+        if (
+          !window.confirm(
+            'Clear all ticks and custom items in this section?',
+          )
+        ) {
+          return;
+        }
+        const t = readJson<TickMap>(TICK_KEY, {});
+        delete t[sectionId];
+        writeJson(TICK_KEY, t);
+        const c = readJson<CustomMap>(CUSTOM_KEY, {});
+        delete c[sectionId];
+        writeJson(CUSTOM_KEY, c);
+        section
+          .querySelectorAll<HTMLInputElement>(
+            '.prep-items input[type="checkbox"][data-tick-key]',
+          )
+          .forEach((cb) => {
+            cb.checked = false;
+          });
+        customList.replaceChildren();
+        updateProgress(section);
+      });
+    }
+
+    updateProgress(section);
+  }
+
+  // Safety: remove no-js even if the paint-guard didn't fire.
+  document.documentElement.classList.remove('no-js');
+
+  document
+    .querySelectorAll<HTMLElement>('[data-prep-checklist]')
+    .forEach(wireSection);
+</script>
