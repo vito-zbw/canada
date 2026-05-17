@@ -118,7 +118,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#186](https://github.com/vito-zbw/canada/issues/186) — Author zh translation: Banff leg
   - [x] [#187](https://github.com/vito-zbw/canada/issues/187) — Author zh translation: Jasper leg
   - [x] [#188](https://github.com/vito-zbw/canada/issues/188) — Author zh translation: The Canadian leg
-  - [ ] [#189](https://github.com/vito-zbw/canada/issues/189) — Author zh translation: Winnipeg leg
+  - [x] [#189](https://github.com/vito-zbw/canada/issues/189) — Author zh translation: Winnipeg leg
   - [ ] [#194](https://github.com/vito-zbw/canada/issues/194) — Author zh translation: Ottawa leg
   - [ ] [#190](https://github.com/vito-zbw/canada/issues/190) — Author zh translation: Montreal leg
   - [ ] [#191](https://github.com/vito-zbw/canada/issues/191) — Author zh translation: Quebec City leg
