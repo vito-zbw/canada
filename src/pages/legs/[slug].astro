@@ -1,0 +1,218 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import Hero from '../../components/Hero.astro';
+import MetaLine from '../../components/MetaLine.astro';
+import AnchorEventBadge from '../../components/AnchorEventBadge.astro';
+import DayJumpNav from '../../components/DayJumpNav.astro';
+import DayList from '../../components/DayList.astro';
+import StaysList from '../../components/StaysList.astro';
+import TransportTable from '../../components/TransportTable.astro';
+import CostTable from '../../components/CostTable.astro';
+import CityMap from '../../components/CityMap.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
+type Entry = CollectionEntry<'itinerary'>;
+
+export const getStaticPaths = (async () => {
+  const all = (await getCollection('itinerary')).sort(
+    (a, b) => a.data.order - b.data.order,
+  );
+  return all.map((entry, i) => ({
+    params: { slug: entry.slug },
+    props: {
+      entry,
+      prev: i > 0 ? all[i - 1] : null,
+      next: i < all.length - 1 ? all[i + 1] : null,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+interface PageProps {
+  entry: Entry;
+  prev: Entry | null;
+  next: Entry | null;
+}
+
+const { entry, prev, next } = Astro.props as PageProps;
+const {
+  city,
+  province,
+  arriveDate,
+  nights,
+  cost,
+  anchorEvent,
+  order,
+  updated,
+  days,
+  stays,
+  transport,
+  costBreakdown,
+  gallery,
+  cityMap,
+} = entry.data;
+const { Content } = await entry.render();
+
+const description = `Leg ${order} of 10: ${city}, ${province}. ${nights} night${nights === 1 ? '' : 's'} from ${arriveDate}.`;
+
+const isStructured = Array.isArray(days) && days.length > 0;
+
+// Pins for the CityMap: flatten days[].items[], keep only those with
+// both `pin` and `coords` set, project shape into CityMapPin.
+const mapPins = isStructured
+  ? days!
+      .flatMap((d) => d.items)
+      .filter((it) => typeof it.pin === 'number' && it.coords)
+      .map((it) => ({
+        pin: it.pin!,
+        name: it.name,
+        lat: it.coords!.lat,
+        lng: it.coords!.lng,
+      }))
+  : [];
+
+const showCityMap = cityMap && mapPins.length > 0;
+
+const dayJumpItems = isStructured
+  ? days!.map((d, i) => ({
+      id: `day-${i + 1}`,
+      label: `Day ${i + 1} · ${new Intl.DateTimeFormat('en-CA', {
+        month: 'short',
+        day: 'numeric',
+      }).format(new Date(`${d.date}T00:00:00`))}`,
+    }))
+  : [];
+
+const galleryHas = Array.isArray(gallery) && gallery.length > 0;
+---
+
+<Base title={`${city} — Cross-Canada Solo Trip 2026`} description={description}>
+  <TopNav currentSlug={entry.slug} />
+  <Hero
+    imageSlug={entry.slug}
+    title={city}
+    eyebrow={`Leg ${order} of 10`}
+    alt={`${city}, leg ${order} of the cross-Canada trip`}
+  />
+  <section class="mt-10 md:mt-12">
+    <MetaLine
+      city={city}
+      province={province}
+      arriveDate={arriveDate}
+      nights={nights}
+      cost={cost}
+    />
+    {
+      anchorEvent && (
+        <div class="mt-4">
+          <AnchorEventBadge
+            name={anchorEvent.name}
+            startDate={anchorEvent.startDate}
+            endDate={anchorEvent.endDate}
+          />
+        </div>
+      )
+    }
+  </section>
+
+  {
+    isStructured ? (
+      <>
+        <div class="mt-10">
+          <DayJumpNav items={dayJumpItems} />
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_minmax(0,360px)]">
+          {showCityMap && (
+            <aside
+              class="order-first lg:order-last lg:sticky lg:top-24 lg:self-start"
+              aria-label="Local map"
+            >
+              <CityMap legSlug={entry.slug} cityMap={cityMap!} pins={mapPins} />
+            </aside>
+          )}
+
+          <div class="space-y-16">
+            <DayList legSlug={entry.slug} days={days!} />
+
+            {stays && stays.length > 0 && <StaysList stays={stays} />}
+
+            {transport && transport.length > 0 && (
+              <TransportTable transport={transport} />
+            )}
+
+            {costBreakdown && (
+              <CostTable
+                breakdown={costBreakdown}
+                total={cost}
+                updated={updated}
+              />
+            )}
+
+            {galleryHas && (
+              <PhotoGallery
+                slugs={gallery!.map((g) => g.slug)}
+                alts={gallery!.map((g) => g.alt)}
+              />
+            )}
+
+            <article
+              class="max-w-prose text-body leading-relaxed text-stone-800 [&>p+p]:mt-6"
+            >
+              <Content />
+            </article>
+          </div>
+        </div>
+      </>
+    ) : (
+      <article
+        class="mt-12 max-w-prose text-body leading-relaxed text-stone-800 [&>p+p]:mt-6"
+      >
+        <Content />
+      </article>
+    )
+  }
+
+  <nav
+    aria-label="Trip navigation"
+    class="mt-22 flex flex-col gap-4 border-t border-stone-200 pt-8 md:flex-row md:justify-between"
+  >
+    {
+      prev ? (
+        <a
+          href={`/legs/${prev.slug}`}
+          class="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700"
+        >
+          <span class="block text-meta uppercase tracking-[0.2em] text-stone-500">
+            Previous leg
+          </span>
+          <span class="mt-1 block font-serif text-h3 text-stone-900 group-hover:text-forest-700">
+            ← {prev.data.city}
+          </span>
+        </a>
+      ) : (
+        <span aria-hidden="true" />
+      )
+    }
+    {
+      next ? (
+        <a
+          href={`/legs/${next.slug}`}
+          class="group block rounded-sm text-right focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700 md:text-right"
+        >
+          <span class="block text-meta uppercase tracking-[0.2em] text-stone-500">
+            Next leg
+          </span>
+          <span class="mt-1 block font-serif text-h3 text-stone-900 group-hover:text-forest-700">
+            {next.data.city} →
+          </span>
+        </a>
+      ) : (
+        <span aria-hidden="true" />
+      )
+    }
+  </nav>
+</Base>
