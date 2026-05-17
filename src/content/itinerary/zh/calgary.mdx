@@ -1,0 +1,172 @@
+---
+id: calgary
+order: 2
+lang: zh
+city: 卡尔加里
+province: AB
+arriveDate: '2026-07-08'
+nights: 4
+cost: 1320
+coords:
+  lat: 51.0447
+  lng: -114.0719
+anchorEvent:
+  name: 卡尔加里牛仔节 (Calgary Stampede)
+  startDate: '2026-07-03'
+  endDate: '2026-07-12'
+legType: city
+updated: '2026-05-17'
+highlights:
+  - 卡尔加里牛仔节 (Calgary Stampede)
+  - Glenbow 博物馆
+  - Studio Bell 国家音乐中心
+  - Saddledome 演唱会
+
+days:
+  - date: '2026-07-08'
+    label: 抵达 + 牛仔节入园
+    items:
+      - name: 'YYC → 市中心'
+        kind: transit
+        time: 下午
+        coords: { lat: 51.1138, lng: -114.0203 }
+        note: 乘卡尔加里 Transit C-Train 到牛仔节园区
+      - pin: 1
+        name: Stampede 园区 — 入园
+        kind: event
+        time: 晚上
+        cost: 28
+        coords: { lat: 51.0376, lng: -114.0540 }
+        note: 普通票 $28;游乐区开到深夜
+      - pin: 2
+        name: 迷你甜甜圈 + Stampede Caesar 鸡尾酒
+        kind: meal
+        time: 晚上
+        coords: { lat: 51.0376, lng: -114.0540 }
+        note: Caesar 鸡尾酒 1969 年诞生于卡尔加里
+      - pin: 3
+        name: '原住民 Elbow River Camp — bannock 玉米饼 (bannock tacos)'
+        kind: meal
+        time: 晚上
+        coords: { lat: 51.0395, lng: -114.0535 }
+
+  - date: '2026-07-09'
+    items:
+      - pin: 4
+        name: Studio Bell / 国家音乐中心
+        kind: attraction
+        time: 上午晚些时候
+        durationMin: 150
+        coords: { lat: 51.0464, lng: -114.0570 }
+        note: East Village 街区;加拿大音乐史的互动展览
+      - pin: 5
+        name: GMC Stadium 下午竞技赛
+        kind: event
+        time: 下午
+        coords: { lat: 51.0379, lng: -114.0497 }
+        note: 13:30 — 骑牛、绕桶赛、马鞍野马 (saddle bronc)
+      - pin: 6
+        name: 篷车赛 (Chuckwagon Races)
+        kind: event
+        time: 晚上
+        coords: { lat: 51.0379, lng: -114.0497 }
+        note: 19:15 于 GMC Stadium 开赛
+      - pin: 7
+        name: '看台秀 (Grandstand Show) + 烟花'
+        kind: event
+        time: 深夜
+        coords: { lat: 51.0379, lng: -114.0497 }
+
+  - date: '2026-07-10'
+    items:
+      - pin: 8
+        name: 卡尔加里塔 (Calgary Tower)
+        kind: attraction
+        time: 上午
+        durationMin: 60
+        coords: { lat: 51.0444, lng: -114.0631 }
+      - pin: 9
+        name: Glenbow 博物馆(刚翻新)
+        kind: attraction
+        time: 上午晚些时候
+        durationMin: 150
+        coords: { lat: 51.0457, lng: -114.0648 }
+      - pin: 10
+        name: Nashville North — honky-tonk 西部舞厅
+        kind: event
+        time: 晚上
+        coords: { lat: 51.0383, lng: -114.0515 }
+
+  - date: '2026-07-11'
+    items:
+      - pin: 11
+        name: Alanis Morissette 演唱会 @ Saddledome
+        kind: event
+        time: 晚上
+        coords: { lat: 51.0375, lng: -114.0517 }
+        note: 已确认 2026 年压轴
+
+  - date: '2026-07-12'
+    label: Showdown Sunday(收官日)
+    items:
+      - pin: 12
+        name: 牛仔节早餐松饼会(周日早晨)
+        kind: meal
+        time: 上午
+        coords: { lat: 51.0447, lng: -114.0719 }
+        note: 全城免费早餐;在 Stampede app 上看当天分布图
+      - pin: 13
+        name: Showdown Sunday 决赛 @ GMC Stadium
+        kind: event
+        time: 下午
+        cost: 125
+        coords: { lat: 51.0379, lng: -114.0497 }
+        note: $75–175;决赛闭幕
+
+stays:
+  - name: 'HI Calgary City Centre (Beltline)'
+    neighborhood: Beltline / East Village
+    checkIn: '2026-07-08'
+    checkOut: '2026-07-12'
+    nightlyCAD: 70
+    bookingNote: '牛仔节周末的青旅床位 4 月前就会售罄(床位约 $50–75)。备选:Hotel Arts Kensington(约 $280)、Sandman Signature Downtown ($250–350)、或 Hilton Garden Inn East Village。'
+
+transport:
+  - purpose: YYC → 市中心
+    mode: 卡尔加里 Transit C-Train
+    costCAD: 30
+    note: 牛仔节人多时一律走 C-Train;非牛仔节期间 ride share 才好用
+  - purpose: 市中心周边 + 前往牛仔节园区
+    mode: 'C-Train (Erlton/Stampede 站) + Plus 15 空中走廊'
+    costCAD: 30
+    note: 4 日交通通票;空中走廊夏季雷暴时尤其方便
+  - purpose: 卡尔加里 → 班夫
+    mode: Banff Airporter / Brewster Express / On-It Regional Transit / Pursuit "Banff Express"
+    costCAD: 84
+    note: 从卡尔加里市中心或 YYC 上 Banff Airporter 或 Brewster Express,在 banffairporter.com 预订。On-It Regional Transit 季节性提供周末 $10 的卡尔加里 → 班夫巴士(非牛仔节期),2026 排班请查 OnItregionaltransit.ca。
+
+costBreakdown:
+  lodging: 280
+  food: 280
+  transportLocal: 60
+  activities: 400
+  buffer: 300
+
+cityMap:
+  centerLat: 51.0447
+  centerLng: -114.0719
+  radiusKm: 15
+  provider: svg
+---
+
+四天围绕牛仔节排布,中间留一天作为休整日去 Glenbow 博物馆和 Studio Bell。牛仔节周末的青旅床位 4 月前就会售罄,所以 Beltline / East Village 的住宿要提前订。
+
+**卡尔加里食物特色**:
+
+- **Caesar 鸡尾酒** —— 1969 年诞生于卡尔加里 —— 推荐 **Cassis Bistro** 或 **1886 Buffalo Cafe**
+- **AAA 阿尔伯塔牛排** 在 **Charcut Roast House** 或 **Modern Steak**
+- 早午餐去 **OEB Breakfast Co.**(Hash House 系列)
+- **Phil and Sebastian Coffee Roasters** —— 本地烘焙厂牌
+- 在 **Bridgeland** 或 **Inglewood** 逛精酿酒吧 —— Village Brewery 和 Ol' Beautiful Brewing 是主力
+
+> _费用与具体青旅尚为初稿;Saddledome 演唱会门票与机场班车仍需对照预订核实。_
