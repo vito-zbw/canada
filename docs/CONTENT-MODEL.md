@@ -6,9 +6,16 @@ The site is built around one Astro content collection: **`itinerary`**. Each ent
 
 ## Collection location
 
-- **Entries:** `src/content/itinerary/<slug>.{md,mdx}`
+- **Entries:** `src/content/itinerary/<slug>.{md,mdx}` (English)
+- **Chinese entries:** `src/content/itinerary/zh/<slug>.{md,mdx}` — same `<slug>` as the English file (e.g. `zh/banff.mdx` for `banff.mdx`), with `lang: 'zh'` in frontmatter. Slug derived from path is `zh/banff`; route code strips the `zh/` prefix when generating URL segments.
 - **Schema:** `src/content/config.ts`
 - **Source draft (not yet split):** `content/itinerary/canada-itinerary.md`
+
+The same convention applies to the `prep` collection: English at `src/content/prep/<slug>.mdx`, Chinese at `src/content/prep/zh/<slug>.mdx`.
+
+## Locale (`lang` field)
+
+Both `itinerary` and `prep` entries carry an optional `lang: z.enum(['en', 'zh']).default('en')`. Existing English MDX files do not need a frontmatter migration — the default handles them. Chinese variants must declare `lang: 'zh'`. Routes filter by `entry.data.lang === <active-locale>` to render the right set.
 
 ## Schema
 

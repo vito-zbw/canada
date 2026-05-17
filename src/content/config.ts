@@ -8,6 +8,10 @@ const itinerary = defineCollection({
     // Core
     id: z.string().regex(/^[a-z0-9-]+$/),
     order: z.number().int().min(1),
+    // Locale of this entry. Default 'en' so existing English files parse
+    // without a frontmatter migration; Chinese variants live under
+    // src/content/itinerary/zh/<slug>.mdx with `lang: 'zh'` in frontmatter.
+    lang: z.enum(['en', 'zh']).default('en'),
     city: z.string(),
     province: z.string(),
     arriveDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -121,6 +125,9 @@ const prep = defineCollection({
   schema: z.object({
     id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'kebab-case'),
     order: z.number().int().min(1),
+    // Same as itinerary.lang — default 'en' for backward compat; Chinese
+    // variants live at src/content/prep/zh/<slug>.mdx.
+    lang: z.enum(['en', 'zh']).default('en'),
     title: z.string(),
     summary: z.string(),
     lastReviewed: z
