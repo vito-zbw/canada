@@ -1,0 +1,32 @@
+---
+// Inline photo gallery: a small grid of supporting images. Prop shape
+// chosen: `slugs: string[]` — each slug is a key in public/images/manifest.json,
+// the gallery renders that slug's hero (the inline-variant has no data yet).
+// When the manifest grows real inline images this can be extended; for now
+// reusing the per-leg hero is the pragmatic answer.
+
+import Image from './Image.astro';
+
+export interface Props {
+  slugs: string[];
+  alts: string[];
+}
+
+const { slugs, alts } = Astro.props;
+
+if (alts.length !== slugs.length) {
+  throw new Error(
+    `<PhotoGallery>: alts array length (${alts.length}) must match slugs length (${slugs.length}).`,
+  );
+}
+---
+
+<div
+  class="my-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+>
+  {
+    slugs.map((slug, i) => (
+      <Image slug={slug} variant="hero" alt={alts[i]} />
+    ))
+  }
+</div>
