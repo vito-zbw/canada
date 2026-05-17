@@ -693,10 +693,6 @@
         "filename": "bata-shoe-museum.jpg",
         "alt": "A stylish display of black leather shoes and accessories on wooden shelves in a store."
       },
-      "distillery-district-return-riverside-walk": {
-        "filename": "distillery-district-return-riverside-walk.jpg",
-        "alt": "Vibrant view of Toronto skyline with waterfront, ferry, and colorful chairs on a sunny day."
-      },
       "pai-northern-thai-kitchen-duncan-st": {
         "filename": "pai-northern-thai-kitchen-duncan-st.jpg",
         "alt": "A flavorful Thai green curry with vegetables and aromatic herbs in a stylish black bowl."
@@ -728,6 +724,14 @@
       "cne-press-preview-pre-opening-events": {
         "filename": "cne-press-preview-pre-opening-events.jpg",
         "alt": "A mesmerizing view of a Ferris wheel at sunset in Boise's vibrant amusement park."
+      },
+      "cne-day-2-bandshell-midway-return": {
+        "filename": "cne-day-2-bandshell-midway-return.jpg",
+        "alt": "A lively scene at an amusement park with a ferris wheel and colorful lights at night."
+      },
+      "canadian-international-air-show-preview-over-the-waterfront": {
+        "filename": "canadian-international-air-show-preview-over-the-waterfront.jpg",
+        "alt": "A stunning aerial view of the Blue Angels performing over Fairfield, California."
       }
     }
   }
