@@ -21,11 +21,6 @@ days:
   - date: '2026-08-08'
     label: Arrival
     items:
-      - name: 'VIA Rail arrival from Québec City'
-        kind: transit
-        time: evening
-        coords: { lat: 43.6453, lng: -79.3806 }
-        note: Union Station
       - pin: 1
         name: Harbourfront walk + CN Tower at night
         kind: attraction
@@ -52,6 +47,14 @@ days:
         time: midday
         coords: { lat: 43.6489, lng: -79.3717 }
       - pin: 5
+        name: 'Hockey Hall of Fame (Brookfield Place)'
+        kind: attraction
+        time: afternoon
+        durationMin: 150
+        cost: 25
+        coords: { lat: 43.6471, lng: -79.3776 }
+        note: $25 student
+      - pin: 6
         name: Toronto Islands ferry at sunset
         kind: attraction
         time: evening
@@ -60,13 +63,13 @@ days:
   - date: '2026-08-10'
     label: Museums
     items:
-      - pin: 6
+      - pin: 7
         name: Royal Ontario Museum
         kind: attraction
         time: morning
         durationMin: 180
         coords: { lat: 43.6677, lng: -79.3948 }
-      - pin: 7
+      - pin: 8
         name: Art Gallery of Ontario
         kind: attraction
         time: afternoon
@@ -75,44 +78,27 @@ days:
         note: Group of Seven + Kent Monkman holdings
 
   - date: '2026-08-11'
-    label: Distillery + Kensington
+    label: Kensington + Distillery + Blue Jays
     items:
-      - pin: 8
-        name: Distillery District
-        kind: attraction
-        time: morning
-        durationMin: 150
-        coords: { lat: 43.6504, lng: -79.3593 }
       - pin: 9
-        name: Kensington Market food crawl
+        name: Kensington Market + Chinatown food crawl
         kind: meal
-        time: afternoon
+        time: midday
         coords: { lat: 43.6543, lng: -79.4006 }
       - pin: 10
-        name: Graffiti Alley
+        name: Distillery District
         kind: attraction
-        time: late afternoon
-        coords: { lat: 43.6480, lng: -79.4011 }
-
-  - date: '2026-08-12'
-    label: Blue Jays night
-    items:
-      - pin: 11
-        name: 'Hockey Hall of Fame (Brookfield Place)'
-        kind: attraction
-        time: morning
+        time: afternoon
         durationMin: 150
-        cost: 25
-        coords: { lat: 43.6471, lng: -79.3776 }
-        note: $25 student
-      - pin: 12
+        coords: { lat: 43.6504, lng: -79.3593 }
+      - pin: 11
         name: 'Blue Jays at Rogers Centre vs. Houston or Philadelphia'
         kind: event
         time: evening
         coords: { lat: 43.6414, lng: -79.3894 }
         note: Tickets from $20; verify opponent
 
-  - date: '2026-08-13'
+  - date: '2026-08-12'
     label: Niagara day trip
     items:
       - name: GO Bus to Niagara Falls
@@ -120,28 +106,61 @@ days:
         time: morning
         durationMin: 120
         coords: { lat: 43.0896, lng: -79.0849 }
-      - pin: 13
+      - pin: 12
         name: Niagara Falls + Hornblower / Maid of the Mist
         kind: attraction
         time: midday
         durationMin: 240
         coords: { lat: 43.0828, lng: -79.0742 }
 
-  - date: '2026-08-14'
-    label: Rest day
+  - date: '2026-08-13'
+    label: TIFF + Graffiti Alley
     items:
-      - name: Rest day — Annex / Yorkville wander
+      - pin: 13
+        name: TIFF Bell Lightbox
+        kind: attraction
+        time: morning
+        durationMin: 120
+        coords: { lat: 43.6469, lng: -79.3905 }
+        note: Rep cinema; check the King Street W calendar for screenings
+      - pin: 14
+        name: 'Banh Mi Boys (Queen West)'
+        kind: meal
+        time: midday
+        coords: { lat: 43.6485, lng: -79.3970 }
+      - pin: 15
+        name: Graffiti Alley
+        kind: attraction
+        time: afternoon
+        coords: { lat: 43.6480, lng: -79.4011 }
+      - pin: 16
+        name: Trinity Bellwoods Park
+        kind: attraction
+        time: late afternoon
+        durationMin: 90
+        coords: { lat: 43.6473, lng: -79.4137 }
+
+  - date: '2026-08-14'
+    label: Honda Indy or east-end neighborhoods
+    items:
+      - pin: 17
+        name: Honda Indy Toronto (Markham Fairgrounds, opening day)
+        kind: event
+        time: afternoon
+        coords: { lat: 43.8970, lng: -79.2588 }
+        note: Relocated from Exhibition Place; tickets from $50 — verify at hondaindy.com
+      - name: 'Alternative — Junction / Leslieville / Riverside walk'
         kind: rest
 
   - date: '2026-08-15'
     label: Leslieville brunch + Beaches
     items:
-      - pin: 14
+      - pin: 18
         name: 'Lady Marmalade brunch (Leslieville)'
         kind: meal
         time: morning
         coords: { lat: 43.6610, lng: -79.3450 }
-      - pin: 15
+      - pin: 19
         name: Beaches boardwalk
         kind: attraction
         time: afternoon
@@ -151,7 +170,7 @@ days:
   - date: '2026-08-16'
     label: Toronto FC night
     items:
-      - pin: 16
+      - pin: 20
         name: Toronto FC at BMO Field
         kind: event
         time: evening
@@ -159,23 +178,34 @@ days:
         note: $40–80 tickets; confirm a home match is scheduled at torontofc.ca before locking the day
 
   - date: '2026-08-17'
-    label: Logistics block
+    label: CNE Press Preview + logistics
     items:
-      - pin: 17
+      - pin: 21
+        name: CNE Press Preview / pre-opening events
+        kind: event
+        time: morning
+        coords: { lat: 43.6334, lng: -79.4178 }
+        note: Exhibition Place; CNE officially opens Aug 21
+      - pin: 22
         name: U of T TCard pickup
         kind: attraction
-        time: morning
+        time: midday
         coords: { lat: 43.6629, lng: -79.3957 }
-      - pin: 18
+      - pin: 23
         name: Open Scotiabank or RBC newcomer account branch visit
         kind: attraction
         time: afternoon
         coords: { lat: 43.6532, lng: -79.3832 }
+      - pin: 24
+        name: 'Pai Northern Thai Kitchen (Duncan St)'
+        kind: meal
+        time: evening
+        coords: { lat: 43.6479, lng: -79.3877 }
 
   - date: '2026-08-18'
     label: CN Tower splurge
     items:
-      - pin: 19
+      - pin: 25
         name: CN Tower 360 Revolving Restaurant
         kind: meal
         time: evening
@@ -185,7 +215,7 @@ days:
   - date: '2026-08-19'
     label: Quiet day — Bata + High Park
     items:
-      - pin: 20
+      - pin: 26
         name: Bata Shoe Museum
         kind: attraction
         time: morning
@@ -193,7 +223,7 @@ days:
         cost: 14
         coords: { lat: 43.6677, lng: -79.4001 }
         note: $14 student admission; surprisingly fascinating
-      - pin: 21
+      - pin: 27
         name: High Park
         kind: attraction
         time: afternoon
@@ -209,7 +239,7 @@ days:
   - date: '2026-08-21'
     label: CNE opens
     items:
-      - pin: 22
+      - pin: 28
         name: 'CNE opening day — midway, Bandshell, CNE Food Building'
         kind: event
         time: midday
@@ -219,7 +249,7 @@ days:
   - date: '2026-08-22'
     label: Move-in
     items:
-      - pin: 23
+      - pin: 29
         name: U of T residence move-in
         kind: attraction
         time: morning
