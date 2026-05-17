@@ -1,0 +1,169 @@
+---
+id: banff
+order: 3
+lang: zh
+city: 班夫
+province: AB
+arriveDate: '2026-07-12'
+nights: 4
+cost: 1040
+coords:
+  lat: 51.1784
+  lng: -115.5708
+legType: city
+updated: '2026-05-17'
+highlights:
+  - 硫磺山 (Sulphur Mountain)
+  - 露易丝湖 (Lake Louise)
+  - 梦莲湖 (Moraine Lake)
+  - 冰原大道 (Icefields Parkway)
+
+days:
+  - date: '2026-07-12'
+    label: 抵达
+    items:
+      - pin: 1
+        name: 弓河瀑布 (Bow Falls) + 班夫大街散步
+        kind: attraction
+        time: 晚上
+        coords: { lat: 51.1697, lng: -115.5631 }
+      - pin: 2
+        name: 班夫上温泉 (Banff Upper Hot Springs)
+        kind: attraction
+        time: 深夜
+        cost: 18
+        coords: { lat: 51.1539, lng: -115.5547 }
+        note: 开到晚上 11 点;门票 $17.50
+
+  - date: '2026-07-13'
+    label: 硫磺山
+    items:
+      - pin: 3
+        name: 硫磺山徒步到缆车山顶
+        kind: attraction
+        time: 上午
+        durationMin: 240
+        coords: { lat: 51.1500, lng: -115.5722 }
+        note: 5.5 公里、上升 700 米;步行下山免费,缆车下山约 $50
+
+  - date: '2026-07-14'
+    label: 露易丝湖
+    items:
+      - pin: 4
+        name: '六冰川茶屋 (Plain of Six Glaciers Tea House) 环线 (+ Lake Agnes)'
+        kind: attraction
+        time: 上午
+        durationMin: 420
+        coords: { lat: 51.4254, lng: -116.2178 }
+        note: 14.6 公里,从露易丝湖湖畔起步;加上 Lake Agnes 是 16 公里。早上 6:30 乘 Roam 8X 出发可避开停车位预约的麻烦。
+
+  - date: '2026-07-15'
+    label: 梦莲湖 + Sentinel Pass
+    items:
+      - name: 从露易丝湖 Park & Ride 乘梦莲湖班车
+        kind: transit
+        time: 上午
+        coords: { lat: 51.4143, lng: -116.1893 }
+        note: Parks Canada 班车提前 48 小时(山区时间上午 8 点)在 reservation.pc.gc.ca 开放预约;私家车不允许进入。
+      - pin: 5
+        name: Larch Valley → Sentinel Pass
+        kind: attraction
+        time: 中午
+        durationMin: 300
+        coords: { lat: 51.3322, lng: -116.1858 }
+        note: 11.6 公里、上升 720 米,从梦莲湖出发 —— 著名的 "Twenty Dollar View" 乱石堆。
+
+  - date: '2026-07-16'
+    label: 冰原大道前往贾斯珀
+    items:
+      - pin: 6
+        name: '约翰斯顿峡谷上瀑布 (Johnston Canyon Upper Falls,9 点前去)'
+        kind: attraction
+        time: '07:30'
+        durationMin: 150
+        coords: { lat: 51.2459, lng: -115.8408 }
+      - pin: 7
+        name: Peyto 湖观景点
+        kind: attraction
+        time: 中午
+        coords: { lat: 51.7273, lng: -116.5078 }
+      - pin: 8
+        name: Bow 湖 / Num-Ti-Jah Lodge
+        kind: attraction
+        time: 中午
+        coords: { lat: 51.6708, lng: -116.4622 }
+      - pin: 9
+        name: 哥伦比亚冰原天空步道 (Columbia Icefield Skywalk)
+        kind: attraction
+        time: 下午
+        coords: { lat: 52.2156, lng: -117.2178 }
+      - pin: 10
+        name: 阿萨巴斯卡冰川 (Athabasca Glacier) —— 冰舌步行
+        kind: attraction
+        time: 下午
+        coords: { lat: 52.1942, lng: -117.2511 }
+      - name: Pursuit 班车 班夫 → 贾斯珀(沿冰原大道)
+        kind: transit
+        time: 晚上
+        durationMin: 720
+        coords: { lat: 51.1784, lng: -115.5708 }
+        note: 早上从班夫出发,中午经 Johnston Canyon,晚上约 7 点抵达贾斯珀
+
+stays:
+  - name: HI Banff Alpine Centre
+    neighborhood: Tunnel Mountain 隧道山
+    checkIn: '2026-07-12'
+    checkOut: '2026-07-16'
+    nightlyCAD: 70
+    bookingNote: '青旅内有 Cougar Pete''s Kitchen + 室外热水池;数月前就要订。备选:Samesun Banff (433 Banff Ave,床位 ~$70,私人间 $200–280);中档:Banff Aspen Lodge 或 Banff Caribou Lodge ($350–500)。'
+
+transport:
+  - purpose: 镇内 + Lake Minnewanka + Canmore
+    mode: Roam Public Transit
+    costCAD: 30
+    note: 单程 $2–5;8X 直达露易丝湖
+  - purpose: 硫磺山下山缆车
+    mode: Banff Gondola
+    costCAD: 50
+    note: 上山徒步免费,只用下山段
+  - purpose: 梦莲湖通行
+    mode: Parks Canada 班车(露易丝湖 Park & Ride)
+    costCAD: 10
+    note: 提前 48 小时开放预约
+  - purpose: 班夫 → 贾斯珀
+    mode: Pursuit 或 Sundog Tour 的冰原大道一日班车;Brewster Express
+    costCAD: 200
+    note: 观光式交通;Peyto / Bow / 哥伦比亚冰原停留;Brewster Express 更偏纯交通
+  - purpose: 国家公园门票
+    mode: Canada Strong Pass —— 免费
+    note: 2026 年 6 月 19 日 – 9 月 7 日全国公园门票豁免
+
+costBreakdown:
+  lodging: 280
+  food: 280
+  transportLocal: 100
+  activities: 300
+  buffer: 80
+
+cityMap:
+  centerLat: 51.1784
+  centerLng: -115.5708
+  radiusKm: 75
+  provider: svg
+---
+
+四晚扎在弓河谷地,三个高强度徒步日,加上冰原大道当作前往贾斯珀的兼程观光日。在 Canada Strong Pass 期间国家公园门票免费;梦莲湖仍然只能乘班车进入。
+
+**班夫吃喝**:
+
+- **Park Distillery** 自家蒸馏的伏特加和 Caesar
+- **Three Ravens**(Banff Centre 顶层)景色与精致料理兼得
+- **Block Kitchen + Bar** 西班牙 tapas
+- **Wild Flour Bakery** 早餐
+- **Banff Ave Brewing Co.** 徒步结束后的一杯
+
+**Banff Centre 夏季节目**:在 [banffcentre.ca](https://www.banffcentre.ca/) 查时间表 —— Eric Harvie 剧场有免费露天音乐会、歌剧和原住民艺术演出;Centre 每年 7 月几乎每周都有演出。
+
+联邦 Canada Strong Pass 计划下,2026 年 6 月 19 日至 9 月 7 日全国国家公园门票对所有人免费 —— 每人每天每公园约省 $11。这覆盖班夫、贾斯珀以及整条冰原大道。
+
+_青旅价格、单段班车费率、演唱会票/门票细节仍为初稿。Pursuit 班车按套餐变动,需与实际预订核对。_
