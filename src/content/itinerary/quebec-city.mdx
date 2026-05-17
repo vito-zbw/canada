@@ -1,0 +1,156 @@
+---
+id: quebec-city
+order: 9
+city: Québec City
+province: QC
+arriveDate: '2026-08-04'
+nights: 4
+cost: 940
+coords:
+  lat: 46.8139
+  lng: -71.2080
+legType: city
+updated: '2026-05-17'
+highlights:
+  - Vieux-Québec
+  - Château Frontenac
+  - Montmorency Falls
+  - Île d'Orléans
+
+days:
+  - date: '2026-08-04'
+    label: Arrival
+    items:
+      - pin: 1
+        name: VIA Rail arrival from Montréal
+        kind: transit
+        time: evening
+        coords: { lat: 46.8167, lng: -71.2275 }
+        note: Gare du Palais
+      - pin: 2
+        name: Dufferin Terrace boardwalk at sunset
+        kind: attraction
+        time: evening
+        coords: { lat: 46.8121, lng: -71.2049 }
+        note: In front of Château Frontenac
+      - pin: 3
+        name: 'Petit Champlain night walk + Le Lapin Sauté'
+        kind: meal
+        time: late evening
+        coords: { lat: 46.8112, lng: -71.2031 }
+
+  - date: '2026-08-05'
+    label: Plains + Musée
+    items:
+      - pin: 4
+        name: Plains of Abraham (1759 battlefield)
+        kind: attraction
+        time: morning
+        durationMin: 120
+        coords: { lat: 46.8050, lng: -71.2186 }
+      - pin: 5
+        name: Musée National des Beaux-Arts du Québec
+        kind: attraction
+        time: late morning
+        durationMin: 180
+        cost: 15
+        coords: { lat: 46.8033, lng: -71.2253 }
+      - pin: 6
+        name: 'Place Royale + Notre-Dame-des-Victoires (Lower Town)'
+        kind: attraction
+        time: afternoon
+        coords: { lat: 46.8120, lng: -71.2024 }
+        note: 'Reach via Escalier Casse-Cou or the funicular'
+
+  - date: '2026-08-06'
+    label: Île d'Orléans + Montmorency Falls
+    items:
+      - pin: 7
+        name: Tours Voir Québec half-day
+        kind: transit
+        time: morning
+        durationMin: 300
+        coords: { lat: 46.8139, lng: -71.2080 }
+        note: Standard Île d'Orléans + Montmorency package
+      - pin: 8
+        name: Montmorency Falls (43 m taller than Niagara)
+        kind: attraction
+        time: morning
+        coords: { lat: 46.8908, lng: -71.1481 }
+      - pin: 9
+        name: "Cassis Monna & Filles (Île d'Orléans)"
+        kind: meal
+        time: afternoon
+        coords: { lat: 46.8919, lng: -71.0911 }
+        note: Blackcurrant tasting
+      - pin: 10
+        name: "Cidrerie Bilodeau (Île d'Orléans)"
+        kind: meal
+        time: afternoon
+        coords: { lat: 46.9056, lng: -71.0008 }
+
+  - date: '2026-08-07'
+    label: Citadelle + departure
+    items:
+      - pin: 11
+        name: "Citadelle guided tour + Changing of the Guard (10 am)"
+        kind: attraction
+        time: '10:00'
+        durationMin: 120
+        coords: { lat: 46.8081, lng: -71.2078 }
+      - pin: 12
+        name: "Lunch at Chez Ashton — canonical Québec poutine"
+        kind: meal
+        time: midday
+        coords: { lat: 46.8136, lng: -71.2089 }
+      - pin: 13
+        name: 4.6 km fortification wall loop
+        kind: attraction
+        time: afternoon
+        durationMin: 120
+        coords: { lat: 46.8139, lng: -71.2080 }
+      - pin: 14
+        name: 'VIA Rail Business Class — Québec City → Toronto'
+        kind: transit
+        time: late afternoon
+        durationMin: 540
+        coords: { lat: 46.8167, lng: -71.2275 }
+        note: 9 hours via Montréal
+
+stays:
+  - name: Auberge Internationale de Québec
+    neighborhood: Rue Sainte-Ursule, inside the walls
+    checkIn: '2026-08-04'
+    checkOut: '2026-08-08'
+    nightlyCAD: 55
+    bookingNote: Historic building inside Old Québec; trip's best-located hostel
+
+transport:
+  - purpose: Around Old Québec
+    mode: Walking + RTC bus
+    costCAD: 30
+  - purpose: Île d'Orléans + Montmorency Falls
+    mode: Tours Voir Québec half-day
+    costCAD: 75
+  - purpose: 'Québec City → Toronto'
+    mode: VIA Rail Business Class
+    costCAD: 400
+    note: 9 hours via Montréal; Business class upgrade for the long leg
+
+costBreakdown:
+  lodging: 220
+  food: 220
+  transportLocal: 105
+  activities: 195
+  buffer: 200
+
+cityMap:
+  centerLat: 46.8139
+  centerLng: -71.2080
+  radiusKm: 25
+  provider: svg
+---
+
+Four nights in the only walled city in North America north of Mexico. Festival d'été ends before arrival; the New France Festival and the Citadelle's daily Changing of the Guard fill the in-between. The leg closes with the long VIA Rail Business Class ride to Toronto.
+
+> _Hostel rate and tour package costs are preliminary. The Business Class fare to Toronto is the largest single line and should be reconciled with the actual booking._
