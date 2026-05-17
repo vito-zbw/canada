@@ -1,0 +1,52 @@
+---
+// Day-by-day scroll surface: one <section id="day-N"> per day with a
+// serif heading and a vertical stack of DayItemCards. Pairs with
+// DayJumpNav whose anchors target the same `day-N` ids.
+
+import type { CollectionEntry } from 'astro:content';
+import DayItemCard from './DayItemCard.astro';
+
+type Days = NonNullable<CollectionEntry<'itinerary'>['data']['days']>;
+
+export interface Props {
+  legSlug: string;
+  days: Days;
+}
+
+const { legSlug, days } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+});
+
+function formatDate(iso: string): string {
+  return dateFormatter.format(new Date(`${iso}T00:00:00`));
+}
+---
+
+{
+  days.length > 0 && (
+    <section aria-label="Day by day" class="space-y-12">
+      {days.map((day, idx) => {
+        const n = idx + 1;
+        const headingText = day.label
+          ? `Day ${n} · ${formatDate(day.date)} — ${day.label}`
+          : `Day ${n} · ${formatDate(day.date)}`;
+        return (
+          <section id={`day-${n}`} class="scroll-mt-24">
+            <h2 class="font-serif text-h3 tracking-tight text-stone-900">
+              {headingText}
+            </h2>
+            <div class="mt-6 space-y-4">
+              {day.items.map((item) => (
+                <DayItemCard legSlug={legSlug} item={item} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </section>
+  )
+}
