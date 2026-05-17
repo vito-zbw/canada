@@ -90,6 +90,19 @@ Every issue must satisfy **all** of these. If any check fails, split or clarify 
 
 Estimate *new or changed* lines, not total file size. When uncertain, round up. An L is always wrong as a single implementable issue — but the epic + children pattern lets you preserve the conceptual grouping.
 
+### Decomposition triggers
+
+Split the candidate issue (or escalate to an epic) if **any** of these is true:
+
+| Trigger | Action |
+|---|---|
+| Title contains "and" / "then" / "also" connecting distinct artifacts | One issue per artifact, wire up `**Depends on:**` |
+| Touches > 3 files | Group changes by layer; one issue per layer |
+| Acceptance criteria balloons past 7 bullets | Two issues are hiding in one — split |
+| You cannot name the props, content fields, or inputs explicitly | A spike (research) issue must come first |
+| Implementation would require inventing trip facts (R5) | Stop — surface the missing values to the user |
+| Estimate creeps past M | Convert to an epic + children |
+
 ## Epics and sub-issues
 
 Some work is too big for one issue but coheres as a unit — a multi-file feature, a templated bulk creation, a UI surface with several independent pieces. Use an **epic** to group it.
@@ -155,7 +168,7 @@ Create one GitHub issue per candidate. Title is imperative, ≤ 70 chars. Apply 
 - `groomed` (always — marks the issue as passed the scope test)
 - `size:S` or `size:M` (one or the other)
 
-Body starts with a metadata block (omit a line entirely if the field is empty), then the standard sections:
+Body starts with a metadata block (omit a line entirely if the field is empty), then the standard sections. **Optional sections** below (`## Files`, `## Signatures`, `## Test plan`) may be omitted only when truly inapplicable — see the per-section guidance.
 
 ```bash
 gh issue create \
@@ -180,6 +193,25 @@ gh issue create \
 - Exact file paths to read
 - Exact values, URLs, environment variable names>
 
+## Files
+<Include when the issue touches more than one file. One row per file. Action is Create | Modify | Delete.>
+
+| File | Action | Purpose |
+|---|---|---|
+| `src/components/Foo.astro` | Create | <one-line reason> |
+| `src/pages/index.astro` | Modify | <one-line reason> |
+
+## Signatures
+<Include for new components, functions, content schemas, or manifest shapes. Paste the literal TypeScript / JSON so the implementer cannot invent a different shape. Omit only when the issue produces no API surface (e.g. a config-only change).>
+
+```ts
+export interface FooProps {
+  imageSlug: string;
+  title: string;
+  eyebrow?: string;
+}
+```
+
 ## Output
 <Concrete description of the artifact when the issue is done. One paragraph max.>
 
@@ -190,14 +222,54 @@ gh issue create \
 - [ ] <E.g. "no axe-core violations on the rendered page">
 - [ ] <E.g. "image uses <Image> component, not raw <img>">
 
+## Test plan
+<Required for any issue with behavioral logic — fetchers, scripts, conditional rendering, dynamic routes, build-time generators. Each scenario names the input, the expected observable, and how to verify.>
+
+- **Happy path:** <input / state> → <observable> (verify via <method>)
+- **Error case:** <input / state> → <observable> (verify via <method>)
+- **Edge case:** <input / state> → <observable> (verify via <method>)
+
+<For pure static-render issues without conditional logic (a Hero, a 404, a `robots.txt`), replace the scenarios above with a viewport check list:>
+
+- [ ] 375 px viewport — no horizontal scroll, layout coherent (R2)
+- [ ] 768 px viewport — stacked / sided per design
+- [ ] 1440 px viewport — desktop alignment matches reference
+
+## Verification
+<Exact shell commands the implementer runs before marking the issue done. Always include `npm run check && npm run build`. Add issue-specific commands underneath.>
+
+```bash
+npm run check && npm run build
+# plus issue-specific (delete what does not apply):
+npm run dev              # then open http://localhost:4321/<route> in browser
+npx @axe-core/cli http://localhost:4321/<route>
+npx tsx scripts/<thing>.ts
+```
+
 ## Out of scope
 <Bulleted list. Anything tempting to include but deferred. Cite the issue that picks it up if one exists.>
 
-## Notes
-<Optional. Risks, edge cases, alternate approaches considered.>
+## Notes / Gotchas
+<Risks, edge cases, alternate approaches considered. Surface rule reminders here when relevant:
+- R5: "ask the user for <missing copy>, do not invent"
+- R6: "no `client:` directive — animation is CSS-only"
+- R7: "if adding <dep>, log in docs/DECISIONS.md">
 EOF
 )"
 ```
+
+### Writing implementation-ready acceptance criteria
+
+The acceptance criteria are the contract the implementer is held to. Vague predicates produce vague code. Replace mood with measurable observables:
+
+| Vague (do not write) | Precise (write this) |
+|---|---|
+| "Make the hero look nice" | "Render `<Hero>` with `imageSlug='vancouver'`, `title=entry.data.city`, dark gradient overlay, serif title at the `text-display` token" |
+| "Handle the empty case" | "If `getCollection('itinerary')` returns `[]`, render the layout with a single `<p>No legs yet.</p>` inside `<main>`" |
+| "Add tests" / "Add appropriate tests" | Enumerate in `## Test plan`: happy path slug exists, missing slug returns 404, manifest entry without `alt` renders an empty `alt` attribute |
+| "Use the right colors" | "Use `bg-forest-700` for the accent, `text-stone-50` for hero text — see `docs/DESIGN.md` § Color tokens" |
+| "Should be accessible" | "Title rendered as `<h1>`; contrast ≥ 4.5:1 on overlay; axe-core: zero violations on `/legs/vancouver`" |
+| "Pass the build" | "`npm run check` clean; `npm run build` completes with no warnings" |
 
 ## How to decompose a multi-part ask
 
@@ -230,6 +302,12 @@ Use the routing table in `CLAUDE.md` ("Skill routing"). The implementer will loa
 | `**Touches:**` line lists multiple paths | Convert to an epic (label `epic`, no `**Touches:**`, no size label) and split into child issues whose bodies cite `**Parent:** #N` |
 | Skill creates issues then continues to implement | Re-read the Stop condition below. Stop. Hand back to the user. |
 | One issue depends on something you haven't groomed yet | Groom the prerequisite first; never write `**Depends on:** ???` |
+| "Tests will be added during implementation" | Enumerate the scenarios in `## Test plan` now — happy / error / edge — or replace with a viewport check list |
+| `## Verification` is missing or says "it works" | List the exact shell commands. At minimum `npm run check && npm run build`. |
+| `## Inputs` says "see the design doc" | Paste the prop types / content fields / endpoints inline. The implementer should not have to context-switch to start. |
+| Component issue with no prop signature | Add a `## Signatures` block with a literal TypeScript interface |
+| Multi-file issue with no Files table | Add a `## Files` table with `File / Action / Purpose` rows |
+| Acceptance criteria mention "appropriate tests" | "Appropriate" is mood, not predicate. Replace with named scenarios. |
 
 ## Red flags — STOP and re-groom
 
@@ -243,6 +321,24 @@ You are about to violate the discipline if you catch yourself thinking:
 - "I'll guess the missing value; the user will correct me if it's wrong"
 
 Each one means: stop, split, name the value, or ask.
+
+## Pre-flight checklist
+
+Run this against every candidate before calling `gh issue create`. If any check fails, fix the issue body first.
+
+- [ ] Title is imperative, ≤ 70 chars, no trailing punctuation, no embedded conjunctions
+- [ ] `**Touches:**` lists exactly one artifact (or there is no `**Touches:**` line because this is an epic)
+- [ ] Every `**Depends on:**` cites a real issue number or an already-planned predecessor in this grooming pass
+- [ ] `## Inputs` names every value, path, prop, type, env var, and endpoint — no "use a reasonable default", no "see the design"
+- [ ] `## Signatures` is present whenever the issue produces a typed surface (component props, function signature, content schema, manifest shape)
+- [ ] `## Files` is present whenever the issue touches > 1 file
+- [ ] `## Acceptance criteria` has 3–7 bullets, each independently verifiable
+- [ ] `## Test plan` enumerates named scenarios (happy/error/edge) OR a viewport check list — never "add tests"
+- [ ] `## Verification` lists exact shell commands, beginning with `npm run check && npm run build`
+- [ ] No invented trip facts (R5). Missing facts are surfaced to the user, not guessed.
+- [ ] Sizing label (`size:S` or `size:M`) matches the estimate from the sizing table
+- [ ] Skills listed match the skill-routing table in `CLAUDE.md`
+- [ ] Out-of-scope list explicitly defers anything tempting but adjacent
 
 ## Stop condition
 
