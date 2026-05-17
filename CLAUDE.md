@@ -131,6 +131,21 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
 - Run `npm run check` (Astro type check) and confirm clean.
 - If a new dependency was added, log it in `docs/DECISIONS.md` with one-sentence rationale.
 
+### After implementing a groomed issue, always
+
+When you finish implementing a groomed issue (a `groomed`-labeled GitHub issue — standalone or an epic child), perform these steps before reporting the work complete:
+
+1. **Commit the issue's scope locally** on `main` in a single commit per issue:
+   - Stage only the files changed for THIS issue (`git add <specific files>` — never `git add -A` / `git add .`). If unrelated working-tree changes are present, leave them uncommitted and surface them to the user separately.
+   - Message: imperative summary ≤ 70 chars, ending with the issue number in parentheses. Example: `Replace homepage prose with trip-facts strip (#100)`.
+   - Optional body explaining *why* if not obvious from the title.
+   - Include the standard `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` trailer.
+   - Tick the corresponding child in this file's Roadmap section in the same commit so the doc stays in sync with reality.
+2. **Close the issue** via `gh issue close <num>`.
+3. **If the closed issue is the last open child of an epic**, also close the epic via `gh issue close <epic#>`. Epics never get their own commit — their children's commits constitute the work.
+
+Do **not** push to GitHub from this workflow — pushing is a separate, user-initiated step.
+
 ## Hard rules (highlights)
 
 The authoritative list is `.claude/rules/RULES.md`. The easiest-to-forget ones:
