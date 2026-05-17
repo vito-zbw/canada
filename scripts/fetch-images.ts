@@ -8,12 +8,15 @@
 //               and a Pexels `tiny` thumbnail as hero.blur.jpg (LQIP source).
 //
 //   --items     Fetch per-item images for each leg's days[].items[] entries
-//               → public/images/<slug>/items/<kebab>.jpg. Items with
-//               kind ∈ {attraction, meal, event, transit} are photographed;
-//               kind = rest is skipped (no Pexels photo for "afternoon nap").
-//               When the literal name yields no Pexels result, the fetcher
-//               retries with a kind-themed semantic query (e.g.
-//               "<city> train transportation" for transit items). See #107.
+//               → public/images/<slug>/items/<kebab>.jpg. All five kinds
+//               (attraction, meal, event, transit, rest) are photographed;
+//               items with an explicit `image:` override in frontmatter are
+//               skipped because the renderer resolves overrides ahead of
+//               the manifest lookup (issue #149). When the literal name
+//               yields no Pexels result, the fetcher retries with a
+//               kind-themed semantic query (e.g. "<city> train
+//               transportation" for transit; "<city> neighborhood walk
+//               leisure" for rest). See #107, #150.
 //
 // Other flags:
 //   --leg <slug>   Limit work to one leg (e.g. --leg vancouver).
@@ -51,6 +54,7 @@ const PHOTOGRAPHABLE_KINDS = new Set<DayItemKind>([
   'meal',
   'event',
   'transit',
+  'rest',
 ]);
 
 // Strip tokens that confuse Pexels search: directional arrows and the
@@ -67,13 +71,16 @@ function cleanPexelsQuery(name: string): string {
 
 // Kind-themed fallback when the literal-name query returns no results.
 // The goal is "semantically similar, not exact" — a SkyTrain photo for
-// any transit item, a landmark for any attraction, etc. rest is omitted
-// because it never reaches this function (filtered upstream).
+// any transit item, a landmark for any attraction, a calm urban-walk
+// photo for any rest item. The rest query is intentionally trip-coded
+// (neighborhood / walk / leisure), not vacation-coded — these days are
+// quieter wanders during an active trip, not beach getaways.
 const KIND_FALLBACK_QUERY: Partial<Record<DayItemKind, string>> = {
   transit: 'train transportation',
   attraction: 'landmark scenic',
   meal: 'restaurant food',
   event: 'festival crowd',
+  rest: 'neighborhood walk leisure',
 };
 
 export interface ManifestImage {

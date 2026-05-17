@@ -5,11 +5,12 @@
 //
 // Image resolution (issue #108):
 //   1. item.image explicit override → /images/<slug>/<image>.jpg
-//   2. manifest convention for kind ∈ {attraction, meal, event, transit}
-//        → /images/<slug>/items/<kebab(name)>.jpg, alt from manifest
-//   3. icon-block fallback — always for kind = rest, and for any
-//      photographable item whose manifest entry is missing (e.g.,
-//      Pexels returned nothing even for the kind-themed fallback)
+//   2. manifest convention for all five kinds (attraction, meal, event,
+//      transit, rest) → /images/<slug>/items/<kebab(name)>.jpg, alt from
+//      manifest
+//   3. icon-block fallback — shown only when no manifest entry exists for
+//      the item (e.g., Pexels returned nothing even for the kind-themed
+//      fallback query)
 
 import type { CollectionEntry } from 'astro:content';
 import manifest from '../../public/images/manifest.json';
@@ -49,6 +50,7 @@ const PHOTOGRAPHABLE: ReadonlySet<DayItem['kind']> = new Set([
   'meal',
   'event',
   'transit',
+  'rest',
 ]);
 
 const { legSlug, item } = Astro.props;
