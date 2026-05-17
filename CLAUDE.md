@@ -109,7 +109,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#179](https://github.com/vito-zbw/canada/issues/179) — Add per-locale homepage route (en + zh)
   - [x] [#180](https://github.com/vito-zbw/canada/issues/180) — Add per-locale leg dynamic route (en + zh)
   - [x] [#181](https://github.com/vito-zbw/canada/issues/181) — Add per-locale pre-trip route (en + zh)
-  - [ ] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)
+  - [x] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)
 
 Translation authoring (Chinese MDX content + `zh` half of the UI dictionary) will be groomed in a separate pass once Milestone 10 lands.
 

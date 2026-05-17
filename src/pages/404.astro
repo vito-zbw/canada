@@ -1,29 +1,59 @@
 ---
+// Single 404 served by Cloudflare Pages for every unknown path. It contains
+// both languages stacked so a Chinese reader hitting a bad URL also sees
+// Chinese content. Each section carries its own `lang` attribute so screen
+// readers switch voices correctly. Decision logged in docs/DECISIONS.md.
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
+import { useTranslations } from '../i18n/ui';
+
+const tEn = useTranslations('en');
+const tZh = useTranslations('zh');
 ---
 
 <Base
-  title="Off the route — Cross-Canada Solo Trip 2026"
-  description="That page is not part of the trip. Try one of the ten legs."
+  lang="en"
+  title={tEn('notFound.metaTitle')}
+  description={tEn('notFound.metaDescription')}
   ogType="website"
 >
   <TopNav />
-  <section class="mt-22 max-w-prose md:mt-30">
-    <p class="text-meta uppercase tracking-[0.2em] text-stone-500">404</p>
+  <section lang="en" class="mt-22 max-w-prose md:mt-30">
+    <p class="text-meta uppercase tracking-[0.2em] text-stone-500">
+      {tEn('notFound.eyebrow')}
+    </p>
     <h1 class="mt-3 font-serif text-h1 tracking-tight md:text-display">
-      Off the route.
+      {tEn('notFound.heading')}
     </h1>
     <p class="mt-6 text-lead text-stone-700">
-      That page is not part of the trip. Try one of the ten legs — or head back
-      to the start.
+      {tEn('notFound.body')}
     </p>
     <p class="mt-10">
       <a
         href="/"
         class="text-forest-700 underline decoration-2 underline-offset-4 hover:text-forest-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700"
       >
-        Back to the homepage →
+        {tEn('notFound.cta')}
+      </a>
+    </p>
+  </section>
+  <hr class="my-12 border-stone-200 md:my-16" />
+  <section lang="zh-Hans" class="max-w-prose">
+    <p class="text-meta uppercase tracking-[0.2em] text-stone-500">
+      {tZh('notFound.eyebrow')}
+    </p>
+    <h2 class="mt-3 font-serif text-h1 tracking-tight md:text-display">
+      {tZh('notFound.heading')}
+    </h2>
+    <p class="mt-6 text-lead text-stone-700">
+      {tZh('notFound.body')}
+    </p>
+    <p class="mt-10">
+      <a
+        href="/zh"
+        class="text-forest-700 underline decoration-2 underline-offset-4 hover:text-forest-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-700"
+      >
+        {tZh('notFound.cta')}
       </a>
     </p>
   </section>

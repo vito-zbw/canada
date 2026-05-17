@@ -6,6 +6,13 @@ A new entry is mandatory for: adding a dependency (R7), choosing one approach ov
 
 ---
 
+## 2026-05-17 — 404 page: single bilingual stacked, not per-locale
+
+- **Decision:** `src/pages/404.astro` renders English + Simplified Chinese sections stacked vertically, separated by an `<hr>`. The page's primary `<html lang>` is `en`; the Chinese block carries an inner `<section lang="zh-Hans">` so screen readers switch voices for that block. There is no `/zh/404` route.
+- **Why:** Cloudflare Pages serves a single file (`/404.html`) for every unmatched URL — including paths under `/zh/`. A locale-prefixed Chinese 404 would be unreachable for unknown paths anyway. Stacking both languages on the single fallback is the only reliable way for a Chinese reader who hits a bad URL to immediately see Chinese.
+- **Alternatives considered:** Per-locale `404.astro` files (Cloudflare Pages can't route 404s by URL prefix without a Worker, and the v1 site has no Worker); JavaScript-based locale detection (R6 — no client JS); Accept-Language header detection (Cloudflare static serving doesn't read it before falling back); a smart redirect from `/zh/<bad>` to `/zh/` (would require either a `_redirects` rule with limited matching or a Worker — both heavier than just showing both languages).
+- **Reversibility:** Easy. Removing the Chinese block reverts to an English-only 404. Adding a Worker later could replace the stacked page with locale-routed 404s if we ever introduce one.
+
 ## 2026-05-17 — Deploy configuration: `wrangler.toml`, no build-time image fetch
 
 - **Decision:** Cloudflare Pages reads `wrangler.toml` at the repo root for project config. The file sets `name = "canada-itinerary"`, `compatibility_date = "2026-05-17"`, and `pages_build_output_dir = "./dist"`. The Pages dashboard build command is `npm run build`; no environment variables are required at deploy time. The Pexels fetcher (`scripts/fetch-images.ts`) is a local dev-only tool — it runs on demand, commits its output under `public/images/`, and is never invoked by `npm run build`. `wrangler` itself is *not* added as a devDependency: the config file is read by the Pages platform directly, and the CLI is only needed for `wrangler pages` local emulation, which we don't use.
