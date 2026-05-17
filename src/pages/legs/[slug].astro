@@ -78,7 +78,7 @@ const cityMarkers = isStructured
       }))
   : [];
 
-const showCityMap = cityMap && cityMarkers.length > 0;
+const showLocalMap = cityMap && cityMarkers.length > 0;
 
 // Markers for the transit variant: transit-kind items in day order
 // connected by a polyline; label is the station name.
@@ -202,7 +202,7 @@ const galleryHas = Array.isArray(gallery) && gallery.length > 0;
         </div>
 
         <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_minmax(0,360px)]">
-          {showCityMap && (
+          {showLocalMap && (
             <aside
               class="order-first lg:order-last lg:sticky lg:top-24 lg:self-start"
               aria-label="Local map"
