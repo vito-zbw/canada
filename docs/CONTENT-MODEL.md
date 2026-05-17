@@ -129,7 +129,7 @@ All fields below are optional. Legs are migrated to the structured layout one at
 | `transport` | array of transport rows | optional | Local-transport options. Each `{ purpose, mode, costCAD?, note? }`. |
 | `costBreakdown` | object | optional | Whole-CAD ints by category: `{ lodging?, food?, transportLocal?, activities?, buffer? }`. Used to render the cost table; the sum is validated against `cost`. |
 | `gallery` | array of `{ slug, alt }` | optional | Photo gallery filenames under `/public/images/<leg-slug>/`. `alt` is required per R3 — no decorative alts in galleries. |
-| `cityMap` | object | optional | `{ centerLat, centerLng, radiusKm, provider }`. `provider` defaults to `'svg'`; `'maplibre'` is reserved for future per-leg opt-in. |
+| `cityMap` | object | optional | `{ centerLat, centerLng, radiusKm, provider }`. The `provider` field is now **decorative** — `src/components/Map.astro` renders all maps via MapLibre + OpenFreeMap regardless of value. The field is retained in the schema for content-author readability and is not migrated out to avoid re-validating every existing leg's frontmatter. |
 
 #### Day item shape
 
@@ -360,6 +360,7 @@ Each item's `id` is the **localStorage key** the `Checklist` island uses to pers
 ## What's not modeled (yet)
 
 - Budget rollup — derived at build from the `cost` fields.
-- Photos — added when the image pipeline is implemented (issue 021 onward).
+
+Photos *are* modeled — via the `gallery[]` field on legs and the per-item `image` field plus the convention-based manifest lookup documented above.
 
 Update this document **before** changing the schema in `src/content/config.ts`. The docs are the source of truth; the code follows.
