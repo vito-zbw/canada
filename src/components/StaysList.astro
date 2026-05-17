@@ -1,0 +1,86 @@
+---
+// "Where I'm staying" card grid. One card per stay segment. Card layout
+// (not a table) because stays mix free-text (name, neighborhood, booking
+// note) with numbers (dates, cost) that wrap poorly in tabular rows on
+// mobile.
+
+import type { CollectionEntry } from 'astro:content';
+
+type Stays = NonNullable<CollectionEntry<'itinerary'>['data']['stays']>;
+
+export interface Props {
+  stays: Stays;
+  title?: string;
+}
+
+const { stays, title = "Where I'm staying" } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+  month: 'short',
+  day: 'numeric',
+});
+
+const cad = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+  maximumFractionDigits: 0,
+});
+
+function isoToUTC(iso: string): number {
+  const [y, m, d] = iso.split('-').map(Number);
+  return Date.UTC(y, m - 1, d);
+}
+
+function nightsBetween(checkIn: string, checkOut: string): number {
+  return Math.round((isoToUTC(checkOut) - isoToUTC(checkIn)) / 86_400_000);
+}
+
+function formatRange(checkIn: string, checkOut: string): string {
+  const inDate = dateFormatter.format(new Date(`${checkIn}T00:00:00`));
+  const outDate = dateFormatter.format(new Date(`${checkOut}T00:00:00`));
+  return `${inDate} – ${outDate}`;
+}
+---
+
+{
+  stays.length > 0 && (
+    <section aria-labelledby="stays-heading" class="space-y-6">
+      <h2
+        id="stays-heading"
+        class="font-serif text-h3 tracking-tight text-stone-900"
+      >
+        {title}
+      </h2>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {stays.map((stay) => {
+          const nights = nightsBetween(stay.checkIn, stay.checkOut);
+          const nightsLabel = `${nights} ${nights === 1 ? 'night' : 'nights'}`;
+          const total = stay.nightlyCAD * nights;
+          return (
+            <article class="rounded-lg border border-stone-200 p-4">
+              <h3 class="font-serif text-h4 leading-tight text-stone-900">
+                {stay.name}
+              </h3>
+              {stay.neighborhood && (
+                <p class="mt-1 text-meta text-stone-500">{stay.neighborhood}</p>
+              )}
+              <p class="mt-3 text-meta text-stone-700">
+                {formatRange(stay.checkIn, stay.checkOut)}{' '}
+                <span aria-hidden="true">·</span> {nightsLabel}
+              </p>
+              <p class="mt-1 text-meta tabular-nums text-stone-700">
+                {cad.format(stay.nightlyCAD)}/night{' '}
+                <span aria-hidden="true">·</span> {cad.format(total)} total
+              </p>
+              {stay.bookingNote && (
+                <p class="mt-3 line-clamp-2 text-meta text-stone-500">
+                  {stay.bookingNote}
+                </p>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )
+}
