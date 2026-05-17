@@ -322,6 +322,18 @@ async function fetchItemImage(
   opts: { force?: boolean },
 ): Promise<ItemFetchResult | null> {
   if (!PHOTOGRAPHABLE_KINDS.has(item.kind)) return null;
+  // An explicit `image:` override means the user curated this file by hand;
+  // `DayItemCard` resolves it via /images/<slug>/<image>.jpg and never reads
+  // the manifest for this item. Fetching here would produce a dead per-item
+  // file and a manifest entry nothing reads. --force is also ignored: it
+  // refreshes auto-fetched files, not user-curated ones. See issue #149.
+  if (typeof item.image === 'string' && item.image.trim() !== '') {
+    const kebabKey = kebab(item.name);
+    process.stderr.write(
+      `  [skip] override "${item.image}" in frontmatter for "${item.name}" (${legSlug}:${kebabKey})\n`,
+    );
+    return null;
+  }
   const key = kebab(item.name);
   if (!key) {
     process.stderr.write(
