@@ -1,0 +1,136 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import Hero from '../../components/Hero.astro';
+import LegCard from '../../components/LegCard.astro';
+import Map from '../../components/Map.astro';
+import LanguageToggle from '../../components/LanguageToggle.astro';
+import { useTranslations, type Locale } from '../../i18n/ui';
+
+const lang: Locale = 'zh';
+const t = useTranslations(lang);
+
+const allLegs = await getCollection('itinerary');
+const legs = allLegs
+  .filter((e) => e.data.lang === 'zh')
+  .sort((a, b) => a.data.order - b.data.order);
+
+// When Chinese leg MDX files haven't been authored yet we still want totals on
+// the page; fall back to the English entries for numbers so the at-a-glance
+// strip is meaningful, and pre-fill the route map with the English geo data.
+const sourceLegs = legs.length > 0
+  ? legs
+  : allLegs
+      .filter((e) => (e.data.lang ?? 'en') === 'en')
+      .sort((a, b) => a.data.order - b.data.order);
+
+const routeMarkers = sourceLegs.map((l) => ({
+  id: l.slug,
+  lat: l.data.coords.lat,
+  lng: l.data.coords.lng,
+  label: l.data.city,
+  href: `/zh/legs/${l.slug.replace(/^zh\//, '')}`,
+  title:
+    t('leg.eyebrow', { order: l.data.order, total: sourceLegs.length }) +
+    ` — ${l.data.city}`,
+}));
+
+const totalNights = sourceLegs.reduce((sum, l) => sum + l.data.nights, 0);
+const totalStops = sourceLegs.filter((l) => l.data.legType === 'city').length;
+const anchorCount = sourceLegs.filter((l) => l.data.anchorEvent != null).length;
+const totalBudget = sourceLegs.reduce((sum, l) => sum + (l.data.cost ?? 0), 0);
+
+const budgetLabel = new Intl.NumberFormat('zh-Hans-CN', {
+  style: 'currency',
+  currency: 'CAD',
+  maximumFractionDigits: 0,
+}).format(totalBudget);
+
+const hasZhContent = legs.length > 0;
+---
+
+<Base
+  lang={lang}
+  title={t('home.metaTitle')}
+  description={t('home.metaDescription')}
+>
+  <TopNav lang={lang} />
+  <div class="mt-6 flex justify-end">
+    <LanguageToggle currentLocale={lang} currentPath={Astro.url.pathname} />
+  </div>
+  <Hero
+    imageSlug="vancouver"
+    title={t('home.heroTitle')}
+    eyebrow={t('home.heroEyebrow')}
+    subtitle={t('home.heroSubtitle', {
+      nights: totalNights,
+      stops: totalStops,
+    })}
+    alt={t('home.heroAlt')}
+  />
+  <section class="mt-18 md:mt-22" aria-label={t('home.atAGlance')}>
+    <dl class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">
+          {t('home.nights')}
+        </dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {totalNights}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">
+          {t('home.stops')}
+        </dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {totalStops}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">
+          {t('home.anchorEvents')}
+        </dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {anchorCount}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">
+          {t('home.budget')}
+        </dt>
+        <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
+          {budgetLabel}
+        </dd>
+      </div>
+    </dl>
+  </section>
+  <section class="mt-18 md:mt-22 lg:mt-30">
+    <h2 class="font-serif text-h2 tracking-tight">{t('home.theRoute')}</h2>
+    <Map
+      variant="route"
+      markers={routeMarkers}
+      routeLine
+      ariaLabel={t('home.routeMapAria')}
+      class="mt-6"
+    />
+  </section>
+  <section class="mt-18 md:mt-22 lg:mt-30">
+    <h2 class="font-serif text-h2 tracking-tight">{t('home.allTenLegs')}</h2>
+    {
+      hasZhContent ? (
+        <ul class="mt-8 grid grid-cols-1 gap-10 list-none p-0 md:grid-cols-2 lg:grid-cols-3">
+          {legs.map((entry) => (
+            <li>
+              <LegCard entry={entry} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-8 text-body text-stone-700">
+          {t('toggle.missingTranslationNotice')}
+        </p>
+      )
+    }
+  </section>
+</Base>

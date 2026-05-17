@@ -106,7 +106,7 @@ MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippab
   - [x] [#176](https://github.com/vito-zbw/canada/issues/176) — Build `LanguageToggle` component
   - [x] [#177](https://github.com/vito-zbw/canada/issues/177) — Localize `TopNav` and integrate `LanguageToggle`
   - [x] [#178](https://github.com/vito-zbw/canada/issues/178) — Localize `Base` layout (html lang, hreflang, footer)
-  - [ ] [#179](https://github.com/vito-zbw/canada/issues/179) — Add per-locale homepage route (en + zh)
+  - [x] [#179](https://github.com/vito-zbw/canada/issues/179) — Add per-locale homepage route (en + zh)
   - [ ] [#180](https://github.com/vito-zbw/canada/issues/180) — Add per-locale leg dynamic route (en + zh)
   - [ ] [#181](https://github.com/vito-zbw/canada/issues/181) — Add per-locale pre-trip route (en + zh)
   - [ ] [#182](https://github.com/vito-zbw/canada/issues/182) — Add per-locale 404 page (en + zh)

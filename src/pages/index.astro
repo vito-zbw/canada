@@ -5,18 +5,24 @@ import TopNav from '../components/TopNav.astro';
 import Hero from '../components/Hero.astro';
 import LegCard from '../components/LegCard.astro';
 import Map from '../components/Map.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
+import { useTranslations, type Locale } from '../i18n/ui';
 
-const legs = (await getCollection('itinerary')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const lang: Locale = 'en';
+const t = useTranslations(lang);
+
+const legs = (await getCollection('itinerary'))
+  .filter((e) => (e.data.lang ?? 'en') === lang)
+  .sort((a, b) => a.data.order - b.data.order);
 
 const routeMarkers = legs.map((l) => ({
   id: l.slug,
   lat: l.data.coords.lat,
   lng: l.data.coords.lng,
   label: l.data.city,
-  href: `/legs/${l.slug}`,
-  title: `${l.data.city}, leg ${l.data.order} of ${legs.length}`,
+  href: `/legs/${l.slug.replace(/^zh\//, '')}`,
+  title: t('leg.eyebrow', { order: l.data.order, total: legs.length }) +
+    ` — ${l.data.city}`,
 }));
 
 const totalNights = legs.reduce((sum, l) => sum + l.data.nights, 0);
@@ -32,42 +38,46 @@ const budgetLabel = new Intl.NumberFormat('en-CA', {
 ---
 
 <Base
-  title="Cross-Canada Solo Trip 2026"
-  description="Vancouver → Toronto, July 1 – August 23, 2026. The working reference for a seven-week cross-Canada itinerary."
+  lang={lang}
+  title={t('home.metaTitle')}
+  description={t('home.metaDescription')}
 >
-  <TopNav />
+  <TopNav lang={lang} />
+  <div class="mt-6 flex justify-end">
+    <LanguageToggle currentLocale={lang} currentPath={Astro.url.pathname} />
+  </div>
   <Hero
     imageSlug="vancouver"
-    title="Cross-Canada Solo Trip 2026"
-    eyebrow="July 1 – August 23, 2026"
-    subtitle={`Vancouver to Toronto, ${totalNights} nights, ${totalStops} stops, one continent.`}
-    alt="Vancouver, the trip's first leg"
+    title={t('home.heroTitle')}
+    eyebrow={t('home.heroEyebrow')}
+    subtitle={t('home.heroSubtitle', { nights: totalNights, stops: totalStops })}
+    alt={t('home.heroAlt')}
   />
   <section
     class="mt-18 md:mt-22"
-    aria-label="Trip at a glance"
+    aria-label={t('home.atAGlance')}
   >
     <dl class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
       <div>
-        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Nights</dt>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">{t('home.nights')}</dt>
         <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
           {totalNights}
         </dd>
       </div>
       <div>
-        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Stops</dt>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">{t('home.stops')}</dt>
         <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
           {totalStops}
         </dd>
       </div>
       <div>
-        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Anchor events</dt>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">{t('home.anchorEvents')}</dt>
         <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
           {anchorCount}
         </dd>
       </div>
       <div>
-        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">Budget</dt>
+        <dt class="text-meta uppercase tracking-[0.2em] text-stone-500">{t('home.budget')}</dt>
         <dd class="mt-1 font-serif text-h2 tabular-nums text-stone-900">
           {budgetLabel}
         </dd>
@@ -75,17 +85,17 @@ const budgetLabel = new Intl.NumberFormat('en-CA', {
     </dl>
   </section>
   <section class="mt-18 md:mt-22 lg:mt-30">
-    <h2 class="font-serif text-h2 tracking-tight">The route</h2>
+    <h2 class="font-serif text-h2 tracking-tight">{t('home.theRoute')}</h2>
     <Map
       variant="route"
       markers={routeMarkers}
       routeLine
-      ariaLabel="Route map of the cross-Canada trip"
+      ariaLabel={t('home.routeMapAria')}
       class="mt-6"
     />
   </section>
   <section class="mt-18 md:mt-22 lg:mt-30">
-    <h2 class="font-serif text-h2 tracking-tight">All ten legs</h2>
+    <h2 class="font-serif text-h2 tracking-tight">{t('home.allTenLegs')}</h2>
     <ul
       class="mt-8 grid grid-cols-1 gap-10 list-none p-0 md:grid-cols-2 lg:grid-cols-3"
     >
