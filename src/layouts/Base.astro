@@ -2,13 +2,35 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  ogType = 'website',
+} = Astro.props;
+
+// Trip canonical span. Source: content/itinerary/canada-itinerary.md "At a
+// Glance" (Jul 1 → Aug 23 2026, ~7 weeks). Update here if the trip is rebooked.
+const TRIP_START = '2026-07-01';
+const TRIP_END = '2026-08-23';
+const SITE_TITLE = 'Cross-Canada Solo Trip 2026';
+
+// Resolve OG image URL to absolute. The `site` setting in astro.config.mjs is
+// the source of truth for production host.
+const ogImageRelative = ogImage ?? '/og-default.jpg';
+const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? '';
+const ogImageAbsolute = ogImageRelative.startsWith('http')
+  ? ogImageRelative
+  : `${siteUrl}${ogImageRelative}`;
+const canonicalUrl = Astro.url.href;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,6 +38,17 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     {description && <meta name="description" content={description} />}
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={ogImageAbsolute} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageAbsolute} />
   </head>
   <body class="min-h-dvh bg-stone-50 text-stone-900 font-sans antialiased">
     <a
@@ -31,9 +64,18 @@ const { title, description } = Astro.props;
       <slot />
     </main>
     <footer
-      class="mx-auto w-full max-w-7xl px-5 pb-10 text-meta text-stone-500 md:px-8 lg:px-16"
+      class="mx-auto w-full max-w-7xl px-5 pt-22 pb-10 text-meta text-stone-500 md:px-8 lg:px-16"
     >
-      <p>© 2026 — Personal cross-Canada itinerary.</p>
+      <div
+        class="flex flex-col gap-2 border-t border-stone-200 pt-6 md:flex-row md:items-baseline md:justify-between"
+      >
+        <p class="font-serif text-stone-700">{SITE_TITLE}</p>
+        <p>
+          <time datetime={TRIP_START}>July 1</time> –
+          <time datetime={TRIP_END}>August 23, 2026</time>
+        </p>
+        <p>A personal record, made carefully.</p>
+      </div>
     </footer>
   </body>
 </html>

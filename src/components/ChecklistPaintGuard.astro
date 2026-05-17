@@ -1,0 +1,53 @@
+---
+// Inline <script> + <style> for <head> on /pre-trip. Runs BEFORE first
+// paint to (1) remove the `no-js` class from <html> so JS-only controls
+// become visible, and (2) stamp the user's saved tick state onto
+// <html data-prep-tick="..."> as a space-separated list of
+// "sectionId:itemId" tokens. CSS can match against this attribute if
+// it ever needs to render checked styling without waiting for the
+// Checklist island to hydrate.
+//
+// Script must be ES5 (no arrows, no const/let). is:inline keeps Astro
+// from bundling it as a module — modules wait for parse, defeating
+// the "before paint" goal.
+---
+
+<script is:inline>
+  (function () {
+    try {
+      var raw = localStorage.getItem('canada:prep:tick:v1');
+      var t = raw ? JSON.parse(raw) : {};
+      var ids = [];
+      for (var section in t) {
+        if (Object.prototype.hasOwnProperty.call(t, section)) {
+          var items = t[section];
+          for (var item in items) {
+            if (
+              Object.prototype.hasOwnProperty.call(items, item) &&
+              items[item]
+            ) {
+              ids.push(section + ':' + item);
+            }
+          }
+        }
+      }
+      document.documentElement.setAttribute(
+        'data-prep-tick',
+        ids.join(' '),
+      );
+    } catch (e) {
+      /* localStorage unavailable; the Checklist island will hydrate
+         and apply state shortly. */
+    }
+    document.documentElement.classList.remove('no-js');
+  })();
+</script>
+
+<style is:inline>
+  /* Hook for paint-time tick styling. The Checklist island sets
+     .checked after hydration; this rule is a placeholder for any
+     future selector that wants to read [data-prep-tick]. */
+  input[type='checkbox'][data-tick-key] {
+    /* intentionally empty */
+  }
+</style>
