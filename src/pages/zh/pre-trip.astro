@@ -1,16 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
-import TopNav from '../components/TopNav.astro';
-import Checklist from '../components/Checklist.astro';
-import ChecklistPaintGuard from '../components/ChecklistPaintGuard.astro';
-import { useTranslations, type Locale } from '../i18n/ui';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import Checklist from '../../components/Checklist.astro';
+import ChecklistPaintGuard from '../../components/ChecklistPaintGuard.astro';
+import { useTranslations, type Locale } from '../../i18n/ui';
 
-const lang: Locale = 'en';
+const lang: Locale = 'zh';
 const t = useTranslations(lang);
 
 const entries = (await getCollection('prep'))
-  .filter((e) => (e.data.lang ?? 'en') === lang)
+  .filter((e) => e.data.lang === 'zh')
   .sort((a, b) => a.data.order - b.data.order);
 
 const totalItems = entries.reduce(
