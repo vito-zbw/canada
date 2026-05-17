@@ -40,6 +40,68 @@ A personal multi-page itinerary website documenting a 7-week solo trip across Ca
 └── public/images/                     ← cached fetched images (committed)
 ```
 
+## Roadmap
+
+The site is being built milestone by milestone. Each milestone is tracked by an `epic` GitHub issue; its children are `groomed` issues. **Tick a child's box here when its issue closes; tick a milestone's box once all its children are done.** A new Claude session opening this repo should read this section first to know what's left.
+
+MVP = milestones 1–4 (home + 10 leg pages + nav + images). The site is shippable once those are complete. Milestones 5–9 round out the full website.
+
+### MVP
+
+- [x] **Milestone 1 — Image pipeline** ([#44](https://github.com/vito-zbw/canada/issues/44))
+  - [x] [#35](https://github.com/vito-zbw/canada/issues/35) — Implement Pexels fetcher script
+  - [x] [#37](https://github.com/vito-zbw/canada/issues/37) — Build `<Image>` component with blur-up and alt enforcement
+  - [x] [#41](https://github.com/vito-zbw/canada/issues/41) — Run image fetcher for all 10 legs and commit cache
+- [x] **Milestone 2 — Shared components and nav** ([#45](https://github.com/vito-zbw/canada/issues/45))
+  - [x] [#38](https://github.com/vito-zbw/canada/issues/38) — Build Hero component
+  - [x] [#33](https://github.com/vito-zbw/canada/issues/33) — Build MetaLine component
+  - [x] [#39](https://github.com/vito-zbw/canada/issues/39) — Build LegCard component
+  - [x] [#34](https://github.com/vito-zbw/canada/issues/34) — Build AnchorEventBadge component
+  - [x] [#40](https://github.com/vito-zbw/canada/issues/40) — Build TopNav component
+  - [x] [#36](https://github.com/vito-zbw/canada/issues/36) — Enhance Base.astro footer with trip metadata
+- [x] **Milestone 3 — Per-leg content (10 entries)** ([#46](https://github.com/vito-zbw/canada/issues/46))
+  - [x] [#23](https://github.com/vito-zbw/canada/issues/23) — Author vancouver.mdx
+  - [x] [#24](https://github.com/vito-zbw/canada/issues/24) — Author calgary.mdx
+  - [x] [#25](https://github.com/vito-zbw/canada/issues/25) — Author banff.mdx
+  - [x] [#26](https://github.com/vito-zbw/canada/issues/26) — Author jasper.mdx
+  - [x] [#27](https://github.com/vito-zbw/canada/issues/27) — Author the-canadian.mdx (VIA Rail transit leg)
+  - [x] [#28](https://github.com/vito-zbw/canada/issues/28) — Author winnipeg.mdx
+  - [x] [#29](https://github.com/vito-zbw/canada/issues/29) — Author ottawa.mdx
+  - [x] [#30](https://github.com/vito-zbw/canada/issues/30) — Author montreal.mdx
+  - [x] [#31](https://github.com/vito-zbw/canada/issues/31) — Author quebec-city.mdx
+  - [x] [#32](https://github.com/vito-zbw/canada/issues/32) — Author toronto.mdx
+- [x] **Milestone 4 — Pages** ([#47](https://github.com/vito-zbw/canada/issues/47))
+  - [x] [#42](https://github.com/vito-zbw/canada/issues/42) — Rebuild homepage as editorial overview
+  - [x] [#43](https://github.com/vito-zbw/canada/issues/43) — Build leg detail dynamic route `/legs/[slug]`
+
+**MVP is shippable when M1–M4 are all ticked.**
+
+### Post-MVP
+
+- [x] **Milestone 5 — Pre-trip essentials** ([#64](https://github.com/vito-zbw/canada/issues/64))
+  - [x] [#48](https://github.com/vito-zbw/canada/issues/48) — Extend content schema with prep collection
+  - [x] [#49](https://github.com/vito-zbw/canada/issues/49) — Author pre-trip.mdx with 5 sections
+  - [x] [#50](https://github.com/vito-zbw/canada/issues/50) — Build /pre-trip route
+- [x] **Milestone 6 — Route map** ([#65](https://github.com/vito-zbw/canada/issues/65))
+  - [x] [#51](https://github.com/vito-zbw/canada/issues/51) — Build static RouteMap SVG component
+  - [x] [#52](https://github.com/vito-zbw/canada/issues/52) — Add RouteMap to homepage
+  - [x] [#53](https://github.com/vito-zbw/canada/issues/53) — Add inset RouteMap to leg pages
+- [x] **Milestone 7 — Richer content components** ([#66](https://github.com/vito-zbw/canada/issues/66))
+  - [x] [#54](https://github.com/vito-zbw/canada/issues/54) — Build PullQuote component
+  - [x] [#55](https://github.com/vito-zbw/canada/issues/55) — Build PhotoGallery component
+  - [x] [#56](https://github.com/vito-zbw/canada/issues/56) — Build DayJumpNav component
+- [x] **Milestone 8 — SEO, OG metadata, and error pages** ([#67](https://github.com/vito-zbw/canada/issues/67))
+  - [x] [#57](https://github.com/vito-zbw/canada/issues/57) — Add OG metadata to Base layout
+  - [x] [#58](https://github.com/vito-zbw/canada/issues/58) — Generate sitemap.xml via @astrojs/sitemap
+  - [x] [#59](https://github.com/vito-zbw/canada/issues/59) — Add robots.txt
+  - [x] [#60](https://github.com/vito-zbw/canada/issues/60) — Build /404 page
+- [ ] **Milestone 9 — Deploy and CI verification** ([#68](https://github.com/vito-zbw/canada/issues/68))
+  - [ ] [#61](https://github.com/vito-zbw/canada/issues/61) — Configure Cloudflare Pages deploy
+  - [ ] [#62](https://github.com/vito-zbw/canada/issues/62) — Wire axe-core into pre-commit or CI
+  - [ ] [#63](https://github.com/vito-zbw/canada/issues/63) — Add Lighthouse CI workflow on PRs
+
+**Resuming protocol:** when picking up a session, scan from the top for the first unticked child. That's your next implementation candidate (subject to its `**Depends on:**` cross-refs in the issue body — verify those are already closed).
+
 ## How to work in this repo
 
 ### Before writing code, always
