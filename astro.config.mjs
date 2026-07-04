@@ -4,8 +4,11 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://canada.pages.dev',
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'],
@@ -13,6 +16,7 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+
   integrations: [
     tailwind(),
     mdx(),
@@ -24,4 +28,7 @@ export default defineConfig({
       },
     }),
   ],
+
+  output: "hybrid",
+  adapter: cloudflare()
 });
