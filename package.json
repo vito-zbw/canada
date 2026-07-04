@@ -8,12 +8,15 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "check": "astro check",
     "a11y": "astro build && tsx scripts/run-a11y.ts",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "11",
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^4.16.0",
@@ -27,6 +30,7 @@
     "axe-core": "^4.11.4",
     "jsdom": "^29.1.1",
     "tsx": "^4.22.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "wrangler": "^4.107.0"
   }
 }
